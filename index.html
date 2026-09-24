@@ -2,10 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-<title>micro:bit Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>micro:bit BLE Dashboard</title>
 
 <style>
 * {
@@ -14,722 +12,366 @@
 
 body {
     margin: 0;
-    min-height: 100vh;
-    background:
-        radial-gradient(circle at top, #20283a 0%, #0b0e14 45%, #07090d 100%);
-    color: #f5f7fb;
-    font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-}
-
-.app {
-    width: min(1100px, 100%);
-    margin: auto;
-    padding: 18px;
+    background: #101114;
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 18px;
+    padding: 20px;
+    text-align: center;
+    background: #181a20;
+    border-bottom: 1px solid #2d3038;
 }
 
-.title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    background: #242b3b;
-    font-size: 27px;
-}
-
-h1 {
-    margin: 0;
+header h1 {
+    margin: 0 0 8px;
     font-size: 25px;
 }
 
-.subtitle {
-    color: #8f99aa;
-    font-size: 13px;
-    margin-top: 3px;
+header p {
+    margin: 0;
+    color: #999;
 }
 
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 14px;
-    border-radius: 999px;
-    background: #181d27;
-    color: #aab3c2;
-    font-size: 13px;
-}
-
-.status-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #e04b4b;
-}
-
-.status.connected .status-dot {
-    background: #35d07f;
-}
-
-.card {
-    background: rgba(20, 25, 34, 0.88);
-    border: 1px solid #293140;
-    border-radius: 20px;
-    padding: 18px;
-    box-shadow: 0 12px 35px rgba(0,0,0,.2);
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
 }
 
 .controls {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 button {
     border: 0;
-    border-radius: 13px;
+    border-radius: 12px;
     padding: 13px 18px;
-    background: #293244;
-    color: white;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
 }
 
-button:active {
-    transform: scale(.97);
+#connectBtn {
+    background: #2ecc71;
+    color: white;
 }
 
-button.primary {
-    background: #3d7cff;
-}
-
-button.danger {
-    background: #b83e4b;
+#disconnectBtn {
+    background: #e74c3c;
+    color: white;
 }
 
 button:disabled {
-    opacity: .45;
+    opacity: 0.4;
     cursor: not-allowed;
+}
+
+.status {
+    background: #181a20;
+    border: 1px solid #2d3038;
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.status-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#status {
+    color: #ffcc00;
+}
+
+.device-name {
+    color: #aaa;
+    margin-top: 5px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 13px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
 }
 
-.sensor {
-    min-height: 135px;
+.card {
+    background: #181a20;
+    border: 1px solid #2d3038;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.card-title {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.unit {
+    color: #888;
+    font-size: 14px;
+    margin-left: 3px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.section h2 {
+    font-size: 18px;
+}
+
+.buttons {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    gap: 10px;
 }
 
-.sensor-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.ab {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    border-radius: 14px;
+    background: #181a20;
+    border: 1px solid #2d3038;
 }
 
-.sensor-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    background: #252d3b;
-    display: grid;
-    place-items: center;
-    font-size: 20px;
-}
-
-.sensor-name {
-    color: #8f99aa;
-    font-size: 13px;
-}
-
-.sensor-value {
+.ab-value {
     font-size: 30px;
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-weight: bold;
 }
 
-.sensor-unit {
-    color: #8f99aa;
-    font-size: 13px;
-}
-
-.full {
-    grid-column: span 2;
-}
-
-.chart-card {
-    margin-top: 13px;
-}
-
-.chart-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.chart-title strong {
-    font-size: 17px;
-}
-
-.chart-title span {
-    color: #7e899b;
-    font-size: 12px;
+.graph-box {
+    background: #181a20;
+    border: 1px solid #2d3038;
+    border-radius: 14px;
+    padding: 10px;
 }
 
 canvas {
     width: 100%;
-    height: 220px;
+    height: 250px;
     display: block;
-    background: #0d1118;
-    border-radius: 14px;
 }
 
-.buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 13px;
-    margin-top: 13px;
-}
-
-.button-state {
-    padding: 22px;
-    text-align: center;
-    border-radius: 16px;
-    background: #121720;
-    border: 1px solid #252d3a;
-}
-
-.button-state.active {
-    background: #263f31;
-    border-color: #3cc77b;
-}
-
-.button-letter {
-    font-size: 32px;
-    font-weight: 900;
-}
-
-.button-label {
-    margin-top: 5px;
-    color: #8f99aa;
-    font-size: 13px;
-}
-
-.command-card {
-    margin-top: 13px;
-}
-
-.command-row {
+.command {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
-.command-row input {
+.command input {
     flex: 1;
     min-width: 0;
-    border: 1px solid #30394a;
-    outline: none;
-    border-radius: 12px;
-    background: #0d1118;
+    background: #0d0e11;
     color: white;
-    padding: 14px;
-    font-size: 15px;
+    border: 1px solid #333740;
+    border-radius: 10px;
+    padding: 12px;
+    outline: none;
 }
 
-.command-row input:focus {
-    border-color: #3d7cff;
-}
-
-.log-card {
-    margin-top: 13px;
+.command button {
+    background: #5865f2;
+    color: white;
 }
 
 .log {
-    height: 170px;
-    overflow-y: auto;
-    background: #0a0d12;
-    border-radius: 13px;
+    background: #0b0c0f;
+    border: 1px solid #2d3038;
+    border-radius: 14px;
     padding: 12px;
+    height: 220px;
+    overflow-y: auto;
     font-family: monospace;
     font-size: 12px;
-    color: #8994a5;
+    white-space: pre-wrap;
 }
 
 .log-line {
     margin-bottom: 5px;
 }
 
-.log-line.good {
-    color: #5fd896;
+.ok {
+    color: #2ecc71;
 }
 
-.log-line.error {
-    color: #ed6d79;
+.error {
+    color: #ff5555;
+}
+
+.info {
+    color: #66aaff;
+}
+
+.warning {
+    color: #ffcc00;
 }
 
 footer {
     text-align: center;
-    padding: 20px;
-    color: #596477;
+    padding: 30px;
+    color: #666;
     font-size: 12px;
-}
-
-@media (max-width: 750px) {
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .full {
-        grid-column: span 2;
-    }
-
-    header {
-        align-items: flex-start;
-    }
-
-    .status {
-        font-size: 11px;
-        padding: 8px 10px;
-    }
-
-    h1 {
-        font-size: 21px;
-    }
-}
-
-@media (max-width: 430px) {
-
-    .app {
-        padding: 12px;
-    }
-
-    .grid {
-        gap: 9px;
-    }
-
-    .card {
-        border-radius: 16px;
-        padding: 13px;
-    }
-
-    .sensor {
-        min-height: 120px;
-    }
-
-    .sensor-value {
-        font-size: 25px;
-    }
-
-    button {
-        flex: 1;
-    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
-
 <header>
-
-    <div class="title">
-
-        <div class="logo">
-            🤖
-        </div>
-
-        <div>
-            <h1>micro:bit Dashboard</h1>
-            <div class="subtitle">
-                BLE Sensor Monitor
-            </div>
-        </div>
-
-    </div>
-
-    <div id="status" class="status">
-
-        <span class="status-dot"></span>
-
-        <span id="statusText">
-            연결 안 됨
-        </span>
-
-    </div>
-
+    <h1>📡 micro:bit BLE Dashboard</h1>
+    <p>Nordic UART Service</p>
 </header>
 
+<div class="container">
 
-<div class="controls">
+    <div class="controls">
+        <button id="connectBtn">🔵 micro:bit 연결</button>
+        <button id="disconnectBtn" disabled>🔴 연결 해제</button>
+    </div>
 
-    <button
-        id="connectButton"
-        class="primary">
+    <div class="status">
+        <div class="status-title">상태</div>
+        <div id="status">연결되지 않음</div>
+        <div class="device-name" id="deviceName">기기 없음</div>
+    </div>
 
-        🔵 micro:bit 연결
+    <div class="grid">
 
-    </button>
-
-    <button
-        id="disconnectButton"
-        class="danger"
-        disabled>
-
-        🔴 연결 해제
-
-    </button>
-
-</div>
-
-
-<div class="grid">
-
-    <div class="card sensor">
-
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                🌡️
+        <div class="card">
+            <div class="card-title">🌡️ 온도</div>
+            <div class="value">
+                <span id="temperature">--</span>
+                <span class="unit">°C</span>
             </div>
-
-            <div class="sensor-name">
-                TEMPERATURE
-            </div>
-
         </div>
 
-        <div>
-            <span
-                id="temperature"
-                class="sensor-value">
-                --
-            </span>
+        <div class="card">
+            <div class="card-title">💡 밝기</div>
+            <div class="value">
+                <span id="light">--</span>
+            </div>
+        </div>
 
-            <span class="sensor-unit">
-                °C
-            </span>
+        <div class="card">
+            <div class="card-title">🎤 소리</div>
+            <div class="value">
+                <span id="sound">--</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📦 패킷</div>
+            <div class="value">
+                <span id="packets">0</span>
+            </div>
         </div>
 
     </div>
 
+    <div class="section">
+        <h2>📐 가속도</h2>
 
-    <div class="card sensor">
+        <div class="grid">
 
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                💡
+            <div class="card">
+                <div class="card-title">X</div>
+                <div class="value">
+                    <span id="x">--</span>
+                    <span class="unit">mg</span>
+                </div>
             </div>
 
-            <div class="sensor-name">
-                LIGHT
+            <div class="card">
+                <div class="card-title">Y</div>
+                <div class="value">
+                    <span id="y">--</span>
+                    <span class="unit">mg</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Z</div>
+                <div class="value">
+                    <span id="z">--</span>
+                    <span class="unit">mg</span>
+                </div>
             </div>
 
         </div>
-
-        <div>
-            <span
-                id="light"
-                class="sensor-value">
-                --
-            </span>
-
-            <span class="sensor-unit">
-                /255
-            </span>
-        </div>
-
     </div>
 
+    <div class="section">
+        <h2>🎮 버튼</h2>
 
-    <div class="card sensor">
+        <div class="buttons">
 
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                🎤
+            <div class="ab">
+                <div>A</div>
+                <div class="ab-value" id="buttonA">OFF</div>
             </div>
 
-            <div class="sensor-name">
-                SOUND
+            <div class="ab">
+                <div>B</div>
+                <div class="ab-value" id="buttonB">OFF</div>
             </div>
 
         </div>
-
-        <div>
-            <span
-                id="sound"
-                class="sensor-value">
-                --
-            </span>
-
-            <span class="sensor-unit">
-                /255
-            </span>
-        </div>
-
     </div>
 
+    <div class="section">
+        <h2>📈 센서 그래프</h2>
 
-    <div class="card sensor">
-
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                📡
-            </div>
-
-            <div class="sensor-name">
-                PACKETS
-            </div>
-
+        <div class="graph-box">
+            <canvas id="graph"></canvas>
         </div>
-
-        <div>
-            <span
-                id="packets"
-                class="sensor-value">
-                0
-            </span>
-
-            <span class="sensor-unit">
-                received
-            </span>
-        </div>
-
     </div>
 
+    <div class="section">
+        <h2>📤 micro:bit로 보내기</h2>
 
-    <div class="card sensor full">
+        <div class="command">
+            <input
+                id="commandInput"
+                type="text"
+                placeholder="예: LED_ON"
+            >
 
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                📐
-            </div>
-
-            <div class="sensor-name">
-                ACCELERATION X
-            </div>
-
+            <button id="sendBtn" disabled>
+                보내기
+            </button>
         </div>
-
-        <div>
-            <span
-                id="accelX"
-                class="sensor-value">
-                --
-            </span>
-
-            <span class="sensor-unit">
-                mg
-            </span>
-        </div>
-
     </div>
 
+    <div class="section">
+        <h2>📜 통신 로그</h2>
 
-    <div class="card sensor full">
-
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                📐
-            </div>
-
-            <div class="sensor-name">
-                ACCELERATION Y
-            </div>
-
-        </div>
-
-        <div>
-            <span
-                id="accelY"
-                class="sensor-value">
-                --
-            </span>
-
-            <span class="sensor-unit">
-                mg
-            </span>
-        </div>
-
-    </div>
-
-
-    <div class="card sensor full">
-
-        <div class="sensor-top">
-
-            <div class="sensor-icon">
-                📐
-            </div>
-
-            <div class="sensor-name">
-                ACCELERATION Z
-            </div>
-
-        </div>
-
-        <div>
-            <span
-                id="accelZ"
-                class="sensor-value">
-                --
-            </span>
-
-            <span class="sensor-unit">
-                mg
-            </span>
-        </div>
-
+        <div class="log" id="log"></div>
     </div>
 
 </div>
-
-
-<div class="card chart-card">
-
-    <div class="chart-title">
-
-        <strong>
-            📈 센서 그래프
-        </strong>
-
-        <span>
-            최근 데이터
-        </span>
-
-    </div>
-
-    <canvas id="chart"></canvas>
-
-</div>
-
-
-<div class="buttons">
-
-    <div
-        id="buttonA"
-        class="button-state">
-
-        <div class="button-letter">
-            A
-        </div>
-
-        <div class="button-label">
-            RELEASED
-        </div>
-
-    </div>
-
-
-    <div
-        id="buttonB"
-        class="button-state">
-
-        <div class="button-letter">
-            B
-        </div>
-
-        <div class="button-label">
-            RELEASED
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="card command-card">
-
-    <div class="chart-title">
-
-        <strong>
-            🎮 micro:bit 명령
-        </strong>
-
-        <span>
-            UART
-        </span>
-
-    </div>
-
-    <div class="command-row">
-
-        <input
-            id="commandInput"
-            type="text"
-            placeholder="예: LED_ON">
-
-        <button
-            id="sendButton"
-            class="primary">
-
-            전송
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<div class="card log-card">
-
-    <div class="chart-title">
-
-        <strong>
-            📋 이벤트 로그
-        </strong>
-
-        <button id="clearLog">
-            지우기
-        </button>
-
-    </div>
-
-    <div id="log" class="log"></div>
-
-</div>
-
 
 <footer>
-    micro:bit V2 · Web Bluetooth Dashboard
+    micro:bit V2 • Bluetooth Low Energy • Nordic UART Service
 </footer>
-
-</div>
 
 
 <script>
+
+/*
+==================================================
+BLE UUID
+==================================================
+*/
 
 const UART_SERVICE_UUID =
     "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -741,24 +383,88 @@ const UART_TX_UUID =
     "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
 
+/*
+==================================================
+BLE 상태
+==================================================
+*/
+
 let device = null;
 let server = null;
+let service = null;
 
 let rxCharacteristic = null;
 let txCharacteristic = null;
 
+let connected = false;
+
 let packetCount = 0;
 
-const graphData = [];
-
-const MAX_GRAPH_POINTS = 80;
+let buffer = "";
 
 
-const $ = id =>
-    document.getElementById(id);
+/*
+==================================================
+DOM
+==================================================
+*/
+
+const connectBtn =
+    document.getElementById("connectBtn");
+
+const disconnectBtn =
+    document.getElementById("disconnectBtn");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+const commandInput =
+    document.getElementById("commandInput");
+
+const statusElement =
+    document.getElementById("status");
+
+const deviceNameElement =
+    document.getElementById("deviceName");
+
+const logElement =
+    document.getElementById("log");
+
+const temperatureElement =
+    document.getElementById("temperature");
+
+const lightElement =
+    document.getElementById("light");
+
+const soundElement =
+    document.getElementById("sound");
+
+const xElement =
+    document.getElementById("x");
+
+const yElement =
+    document.getElementById("y");
+
+const zElement =
+    document.getElementById("z");
+
+const buttonAElement =
+    document.getElementById("buttonA");
+
+const buttonBElement =
+    document.getElementById("buttonB");
+
+const packetsElement =
+    document.getElementById("packets");
 
 
-function log(message, type = "") {
+/*
+==================================================
+로그
+==================================================
+*/
+
+function log(message, type = "info") {
 
     const line =
         document.createElement("div");
@@ -770,247 +476,67 @@ function log(message, type = "") {
         new Date().toLocaleTimeString();
 
     line.textContent =
-        `[${time}] ${message}`;
+        "[" + time + "] " + message;
 
-    $("log").appendChild(line);
+    logElement.appendChild(line);
 
-    $("log").scrollTop =
-        $("log").scrollHeight;
+    logElement.scrollTop =
+        logElement.scrollHeight;
+
+    console.log(message);
 }
 
 
-function setStatus(text, connected = false) {
+/*
+==================================================
+상태 표시
+==================================================
+*/
 
-    $("statusText").textContent =
-        text;
+function setStatus(message, type = "info") {
 
-    $("status").classList.toggle(
-        "connected",
-        connected
-    );
+    statusElement.textContent =
+        message;
 
+    statusElement.className =
+        type;
 }
 
 
-function updateValue(id, value) {
-
-    $(id).textContent =
-        value;
-
-}
-
-
-function parsePacket(text) {
-
-    text =
-        text.trim();
-
-    if (!text) {
-        return;
-    }
-
-    /*
-        micro:bit에서 다음 형식으로 보낸다.
-
-        DATA,temperature,light,sound,x,y,z,A,B
-
-        예:
-
-        DATA,24,137,58,100,-20,1010,0,1
-    */
-
-    const parts =
-        text.split(",");
-
-    if (parts[0] !== "DATA") {
-
-        log(
-            "micro:bit: " + text
-        );
-
-        return;
-    }
-
-    if (parts.length < 9) {
-
-        log(
-            "잘못된 데이터: " + text,
-            "error"
-        );
-
-        return;
-    }
-
-    const temperature =
-        Number(parts[1]);
-
-    const light =
-        Number(parts[2]);
-
-    const sound =
-        Number(parts[3]);
-
-    const x =
-        Number(parts[4]);
-
-    const y =
-        Number(parts[5]);
-
-    const z =
-        Number(parts[6]);
-
-    const buttonA =
-        Number(parts[7]);
-
-    const buttonB =
-        Number(parts[8]);
-
-
-    updateValue(
-        "temperature",
-        temperature
-    );
-
-    updateValue(
-        "light",
-        light
-    );
-
-    updateValue(
-        "sound",
-        sound
-    );
-
-    updateValue(
-        "accelX",
-        x
-    );
-
-    updateValue(
-        "accelY",
-        y
-    );
-
-    updateValue(
-        "accelZ",
-        z
-    );
-
-
-    packetCount++;
-
-    updateValue(
-        "packets",
-        packetCount
-    );
-
-
-    updateButton(
-        "buttonA",
-        buttonA
-    );
-
-    updateButton(
-        "buttonB",
-        buttonB
-    );
-
-
-    graphData.push({
-        sound: sound,
-        light: light,
-        temperature: temperature
-    });
-
-    if (
-        graphData.length >
-        MAX_GRAPH_POINTS
-    ) {
-        graphData.shift();
-    }
-
-    drawChart();
-}
-
-
-function updateButton(id, state) {
-
-    const element =
-        $(id);
-
-    const label =
-        element.querySelector(
-            ".button-label"
-        );
-
-    if (state) {
-
-        element.classList.add("active");
-
-        label.textContent =
-            "PRESSED";
-
-    } else {
-
-        element.classList.remove("active");
-
-        label.textContent =
-            "RELEASED";
-    }
-}
-
-
-let receiveBuffer = "";
-
-
-async function handleNotification(event) {
-
-    const value =
-        event.target.value;
-
-    const decoder =
-        new TextDecoder();
-
-    const text =
-        decoder.decode(value);
-
-    receiveBuffer += text;
-
-    const lines =
-        receiveBuffer.split("\n");
-
-    receiveBuffer =
-        lines.pop();
-
-    for (const line of lines) {
-
-        parsePacket(line);
-    }
-}
-
-
-async function connectMicrobit() {
-
-    if (!navigator.bluetooth) {
-
-        alert(
-            "이 브라우저는 Web Bluetooth를 지원하지 않습니다."
-        );
-
-        return;
-    }
-
+/*
+==================================================
+연결
+==================================================
+*/
+
+connectBtn.addEventListener("click", async () => {
 
     try {
 
+        if (!navigator.bluetooth) {
+
+            alert(
+                "이 브라우저는 Web Bluetooth를 지원하지 않습니다."
+            );
+
+            return;
+        }
+
         log(
-            "micro:bit 검색 중..."
+            "micro:bit 검색 시작...",
+            "info"
         );
 
         setStatus(
-            "검색 중..."
+            "micro:bit 검색 중...",
+            "warning"
         );
 
+        /*
+        ==========================================
+        micro:bit 선택창
+        ==========================================
+        */
 
         device =
             await navigator.bluetooth.requestDevice({
@@ -1031,33 +557,88 @@ async function connectMicrobit() {
 
 
         log(
-            "발견: " +
-            (device.name || "micro:bit"),
-            "good"
+            "선택된 기기: " +
+            (device.name || "이름 없음"),
+            "ok"
         );
 
+
+        deviceNameElement.textContent =
+            device.name ||
+            "micro:bit";
+
+
+        /*
+        ==========================================
+        disconnect 이벤트
+        ==========================================
+        */
 
         device.addEventListener(
             "gattserverdisconnected",
-            onDisconnected
+            handleDisconnected
         );
 
+
+        /*
+        ==========================================
+        GATT 연결
+        ==========================================
+        */
+
+        setStatus(
+            "GATT 연결 중...",
+            "warning"
+        );
+
+        log(
+            "GATT 서버 연결 중...",
+            "info"
+        );
 
         server =
             await device.gatt.connect();
 
 
         log(
-            "GATT 연결 완료",
-            "good"
+            "GATT 연결 성공!",
+            "ok"
         );
 
 
-        const service =
+        /*
+        ==========================================
+        UART Service
+        ==========================================
+        */
+
+        log(
+            "UART Service 가져오는 중...",
+            "info"
+        );
+
+        service =
             await server.getPrimaryService(
                 UART_SERVICE_UUID
             );
 
+
+        log(
+            "UART Service 발견!",
+            "ok"
+        );
+
+
+        /*
+        ==========================================
+        RX
+        ==========================================
+        */
+
+        log(
+            "RX Characteristic 가져오는 중...",
+            "info"
+        );
 
         rxCharacteristic =
             await service.getCharacteristic(
@@ -1065,11 +646,45 @@ async function connectMicrobit() {
             );
 
 
+        log(
+            "RX Characteristic 발견!",
+            "ok"
+        );
+
+
+        /*
+        ==========================================
+        TX
+        ==========================================
+        */
+
+        log(
+            "TX Characteristic 가져오는 중...",
+            "info"
+        );
+
         txCharacteristic =
             await service.getCharacteristic(
                 UART_TX_UUID
             );
 
+
+        log(
+            "TX Characteristic 발견!",
+            "ok"
+        );
+
+
+        /*
+        ==========================================
+        Notify 시작
+        ==========================================
+        */
+
+        log(
+            "TX Notify 시작...",
+            "info"
+        );
 
         await txCharacteristic.startNotifications();
 
@@ -1080,101 +695,354 @@ async function connectMicrobit() {
         );
 
 
-        setStatus(
-            "연결됨",
-            true
+        log(
+            "TX Notify 활성화!",
+            "ok"
         );
 
 
-        $("connectButton").disabled =
-            true;
+        /*
+        ==========================================
+        UI 변경
+        ==========================================
+        */
 
-        $("disconnectButton").disabled =
-            false;
+        connected = true;
 
+        connectBtn.disabled = true;
+        disconnectBtn.disabled = false;
+        sendBtn.disabled = false;
+
+        setStatus(
+            "🟢 연결됨",
+            "ok"
+        );
 
         log(
-            "UART 준비 완료!",
-            "good"
+            "micro:bit 연결 완료!",
+            "ok"
         );
 
-
-        await sendCommand(
-            "HELLO"
-        );
-
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         log(
-            "연결 실패: " +
+            "❌ " +
+            error.name +
+            ": " +
             error.message,
             "error"
         );
 
         setStatus(
-            "연결 실패"
+            "연결 실패",
+            "error"
         );
 
     }
 
-}
+});
 
 
-function onDisconnected() {
+/*
+==================================================
+연결 해제
+==================================================
+*/
 
-    log(
-        "micro:bit 연결 끊김",
-        "error"
-    );
-
-    setStatus(
-        "연결 안 됨"
-    );
-
-    $("connectButton").disabled =
-        false;
-
-    $("disconnectButton").disabled =
-        true;
-
-    rxCharacteristic =
-        null;
-
-    txCharacteristic =
-        null;
-
-}
+disconnectBtn.addEventListener(
+    "click",
+    disconnect
+);
 
 
-function disconnectMicrobit() {
+function disconnect() {
 
-    if (
-        device &&
-        device.gatt &&
-        device.gatt.connected
-    ) {
+    try {
 
-        device.gatt.disconnect();
+        if (
+            device &&
+            device.gatt &&
+            device.gatt.connected
+        ) {
+
+            device.gatt.disconnect();
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
 
     }
 
-    onDisconnected();
+}
+
+
+/*
+==================================================
+연결 끊김
+==================================================
+*/
+
+function handleDisconnected() {
+
+    connected = false;
+
+    connectBtn.disabled = false;
+    disconnectBtn.disabled = true;
+    sendBtn.disabled = true;
+
+    setStatus(
+        "연결되지 않음",
+        "error"
+    );
+
+    log(
+        "micro:bit 연결이 끊어졌습니다.",
+        "warning"
+    );
 
 }
 
 
-async function sendCommand(command) {
+/*
+==================================================
+BLE Notification
+==================================================
+*/
 
-    if (!rxCharacteristic) {
+function handleNotification(event) {
+
+    const value =
+        event.target.value;
+
+    const decoder =
+        new TextDecoder("utf-8");
+
+    const text =
+        decoder.decode(value);
+
+    log(
+        "← " +
+        text.replace(/\r?\n/g, "\\n"),
+        "info"
+    );
+
+    buffer += text;
+
+
+    /*
+    ==========================================
+    줄 단위로 분리
+    ==========================================
+    */
+
+    const lines =
+        buffer.split("\n");
+
+    buffer =
+        lines.pop();
+
+
+    for (const line of lines) {
+
+        const clean =
+            line.trim();
+
+        if (clean.length === 0) {
+            continue;
+        }
+
+        processData(clean);
+
+    }
+
+}
+
+
+/*
+==================================================
+데이터 처리
+==================================================
+*/
+
+function processData(data) {
+
+    /*
+    예상 형식:
+
+    DATA,
+    temperature,
+    light,
+    sound,
+    x,
+    y,
+    z,
+    a,
+    b
+    */
+
+    if (!data.startsWith("DATA,")) {
+
+        log(
+            "수신 데이터: " +
+            data,
+            "warning"
+        );
+
+        return;
+    }
+
+
+    const parts =
+        data.split(",");
+
+
+    if (parts.length < 9) {
+
+        log(
+            "DATA 형식 오류: " +
+            data,
+            "error"
+        );
+
+        return;
+    }
+
+
+    const temperature =
+        Number(parts[1]);
+
+    const light =
+        Number(parts[2]);
+
+    const sound =
+        Number(parts[3]);
+
+    const x =
+        Number(parts[4]);
+
+    const y =
+        Number(parts[5]);
+
+    const z =
+        Number(parts[6]);
+
+    const a =
+        Number(parts[7]);
+
+    const b =
+        Number(parts[8]);
+
+
+    /*
+    ==========================================
+    화면 업데이트
+    ==========================================
+    */
+
+    temperatureElement.textContent =
+        temperature;
+
+    lightElement.textContent =
+        light;
+
+    soundElement.textContent =
+        sound;
+
+    xElement.textContent =
+        x;
+
+    yElement.textContent =
+        y;
+
+    zElement.textContent =
+        z;
+
+
+    buttonAElement.textContent =
+        a ? "ON" : "OFF";
+
+    buttonBElement.textContent =
+        b ? "ON" : "OFF";
+
+
+    /*
+    ==========================================
+    패킷 수
+    ==========================================
+    */
+
+    packetCount++;
+
+    packetsElement.textContent =
+        packetCount;
+
+
+    /*
+    ==========================================
+    그래프
+    ==========================================
+    */
+
+    addGraphData(
+        temperature,
+        sound,
+        light
+    );
+
+}
+
+
+/*
+==================================================
+micro:bit로 데이터 보내기
+==================================================
+*/
+
+sendBtn.addEventListener(
+    "click",
+    sendCommand
+);
+
+
+commandInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            sendCommand();
+
+        }
+
+    }
+);
+
+
+async function sendCommand() {
+
+    if (
+        !connected ||
+        !rxCharacteristic
+    ) {
 
         log(
             "micro:bit가 연결되지 않았습니다.",
             "error"
         );
 
+        return;
+    }
+
+
+    const text =
+        commandInput.value.trim();
+
+
+    if (!text) {
         return;
     }
 
@@ -1186,62 +1054,41 @@ async function sendCommand(command) {
 
         const data =
             encoder.encode(
-                command + "\n"
+                text + "\n"
             );
 
 
         /*
-            BLE characteristic은 한 번에
-            너무 큰 데이터를 보내면 안 되므로
-            작은 조각으로 나눠서 보낸다.
+        ======================================
+        Write Without Response 우선
+        ======================================
         */
 
-        const CHUNK_SIZE = 20;
-
-
-        for (
-            let i = 0;
-            i < data.length;
-            i += CHUNK_SIZE
+        if (
+            rxCharacteristic.writeValueWithoutResponse
         ) {
 
-            const chunk =
-                data.slice(
-                    i,
-                    i + CHUNK_SIZE
-                );
+            await rxCharacteristic
+                .writeValueWithoutResponse(data);
 
+        } else {
 
-            if (
-                rxCharacteristic.writeValueWithoutResponse
-            ) {
+            await rxCharacteristic
+                .writeValue(data);
 
-                await rxCharacteristic
-                    .writeValueWithoutResponse(
-                        chunk
-                    );
-
-            } else {
-
-                await rxCharacteristic
-                    .writeValue(chunk);
-
-            }
-
-
-            await sleep(35);
         }
 
 
         log(
-            "전송: " + command,
-            "good"
+            "→ " + text,
+            "ok"
         );
 
-    }
-    catch (error) {
 
-        console.error(error);
+        commandInput.value = "";
+
+
+    } catch (error) {
 
         log(
             "전송 실패: " +
@@ -1254,51 +1101,93 @@ async function sendCommand(command) {
 }
 
 
-function sleep(ms) {
+/*
+==================================================
+그래프
+==================================================
+*/
 
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
+const canvas =
+    document.getElementById("graph");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+let graphTemperature = [];
+let graphSound = [];
+let graphLight = [];
+
+
+const MAX_POINTS = 80;
+
+
+function addGraphData(
+    temperature,
+    sound,
+    light
+) {
+
+    graphTemperature.push(
+        temperature
     );
+
+    graphSound.push(
+        sound
+    );
+
+    graphLight.push(
+        light
+    );
+
+
+    if (
+        graphTemperature.length >
+        MAX_POINTS
+    ) {
+
+        graphTemperature.shift();
+        graphSound.shift();
+        graphLight.shift();
+
+    }
+
+
+    drawGraph();
 
 }
 
 
-function drawChart() {
-
-    const canvas =
-        $("chart");
+function resizeCanvas() {
 
     const rect =
         canvas.getBoundingClientRect();
 
-
-    const dpr =
-        window.devicePixelRatio || 1;
-
-
     canvas.width =
-        rect.width * dpr;
+        rect.width *
+        window.devicePixelRatio;
 
     canvas.height =
-        rect.height * dpr;
+        rect.height *
+        window.devicePixelRatio;
+
+    ctx.scale(
+        window.devicePixelRatio,
+        window.devicePixelRatio
+    );
+
+    drawGraph();
+
+}
 
 
-    const ctx =
-        canvas.getContext("2d");
-
-
-    ctx.scale(dpr, dpr);
-
+function drawGraph() {
 
     const width =
-        rect.width;
+        canvas.clientWidth;
 
     const height =
-        rect.height;
+        canvas.clientHeight;
 
 
     ctx.clearRect(
@@ -1310,25 +1199,26 @@ function drawChart() {
 
 
     /*
-        Grid
+    ==========================================
+    Grid
+    ==========================================
     */
 
     ctx.strokeStyle =
-        "#202733";
+        "#292c34";
 
-    ctx.lineWidth =
-        1;
+    ctx.lineWidth = 1;
 
 
     for (
-        let i = 1;
-        i < 5;
+        let i = 0;
+        i <= 5;
         i++
     ) {
 
         const y =
-            height *
-            i / 5;
+            (height / 5) * i;
+
 
         ctx.beginPath();
 
@@ -1343,197 +1233,148 @@ function drawChart() {
         );
 
         ctx.stroke();
+
     }
 
 
-    if (graphData.length < 2) {
-        return;
-    }
-
+    /*
+    ==========================================
+    그래프
+    ==========================================
+    */
 
     drawLine(
-        ctx,
-        graphData.map(
-            item => item.sound
-        ),
-        255,
-        width,
-        height
+        graphTemperature,
+        height,
+        50
     );
 
+    drawLine(
+        graphSound,
+        height,
+        255
+    );
 
     drawLine(
-        ctx,
-        graphData.map(
-            item => item.light
-        ),
-        255,
-        width,
-        height
+        graphLight,
+        height,
+        255
     );
 
 }
 
 
 function drawLine(
-    ctx,
-    values,
-    maxValue,
-    width,
-    height
+    data,
+    height,
+    maxValue
 ) {
 
-    if (values.length < 2) {
+    if (data.length < 2) {
         return;
     }
 
 
     ctx.beginPath();
 
-
-    values.forEach(
-        (value, index) => {
-
-            const x =
-                index /
-                (MAX_GRAPH_POINTS - 1) *
-                width;
-
-
-            const normalized =
-                Math.max(
-                    0,
-                    Math.min(
-                        1,
-                        value / maxValue
-                    )
-                );
-
-
-            const y =
-                height -
-                normalized *
-                height;
-
-
-            if (index === 0) {
-
-                ctx.moveTo(
-                    x,
-                    y
-                );
-
-            } else {
-
-                ctx.lineTo(
-                    x,
-                    y
-                );
-
-            }
-
-        }
-    );
-
+    ctx.lineWidth = 2;
 
     ctx.strokeStyle =
-        "#4d8dff";
+        "#ffffff";
 
-    ctx.lineWidth =
-        2;
+
+    for (
+        let i = 0;
+        i < data.length;
+        i++
+    ) {
+
+        const x =
+            (i /
+            (MAX_POINTS - 1)) *
+            canvas.clientWidth;
+
+
+        let value =
+            Number(data[i]);
+
+
+        if (value < 0) {
+            value = 0;
+        }
+
+        if (value > maxValue) {
+            value = maxValue;
+        }
+
+
+        const y =
+            height -
+            (value / maxValue) *
+            height;
+
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
 
     ctx.stroke();
 
 }
 
 
-$("connectButton").addEventListener(
-    "click",
-    connectMicrobit
-);
-
-
-$("disconnectButton").addEventListener(
-    "click",
-    disconnectMicrobit
-);
-
-
-$("sendButton").addEventListener(
-    "click",
-    async () => {
-
-        const input =
-            $("commandInput");
-
-        const command =
-            input.value.trim();
-
-
-        if (!command) {
-            return;
-        }
-
-
-        await sendCommand(
-            command
-        );
-
-
-        input.value =
-            "";
-
-    }
-);
-
-
-$("commandInput").addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            $("sendButton").click();
-
-        }
-
-    }
-);
-
-
-$("clearLog").addEventListener(
-    "click",
-    () => {
-
-        $("log").innerHTML =
-            "";
-
-    }
-);
-
-
 window.addEventListener(
     "resize",
-    drawChart
+    resizeCanvas
 );
 
+
+resizeCanvas();
+
+
+/*
+==================================================
+페이지 시작
+==================================================
+*/
 
 log(
     "Dashboard 준비 완료",
-    "good"
+    "ok"
 );
 
+log(
+    "UART Service: " +
+    UART_SERVICE_UUID,
+    "info"
+);
 
-if (!navigator.bluetooth) {
+log(
+    "RX: " +
+    UART_RX_UUID,
+    "info"
+);
 
-    log(
-        "Web Bluetooth를 사용할 수 없습니다.",
-        "error"
-    );
-
-}
+log(
+    "TX: " +
+    UART_TX_UUID,
+    "info"
+);
 
 </script>
 
