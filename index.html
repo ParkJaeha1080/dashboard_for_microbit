@@ -2,21 +2,26 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
->
-
-<meta name="theme-color" content="#09090b">
-
-<title>micro:bit AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>micro:bit AI Dashboard</title>
 
 <style>
-
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --bg: #0b0d12;
+    --panel: #12151c;
+    --panel2: #181c24;
+    --border: #292e38;
+    --text: #f5f7fb;
+    --muted: #8e96a5;
+    --accent: #5865f2;
+    --accent2: #7289ff;
+    --danger: #ef4444;
+    --success: #22c55e;
 }
 
 html,
@@ -24,11 +29,8 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-
-    background: #09090b;
-    color: #f4f4f5;
-
+    background: var(--bg);
+    color: var(--text);
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -36,445 +38,373 @@ body {
         Roboto,
         Arial,
         sans-serif;
-}
-
-body {
-    overscroll-behavior: none;
+    overflow: hidden;
 }
 
 button,
-input,
-textarea,
-select {
+input {
     font: inherit;
 }
 
 button {
-    touch-action: manipulation;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
 }
-
-
-/* =====================================================
-   APP
-===================================================== */
 
 .app {
-    width: 100%;
-    height: 100%;
-
     display: flex;
-
-    background: #09090b;
+    width: 100%;
+    height: 100dvh;
 }
 
-
-/* =====================================================
-   DESKTOP SIDEBAR
-===================================================== */
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar {
-    width: 270px;
+    width: 260px;
     flex-shrink: 0;
-
-    background: #111113;
-
-    border-right: 1px solid #27272a;
-
+    background: #090b10;
+    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-
-    padding: 12px;
+    padding: 14px;
 }
 
 .logo {
-    padding: 13px 10px;
-
-    font-size: 18px;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 10px 20px;
+    font-weight: 800;
+    font-size: 17px;
 }
 
-.new-chat {
+.logo-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+.sidebar-btn {
     width: 100%;
-
-    padding: 12px;
-
-    border: 1px solid #3f3f46;
-    border-radius: 9px;
-
-    background: transparent;
-    color: #fff;
-
     text-align: left;
-
-    cursor: pointer;
+    padding: 13px;
+    margin-bottom: 5px;
+    background: transparent;
+    border-radius: 9px;
+    color: #c8ced9;
 }
 
-.new-chat:hover {
-    background: #27272a;
+.sidebar-btn:hover {
+    background: #171b23;
+    color: white;
 }
 
-.sidebar-section {
-    padding: 18px 10px 7px;
-
-    color: #71717a;
-
-    font-size: 12px;
-}
-
-.command-list {
-    flex: 1;
-
-    overflow-y: auto;
-}
-
-.command-item {
-    padding: 10px;
-
-    border-radius: 8px;
-
-    color: #d4d4d8;
-
-    font-size: 14px;
-
-    cursor: pointer;
-}
-
-.command-item:hover {
-    background: #27272a;
+.sidebar-btn.active {
+    background: #1b1f2a;
+    color: white;
 }
 
 .sidebar-bottom {
-    padding-top: 8px;
-
-    border-top: 1px solid #27272a;
+    margin-top: auto;
 }
 
-.sidebar-button {
-    width: 100%;
-
-    padding: 11px;
-
-    border: 0;
-    border-radius: 8px;
-
-    background: transparent;
-    color: #d4d4d8;
-
-    text-align: left;
-
-    cursor: pointer;
+.connection-status {
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--muted);
 }
 
-.sidebar-button:hover {
-    background: #27272a;
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--danger);
+    margin-right: 6px;
 }
 
+.status-dot.connected {
+    background: var(--success);
+}
 
-/* =====================================================
+/* =========================
    MAIN
-===================================================== */
+========================= */
 
 .main {
-    min-width: 0;
-
     flex: 1;
-
+    min-width: 0;
     display: flex;
     flex-direction: column;
-
-    position: relative;
 }
 
-
-/* =====================================================
-   TOP BAR
-===================================================== */
-
 .topbar {
-    height: 60px;
-
+    height: 58px;
     flex-shrink: 0;
-
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 0 18px;
-
-    border-bottom: 1px solid #27272a;
-
-    background:
-        rgba(9,9,11,.92);
-
-    backdrop-filter: blur(16px);
-
-    z-index: 20;
 }
 
-.title {
-    font-size: 16px;
+.top-title {
     font-weight: 700;
 }
 
-.connection {
+.top-actions {
     display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    max-width: 200px;
-
-    font-size: 12px;
-
-    color: #a1a1aa;
-
-    overflow: hidden;
+    gap: 8px;
 }
 
-.connection span {
-    overflow: hidden;
-
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
+.small-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
 }
 
-.dot {
-    width: 8px;
-    height: 8px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background: #71717a;
+.small-btn:hover {
+    background: #222733;
 }
 
-.dot.connected {
-    background: #22c55e;
-
-    box-shadow:
-        0 0 10px
-        rgba(34,197,94,.7);
-}
-
-
-/* =====================================================
+/* =========================
    CHAT
-===================================================== */
+========================= */
 
 .chat {
     flex: 1;
-
     overflow-y: auto;
-
-    padding:
-        20px 16px
-        130px;
-
-    scroll-behavior: smooth;
-
-    overscroll-behavior: contain;
+    padding: 24px;
+    padding-bottom: 110px;
 }
 
 .message {
-    width: 100%;
     max-width: 850px;
-
-    margin: 0 auto;
-
+    margin: 0 auto 18px;
     display: flex;
-
     gap: 12px;
-
-    padding: 16px 2px;
 }
 
 .avatar {
     width: 34px;
     height: 34px;
-
-    min-width: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-
-    font-size: 16px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--accent);
 }
 
-.user-avatar {
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #4f46e5
-        );
-}
-
-.bot-avatar {
-    background:
-        linear-gradient(
-            135deg,
-            #10a37f,
-            #059669
-        );
+.message.user .avatar {
+    background: #303642;
 }
 
 .message-content {
     min-width: 0;
-
-    flex: 1;
-
-    line-height: 1.65;
-
+    line-height: 1.6;
     white-space: pre-wrap;
-
     word-break: break-word;
+}
 
+.message-name {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 3px;
+}
+
+.message-text {
     font-size: 15px;
 }
 
-.bot-message {
-    background: #151518;
-
-    border-radius: 13px;
-
-    padding-right: 14px;
-}
-
-
-/* =====================================================
+/* =========================
    INPUT
-===================================================== */
+========================= */
 
 .input-area {
     position: fixed;
-
-    left: 270px;
+    left: 260px;
     right: 0;
     bottom: 0;
-
-    z-index: 30;
-
-    padding:
-        12px 18px
-        calc(
-            15px +
-            env(safe-area-inset-bottom)
-        );
-
-    background:
-        linear-gradient(
-            transparent,
-            #09090b 28%
-        );
+    padding: 15px 20px calc(15px + env(safe-area-inset-bottom));
+    background: linear-gradient(
+        transparent,
+        rgba(11,13,18,.96) 25%
+    );
 }
 
 .input-box {
-    width: 100%;
     max-width: 850px;
-
-    margin: auto;
-
+    margin: 0 auto;
     display: flex;
-    align-items: center;
-
-    padding: 7px;
-
-    border:
-        1px solid #3f3f46;
-
-    border-radius: 17px;
-
-    background: #18181b;
-
-    box-shadow:
-        0 8px 30px
-        rgba(0,0,0,.3);
+    gap: 8px;
+    background: #151922;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 8px;
 }
 
-.input-box:focus-within {
-    border-color: #52525b;
-}
-
-.input-box input {
+.chat-input {
     flex: 1;
-
     min-width: 0;
-
-    padding: 11px 10px;
-
-    border: 0;
-    outline: 0;
-
     background: transparent;
-
-    color: #fff;
-
-    font-size: 15px;
+    border: 0;
+    outline: none;
+    color: white;
+    padding: 9px;
 }
 
-.input-box input::placeholder {
-    color: #71717a;
-}
-
-.send {
+.send-btn {
     width: 42px;
     height: 42px;
-
-    flex-shrink: 0;
-
-    border: 0;
-
-    border-radius: 12px;
-
-    background: #10a37f;
-    color: #fff;
-
-    font-size: 19px;
-
-    cursor: pointer;
+    border-radius: 10px;
+    background: var(--accent);
 }
 
-.send:active {
-    transform: scale(.94);
+.send-btn:hover {
+    background: var(--accent2);
 }
 
+/* =========================
+   PANELS
+========================= */
 
-/* =====================================================
-   MOBILE NAV
-===================================================== */
-
-.mobile-nav {
+.panel {
     display: none;
+    height: 100%;
+    overflow-y: auto;
+    padding: 22px;
 }
 
+.panel.active {
+    display: block;
+}
 
-/* =====================================================
+.panel-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.card-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.big-button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    background: var(--accent);
+    margin-top: 8px;
+}
+
+.big-button.secondary {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+}
+
+.big-button.danger {
+    background: var(--danger);
+}
+
+/* =========================
+   SENSOR
+========================= */
+
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.sensor {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.sensor-label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.sensor-value {
+    margin-top: 7px;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+/* =========================
+   COMMANDS
+========================= */
+
+.command-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.command-info {
+    min-width: 0;
+}
+
+.command-name {
+    font-weight: 700;
+}
+
+.command-trigger {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.delete-btn {
+    flex-shrink: 0;
+    background: #352027;
+    color: #ff8798;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+/* =========================
    MODAL
-===================================================== */
+========================= */
 
 .modal {
     position: fixed;
-
     inset: 0;
-
-    z-index: 100;
-
+    background: rgba(0,0,0,.65);
     display: none;
-
     align-items: center;
     justify-content: center;
-
-    padding: 16px;
-
-    background:
-        rgba(0,0,0,.68);
-
-    backdrop-filter: blur(7px);
+    z-index: 100;
+    padding: 18px;
 }
 
 .modal.show {
@@ -482,299 +412,147 @@ button {
 }
 
 .modal-box {
-    width: 100%;
-    max-width: 520px;
-
-    max-height:
-        calc(100dvh - 32px);
-
+    width: min(500px, 100%);
+    max-height: 90dvh;
     overflow-y: auto;
-
-    padding: 20px;
-
-    border:
-        1px solid #303034;
-
-    border-radius: 20px;
-
-    background: #18181b;
-
-    box-shadow:
-        0 25px 70px
-        rgba(0,0,0,.55);
+    background: #11141b;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
 }
 
 .modal-title {
-    margin-bottom: 18px;
-
     font-size: 20px;
-    font-weight: 750;
-}
-
-
-/* =====================================================
-   FIELDS
-===================================================== */
-
-.field {
+    font-weight: 800;
     margin-bottom: 15px;
 }
 
-.field label {
+.form-label {
     display: block;
-
-    margin-bottom: 7px;
-
-    color: #a1a1aa;
-
+    margin: 12px 0 6px;
+    color: var(--muted);
     font-size: 13px;
 }
 
-.field input,
-.field textarea,
-.field select {
+.form-input {
     width: 100%;
-
-    padding: 13px;
-
-    outline: 0;
-
-    border:
-        1px solid #3f3f46;
-
-    border-radius: 11px;
-
-    background: #0f0f11;
-
-    color: #fff;
-
-    font-size: 15px;
+    background: #0b0d12;
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 11px;
+    outline: none;
 }
 
-.field input:focus,
-.field textarea:focus,
-.field select:focus {
-    border-color: #71717a;
-}
-
-.field textarea {
-    min-height: 100px;
-
-    resize: vertical;
-}
-
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.btn {
-    min-height: 44px;
-
-    padding: 10px 15px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    color: #fff;
-
-    cursor: pointer;
-}
-
-.btn-green {
-    background: #10a37f;
-}
-
-.btn-gray {
-    background: #3f3f46;
-}
-
-.btn-red {
-    background: #dc2626;
-}
-
-.btn-blue {
-    background: #2563eb;
-}
-
-.btn:active {
-    transform: scale(.97);
-}
-
-.modal-buttons {
+.modal-actions {
     display: flex;
-
     gap: 8px;
-
-    justify-content: flex-end;
-
-    margin-top: 18px;
+    margin-top: 16px;
 }
 
-
-/* =====================================================
-   DEVICE
-===================================================== */
-
-.device-info {
-    margin-top: 13px;
-
-    padding: 14px;
-
-    border:
-        1px solid #303034;
-
-    border-radius: 12px;
-
-    background: #0f0f11;
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 9px;
+    background: var(--accent);
 }
 
-.device-name {
-    font-size: 15px;
-    font-weight: 650;
+.modal-actions .cancel {
+    background: var(--panel2);
+    border: 1px solid var(--border);
 }
 
-.device-id {
-    margin-top: 5px;
+/* =========================
+   LED DRAWER
+========================= */
 
-    color: #71717a;
-
-    font-size: 11px;
-
-    word-break: break-all;
+.led-editor {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
 }
 
-.connect-button {
-    width: 100%;
-
-    min-height: 47px;
-
-    margin-top: 10px;
-
-    border: 0;
-
-    border-radius: 11px;
-
-    background: #2563eb;
-
-    color: #fff;
-
-    cursor: pointer;
-}
-
-.connect-button:active {
-    transform: scale(.98);
-}
-
-
-/* =====================================================
-   SENSOR
-===================================================== */
-
-.sensor-grid {
+.led-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 9px;
+    grid-template-columns: repeat(5, 52px);
+    grid-template-rows: repeat(5, 52px);
+    gap: 7px;
 }
 
-.sensor-card {
-    padding: 14px;
-
-    border:
-        1px solid #303034;
-
-    border-radius: 12px;
-
-    background: #0f0f11;
+.led-cell {
+    width: 52px;
+    height: 52px;
+    border-radius: 9px;
+    background: #20242c;
+    border: 2px solid #343a46;
+    transition: .1s;
 }
 
-.sensor-label {
-    color: #71717a;
+.led-cell.on {
+    background: #ffffff;
+    border-color: #ffffff;
+    box-shadow:
+        0 0 12px rgba(255,255,255,.8),
+        0 0 25px rgba(255,255,255,.35);
+}
 
+.led-tools {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.led-tools button {
+    flex: 1;
+    padding: 11px;
+    border-radius: 9px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+}
+
+.led-tools button.primary {
+    background: var(--accent);
+}
+
+.led-preview-code {
+    margin-top: 12px;
+    font-family: monospace;
+    background: #090b10;
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 8px;
+    color: #aeb6c5;
     font-size: 12px;
+    white-space: pre;
 }
 
-.sensor-value {
-    margin-top: 5px;
-
-    font-size: 20px;
-    font-weight: 700;
-}
-
-
-/* =====================================================
+/* =========================
    LOG
-===================================================== */
+========================= */
 
 .log {
-    max-height: 190px;
-
-    overflow-y: auto;
-
-    padding: 11px;
-
-    border:
-        1px solid #303034;
-
-    border-radius: 10px;
-
-    background: #070708;
-
-    color: #a1a1aa;
-
     font-family: monospace;
-
-    font-size: 10px;
-
+    font-size: 12px;
+    background: #07090d;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    min-height: 300px;
     white-space: pre-wrap;
+    overflow-y: auto;
 }
 
+/* =========================
+   MOBILE NAV
+========================= */
 
-/* =====================================================
-   COMMAND CARD
-===================================================== */
-
-.command-card {
-    margin-top: 9px;
-
-    padding: 13px;
-
-    border:
-        1px solid #303034;
-
-    border-radius: 12px;
-
-    background: #101012;
+.mobile-nav {
+    display: none;
 }
 
-.command-card-name {
-    font-weight: 700;
-}
-
-.command-card-trigger {
-    margin-top: 5px;
-
-    color: #71717a;
-
-    font-size: 12px;
-}
-
-.command-card-action {
-    margin-top: 5px;
-
-    color: #10a37f;
-
-    font-size: 12px;
-}
-
-
-/* =====================================================
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
 @media (max-width: 700px) {
 
@@ -783,981 +561,497 @@ button {
     }
 
     .topbar {
-        height:
-            calc(
-                56px +
-                env(safe-area-inset-top)
-            );
-
-        padding:
-            env(safe-area-inset-top)
-            14px
-            0;
+        height: 55px;
+        padding: 0 12px;
     }
 
     .chat {
-        padding:
-            12px 13px
-            calc(
-                145px +
-                env(safe-area-inset-bottom)
-            );
-    }
-
-    .message {
-        gap: 10px;
-
-        padding:
-            13px 1px;
-    }
-
-    .avatar {
-        width: 32px;
-        height: 32px;
-
-        min-width: 32px;
-
-        border-radius: 9px;
-    }
-
-    .message-content {
-        font-size: 15px;
+        padding: 15px;
+        padding-bottom: 120px;
     }
 
     .input-area {
         left: 0;
-        right: 0;
-
-        bottom: 62px;
-
-        padding:
-            8px 10px;
-
-        background:
-            linear-gradient(
-                transparent,
-                #09090b 25%
-            );
+        bottom: 58px;
+        padding: 8px 10px;
     }
 
     .input-box {
-        border-radius: 16px;
-
-        padding: 6px;
-    }
-
-    .input-box input {
-        padding:
-            10px 8px;
-
-        font-size: 15px;
-    }
-
-    .send {
-        width: 42px;
-        height: 42px;
+        border-radius: 13px;
     }
 
     .mobile-nav {
-        position: fixed;
-
         display: flex;
-
+        position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
-
-        height:
-            calc(
-                62px +
-                env(safe-area-inset-bottom)
-            );
-
-        padding-bottom:
-            env(safe-area-inset-bottom);
-
+        height: calc(58px + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
+        background: #090b10;
+        border-top: 1px solid var(--border);
         z-index: 50;
-
-        background:
-            rgba(20,20,23,.94);
-
-        border-top:
-            1px solid #303034;
-
-        backdrop-filter:
-            blur(18px);
     }
 
-    .nav-button {
+    .mobile-nav button {
         flex: 1;
-
-        min-width: 0;
-
-        display: flex;
-        flex-direction: column;
-
-        align-items: center;
-        justify-content: center;
-
-        gap: 3px;
-
-        border: 0;
-
         background: transparent;
-
-        color: #71717a;
-
+        color: var(--muted);
         font-size: 11px;
-
-        cursor: pointer;
     }
 
-    .nav-button .icon {
-        font-size: 21px;
-
-        line-height: 1;
+    .mobile-nav button.active {
+        color: white;
     }
 
-    .nav-button.active {
-        color: #10a37f;
-    }
-
-    .nav-button:active {
-        transform: scale(.94);
-    }
-
-    .modal {
-        align-items: flex-end;
-
-        padding: 0;
-    }
-
-    .modal-box {
-        max-width: none;
-
-        max-height: 88dvh;
-
-        padding:
-            20px 16px
-            calc(
-                20px +
-                env(safe-area-inset-bottom)
-            );
-
-        border:
-            1px solid #303034;
-
-        border-bottom: 0;
-
-        border-radius:
-            23px 23px 0 0;
-
-        animation:
-            sheetUp .2s ease-out;
-    }
-
-    .modal-title {
+    .mobile-nav-icon {
+        display: block;
         font-size: 19px;
+        margin-bottom: 2px;
     }
 
-    .modal-buttons {
-        position: sticky;
-
-        bottom: 0;
-
-        padding-top: 10px;
-
-        background: #18181b;
+    .panel {
+        padding: 15px;
+        padding-bottom: 80px;
     }
 
-    .modal-buttons .btn {
-        flex: 1;
+    .sensor-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .connect-button {
-        min-height: 50px;
-
-        font-size: 15px;
+    .led-grid {
+        grid-template-columns: repeat(5, 46px);
+        grid-template-rows: repeat(5, 46px);
+        gap: 6px;
     }
 
+    .led-cell {
+        width: 46px;
+        height: 46px;
+    }
 }
-
-
-/* =====================================================
-   SMALL PHONE
-===================================================== */
-
-@media (max-width: 380px) {
-
-    .chat {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .message-content {
-        font-size: 14px;
-    }
-
-    .sensor-value {
-        font-size: 17px;
-    }
-
-}
-
-
-/* =====================================================
-   ANIMATION
-===================================================== */
-
-@keyframes sheetUp {
-
-    from {
-        transform:
-            translateY(100%);
-    }
-
-    to {
-        transform:
-            translateY(0);
-    }
-
-}
-
 </style>
 </head>
 
-
 <body>
-
 
 <div class="app">
 
-
-    <!-- =================================================
-         DESKTOP SIDEBAR
-    ================================================== -->
-
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
-            🤖 micro:bit AI
+            <div class="logo-icon">🤖</div>
+            <span>micro:bit AI</span>
         </div>
 
-
-        <button
-            class="new-chat"
-            onclick="newChat()">
-
-            ＋ 새 채팅
-
+        <button class="sidebar-btn active" onclick="showPanel('chat')">
+            💬 채팅
         </button>
 
+        <button class="sidebar-btn" onclick="showPanel('connect')">
+            📡 연결
+        </button>
 
-        <div class="sidebar-section">
-            명령
-        </div>
+        <button class="sidebar-btn" onclick="showPanel('led')">
+            🎨 LED 그리기
+        </button>
 
+        <button class="sidebar-btn" onclick="showPanel('sensors')">
+            📊 센서
+        </button>
 
-        <div
-            class="command-list"
-            id="commandList">
-        </div>
+        <button class="sidebar-btn" onclick="showPanel('commands')">
+            ⚙️ 명령 관리
+        </button>
 
+        <button class="sidebar-btn" onclick="showPanel('log')">
+            📜 BLE 로그
+        </button>
 
         <div class="sidebar-bottom">
 
-            <button
-                class="sidebar-button"
-                onclick="openDeviceModal()">
-
-                📡 micro:bit 연결
-
+            <button class="sidebar-btn" onclick="newChat()">
+                🔄 새 채팅
             </button>
 
-
-            <button
-                class="sidebar-button"
-                onclick="openCommandManager()">
-
-                ⚙️ 명령 관리
-
-            </button>
-
-
-            <button
-                class="sidebar-button"
-                onclick="openSensorModal()">
-
-                📊 센서
-
-            </button>
-
-
-            <button
-                class="sidebar-button"
-                onclick="openLogModal()">
-
-                📝 BLE 로그
-
-            </button>
+            <div class="connection-status">
+                <span id="statusDot" class="status-dot"></span>
+                <span id="statusText">연결 안 됨</span>
+            </div>
 
         </div>
 
     </aside>
 
-
-    <!-- =================================================
-         MAIN
-    ================================================== -->
-
+    <!-- MAIN -->
     <main class="main">
-
 
         <header class="topbar">
 
-            <div class="title">
-                🤖 micro:bit AI
+            <div class="top-title" id="topTitle">
+                💬 micro:bit AI
             </div>
 
-
-            <div class="connection">
-
-                <div
-                    class="dot"
-                    id="connectionDot">
-                </div>
-
-
-                <span id="connectionText">
-                    연결 안 됨
-                </span>
-
+            <div class="top-actions">
+                <button class="small-btn" onclick="connectBluetooth()">
+                    📡 연결
+                </button>
             </div>
 
         </header>
 
+        <!-- CHAT -->
+        <section id="panel-chat" class="chat">
 
-        <!-- =================================================
-             CHAT
-        ================================================== -->
+            <div class="message">
 
-        <section
-            class="chat"
-            id="chat">
-
-            <div class="message bot-message">
-
-                <div class="avatar bot-avatar">
+                <div class="avatar">
                     🤖
                 </div>
 
-
                 <div class="message-content">
-                    안녕하세요! 👋
 
-                    저는 micro:bit를
-                    조종하는 AI예요.
+                    <div class="message-name">
+                        micro:bit AI
+                    </div>
 
-                    "하트 보여줘"
-                    "불 켜줘"
-                    "온도 알려줘"
+                    <div class="message-text">
+                        안녕! 👋<br>
+                        micro:bit를 연결하면 다양한 명령을 보낼 수 있어.<br><br>
 
-                    처럼 말해보세요! ✨
+                        예를 들어:<br>
+                        💡 "LED 켜줘"<br>
+                        ❤️ "하트 보여줘"<br>
+                        🌡️ "온도 알려줘"<br>
+                        🎨 "LED 그리기"<br><br>
+
+                        왼쪽의 <b>🎨 LED 그리기</b>에서 5×5 LED를 직접 그릴 수도 있어!
+                    </div>
+
                 </div>
 
             </div>
 
         </section>
 
+        <!-- CONNECT -->
+        <section id="panel-connect" class="panel">
 
-        <!-- =================================================
-             INPUT
-        ================================================== -->
+            <div class="panel-title">
+                📡 micro:bit 연결
+            </div>
 
-        <div class="input-area">
+            <div class="card">
 
-            <div class="input-box">
+                <div class="card-title">
+                    Bluetooth
+                </div>
 
-                <input
-                    id="chatInput"
-                    autocomplete="off"
-                    placeholder="micro:bit에게 말해보세요..."
-                    onkeydown="handleEnter(event)"
-                >
+                <div id="deviceName">
+                    연결된 기기 없음
+                </div>
 
+                <button class="big-button" onclick="connectBluetooth()">
+                    📡 micro:bit 검색 및 연결
+                </button>
 
-                <button
-                    class="send"
-                    onclick="sendChat()">
-
-                    ↑
-
+                <button class="big-button secondary" onclick="disconnectBluetooth()">
+                    🔌 연결 해제
                 </button>
 
             </div>
 
-        </div>
+            <div class="card">
+
+                <div class="card-title">
+                    연결 상태
+                </div>
+
+                <div id="connectionInfo">
+                    연결되지 않았습니다.
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- LED -->
+        <section id="panel-led" class="panel">
+
+            <div class="panel-title">
+                🎨 LED 직접 그리기
+            </div>
+
+            <div class="card">
+
+                <div class="card-title">
+                    5 × 5 LED
+                </div>
+
+                <div class="led-editor">
+
+                    <div id="ledGrid" class="led-grid"></div>
+
+                </div>
+
+                <div class="led-tools">
+
+                    <button onclick="clearLED()">
+                        🧹 지우기
+                    </button>
+
+                    <button onclick="fillLED()">
+                        ⬜ 전체 켜기
+                    </button>
+
+                    <button class="primary" onclick="sendLED()">
+                        📤 micro:bit에 표시
+                    </button>
+
+                </div>
+
+                <div id="ledCode" class="led-preview-code"></div>
+
+            </div>
+
+        </section>
+
+        <!-- SENSORS -->
+        <section id="panel-sensors" class="panel">
+
+            <div class="panel-title">
+                📊 센서
+            </div>
+
+            <div class="sensor-grid">
+
+                <div class="sensor">
+                    <div class="sensor-label">🌡️ 온도</div>
+                    <div class="sensor-value">
+                        <span id="tempValue">--</span> °C
+                    </div>
+                </div>
+
+                <div class="sensor">
+                    <div class="sensor-label">☀️ 빛</div>
+                    <div class="sensor-value">
+                        <span id="lightValue">--</span>
+                    </div>
+                </div>
+
+                <div class="sensor">
+                    <div class="sensor-label">🔊 소리</div>
+                    <div class="sensor-value">
+                        <span id="soundValue">--</span>
+                    </div>
+                </div>
+
+                <div class="sensor">
+                    <div class="sensor-label">📈 X</div>
+                    <div class="sensor-value">
+                        <span id="accelX">--</span>
+                    </div>
+                </div>
+
+                <div class="sensor">
+                    <div class="sensor-label">📈 Y</div>
+                    <div class="sensor-value">
+                        <span id="accelY">--</span>
+                    </div>
+                </div>
+
+                <div class="sensor">
+                    <div class="sensor-label">📈 Z</div>
+                    <div class="sensor-value">
+                        <span id="accelZ">--</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="big-button" onclick="sendCommand('SENSOR')">
+                📡 센서 데이터 가져오기
+            </button>
+
+        </section>
+
+        <!-- COMMANDS -->
+        <section id="panel-commands" class="panel">
+
+            <div class="panel-title">
+                ⚙️ 명령 관리
+            </div>
+
+            <div class="card">
+
+                <div class="card-title">
+                    사용자 명령
+                </div>
+
+                <button class="big-button" onclick="openAddCommand()">
+                    ➕ 명령 추가
+                </button>
+
+            </div>
+
+            <div id="commandList"></div>
+
+        </section>
+
+        <!-- LOG -->
+        <section id="panel-log" class="panel">
+
+            <div class="panel-title">
+                📜 BLE 로그
+            </div>
+
+            <div id="bleLog" class="log"></div>
+
+            <button class="big-button danger" onclick="clearLog()">
+                🗑️ 로그 삭제
+            </button>
+
+        </section>
 
     </main>
 
 </div>
 
 
-<!-- =====================================================
-     MOBILE NAV
-====================================================== -->
+<!-- INPUT -->
+<div class="input-area">
+
+    <div class="input-box">
+
+        <input
+            id="chatInput"
+            class="chat-input"
+            placeholder="micro:bit에게 말해보세요..."
+            autocomplete="off"
+        >
+
+        <button
+            class="send-btn"
+            onclick="sendChat()"
+        >
+            ➤
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MOBILE NAV -->
 
 <nav class="mobile-nav">
 
-
     <button
-        class="nav-button active"
-        onclick="newChat()">
-
-        <span class="icon">
-            💬
-        </span>
-
+        id="nav-chat"
+        class="active"
+        onclick="showPanel('chat')"
+    >
+        <span class="mobile-nav-icon">💬</span>
         채팅
-
     </button>
 
-
     <button
-        class="nav-button"
-        onclick="openDeviceModal()">
-
-        <span class="icon">
-            📡
-        </span>
-
+        id="nav-connect"
+        onclick="showPanel('connect')"
+    >
+        <span class="mobile-nav-icon">📡</span>
         연결
-
     </button>
 
+    <button
+        id="nav-led"
+        onclick="showPanel('led')"
+    >
+        <span class="mobile-nav-icon">🎨</span>
+        LED
+    </button>
 
     <button
-        class="nav-button"
-        onclick="openSensorModal()">
-
-        <span class="icon">
-            📊
-        </span>
-
+        id="nav-sensors"
+        onclick="showPanel('sensors')"
+    >
+        <span class="mobile-nav-icon">📊</span>
         센서
-
     </button>
 
-
     <button
-        class="nav-button"
-        onclick="openCommandManager()">
-
-        <span class="icon">
-            ⚙️
-        </span>
-
+        id="nav-commands"
+        onclick="showPanel('commands')"
+    >
+        <span class="mobile-nav-icon">⚙️</span>
         명령
-
-    </button>
-
-
-    <button
-        class="nav-button"
-        onclick="openLogModal()">
-
-        <span class="icon">
-            📝
-        </span>
-
-        로그
-
     </button>
 
 </nav>
 
 
-<!-- =====================================================
-     DEVICE MODAL
-====================================================== -->
+<!-- COMMAND MODAL -->
 
-<div
-    class="modal"
-    id="deviceModal">
+<div id="commandModal" class="modal">
 
     <div class="modal-box">
 
-
         <div class="modal-title">
-            📡 micro:bit 연결
+            ➕ 명령 추가
         </div>
 
+        <label class="form-label">
+            명령 이름
+        </label>
 
-        <div
-            style="
-                color:#a1a1aa;
-                font-size:13px;
-                line-height:1.5;
-            ">
+        <input
+            id="commandName"
+            class="form-input"
+            placeholder="예: 웃기"
+        >
 
-            Bluetooth 기기를 검색해서
-            micro:bit에 연결합니다.
+        <label class="form-label">
+            인식할 단어
+        </label>
 
-        </div>
+        <input
+            id="commandTriggers"
+            class="form-input"
+            placeholder="예: 웃어, 웃기, smile"
+        >
 
+        <label class="form-label">
+            micro:bit 명령
+        </label>
 
-        <div class="device-info">
+        <input
+            id="commandAction"
+            class="form-input"
+            placeholder="예: SMILE"
+        >
 
-            <div
-                class="device-name"
-                id="deviceName">
+        <label class="form-label">
+            채팅 응답
+        </label>
 
-                연결된 기기 없음
+        <input
+            id="commandResponse"
+            class="form-input"
+            placeholder="예: 😄 웃어볼게!"
+        >
 
-            </div>
-
-
-            <div
-                class="device-id"
-                id="deviceId">
-
-                -
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="connect-button"
-            onclick="connectBluetooth()">
-
-            🔎 Bluetooth 기기 검색
-
-        </button>
-
-
-        <button
-            class="connect-button"
-            style="background:#3f3f46"
-            onclick="disconnectBluetooth()">
-
-            ❌ 연결 해제
-
-        </button>
-
-
-        <div
-            class="log"
-            id="bleLog"
-            style="margin-top:12px">
-
-        </div>
-
-
-        <div class="modal-buttons">
+        <div class="modal-actions">
 
             <button
-                class="btn btn-gray"
-                onclick="closeDeviceModal()">
-
-                닫기
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     COMMAND MANAGER
-====================================================== -->
-
-<div
-    class="modal"
-    id="commandModal">
-
-    <div class="modal-box">
-
-
-        <div class="modal-title">
-            ⚙️ 명령 관리
-        </div>
-
-
-        <button
-            class="btn btn-green"
-            style="width:100%"
-            onclick="openAddCommand()">
-
-            ＋ 새 명령 추가
-
-        </button>
-
-
-        <div
-            id="commandManagerList"
-            style="margin-top:14px">
-
-        </div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="btn btn-gray"
-                onclick="closeCommandManager()">
-
-                닫기
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     ADD COMMAND
-====================================================== -->
-
-<div
-    class="modal"
-    id="addCommandModal">
-
-    <div class="modal-box">
-
-
-        <div class="modal-title">
-            ＋ 새 명령
-        </div>
-
-
-        <div class="field">
-
-            <label>
-                명령 이름
-            </label>
-
-            <input
-                id="commandName"
-                placeholder="예: 생일 축하">
-
-        </div>
-
-
-        <div class="field">
-
-            <label>
-                사용자가 말할 표현
-            </label>
-
-            <input
-                id="commandTriggers"
-                placeholder="생일 축하, 축하해, 생일">
-
-        </div>
-
-
-        <div class="field">
-
-            <label>
-                micro:bit 동작
-            </label>
-
-            <select id="commandAction">
-
-                <option value="HELLO">
-                    👋 HELLO
-                </option>
-
-                <option value="HEART">
-                    ❤️ HEART
-                </option>
-
-                <option value="WHAT">
-                    ❓ WHAT
-                </option>
-
-                <option value="DANCE">
-                    💃 DANCE
-                </option>
-
-                <option value="BEEP">
-                    🔊 BEEP
-                </option>
-
-                <option value="LED_ON">
-                    💡 LED ON
-                </option>
-
-                <option value="LED_OFF">
-                    🌑 LED OFF
-                </option>
-
-                <option value="TEMP">
-                    🌡️ TEMP
-                </option>
-
-                <option value="LIGHT">
-                    ☀️ LIGHT
-                </option>
-
-                <option value="SOUND">
-                    🔊 SOUND
-                </option>
-
-                <option value="SENSOR">
-                    📊 SENSOR
-                </option>
-
-                <option value="PING">
-                    📡 PING
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="field">
-
-            <label>
-                AI 답변
-            </label>
-
-            <textarea
-                id="commandResponse"
-                placeholder="🎉 생일 축하해!">
-            </textarea>
-
-        </div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="btn btn-gray"
-                onclick="closeAddCommand()">
-
+                class="cancel"
+                onclick="closeAddCommand()"
+            >
                 취소
-
             </button>
 
-
-            <button
-                class="btn btn-green"
-                onclick="saveCommand()">
-
+            <button onclick="saveCommand()">
                 저장
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     SENSOR
-====================================================== -->
-
-<div
-    class="modal"
-    id="sensorModal">
-
-    <div class="modal-box">
-
-
-        <div class="modal-title">
-            📊 센서
-        </div>
-
-
-        <div class="sensor-grid">
-
-
-            <div class="sensor-card">
-
-                <div class="sensor-label">
-                    🌡️ 온도
-                </div>
-
-                <div
-                    class="sensor-value"
-                    id="temperature">
-
-                    --
-
-                </div>
-
-            </div>
-
-
-            <div class="sensor-card">
-
-                <div class="sensor-label">
-                    ☀️ 빛
-                </div>
-
-                <div
-                    class="sensor-value"
-                    id="light">
-
-                    --
-
-                </div>
-
-            </div>
-
-
-            <div class="sensor-card">
-
-                <div class="sensor-label">
-                    🔊 소리
-                </div>
-
-                <div
-                    class="sensor-value"
-                    id="sound">
-
-                    --
-
-                </div>
-
-            </div>
-
-
-            <div class="sensor-card">
-
-                <div class="sensor-label">
-                    ↔️ X
-                </div>
-
-                <div
-                    class="sensor-value"
-                    id="accelX">
-
-                    --
-
-                </div>
-
-            </div>
-
-
-            <div class="sensor-card">
-
-                <div class="sensor-label">
-                    ↕️ Y
-                </div>
-
-                <div
-                    class="sensor-value"
-                    id="accelY">
-
-                    --
-
-                </div>
-
-            </div>
-
-
-            <div class="sensor-card">
-
-                <div class="sensor-label">
-                    📐 Z
-                </div>
-
-                <div
-                    class="sensor-value"
-                    id="accelZ">
-
-                    --
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div
-            style="
-                margin-top:13px;
-                color:#71717a;
-                font-size:11px;
-            ">
-
-            DATA,temp,light,sound,x,y,z,a,b
-
-        </div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="btn btn-gray"
-                onclick="closeSensorModal()">
-
-                닫기
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     LOG
-====================================================== -->
-
-<div
-    class="modal"
-    id="logModal">
-
-    <div class="modal-box">
-
-
-        <div class="modal-title">
-            📝 BLE 로그
-        </div>
-
-
-        <div
-            class="log"
-            id="fullLog"
-            style="max-height:55dvh">
-
-        </div>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="btn btn-red"
-                onclick="clearLog()">
-
-                삭제
-
-            </button>
-
-
-            <button
-                class="btn btn-gray"
-                onclick="closeLogModal()">
-
-                닫기
-
             </button>
 
         </div>
@@ -1769,25 +1063,9 @@ button {
 
 <script>
 
-
-/* =====================================================
+/* =========================================================
    BLE UUID
-===================================================== */
-
-/*
-    micro:bit UART Service
-
-    Service:
-    6e400001-b5a3-f393-e0a9-e50e24dcca9e
-
-    micro:bit -> S25:
-    6e400002-b5a3-f393-e0a9-e50e24dcca9e
-    INDICATE
-
-    S25 -> micro:bit:
-    6e400003-b5a3-f393-e0a9-e50e24dcca9e
-    WRITE / WRITE_NO_RESPONSE
-*/
+========================================================= */
 
 const SERVICE_UUID =
     "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -1799,221 +1077,998 @@ const TX_UUID =
     "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
 
+/* =========================================================
+   BLE STATE
+========================================================= */
+
 let bluetoothDevice = null;
-
 let gattServer = null;
-
 let rxCharacteristic = null;
-
 let txCharacteristic = null;
 
-let receivedBuffer = "";
+
+/* =========================================================
+   SENSOR STATE
+========================================================= */
+
+let sensorData = {
+    temperature: 0,
+    light: 0,
+    sound: 0,
+    x: 0,
+    y: 0,
+    z: 0
+};
 
 
-/* =====================================================
+/* =========================================================
    DEFAULT COMMANDS
-===================================================== */
+========================================================= */
 
 const defaultCommands = [
 
     {
-        name:"인사",
-
-        triggers:[
-            "안녕",
-            "hello",
-            "hi"
-        ],
-
-        action:"HELLO",
-
-        response:"안녕! 👋"
+        name: "인사",
+        triggers: ["안녕", "hello", "hi"],
+        action: "HELLO",
+        response: "안녕! 👋"
     },
 
-
     {
-        name:"하트",
-
-        triggers:[
-            "하트",
-            "사랑",
-            "heart"
-        ],
-
-        action:"HEART",
-
-        response:
-            "❤️ 하트를 보여줄게!"
+        name: "하트",
+        triggers: ["하트", "사랑", "heart"],
+        action: "HEART",
+        response: "❤️ 하트를 보여줄게!"
     },
 
-
     {
-        name:"뭐하지",
-
-        triggers:[
-            "뭐하지",
-            "뭐 해",
-            "뭐해",
-            "what"
-        ],
-
-        action:"WHAT",
-
-        response:
-            "🤔 재미있는 걸 해보자!"
+        name: "뭐하지",
+        triggers: ["뭐하지", "뭐 해", "뭐해", "what"],
+        action: "WHAT",
+        response: "🤔 재미있는 걸 해보자!"
     },
 
-
     {
-        name:"춤",
-
-        triggers:[
-            "춤",
-            "댄스",
-            "dance"
-        ],
-
-        action:"DANCE",
-
-        response:
-            "💃 춤춰볼게!"
+        name: "춤",
+        triggers: ["춤", "댄스", "dance"],
+        action: "DANCE",
+        response: "💃 춤춰볼게!"
     },
 
-
     {
-        name:"소리",
-
-        triggers:[
-            "소리",
-            "삐",
-            "beep"
-        ],
-
-        action:"BEEP",
-
-        response:
-            "🔊 삐!"
+        name: "소리",
+        triggers: ["소리", "삐", "beep"],
+        action: "BEEP",
+        response: "🔊 삐!"
     },
 
-
     {
-        name:"LED 켜기",
-
-        triggers:[
+        name: "LED 켜기",
+        triggers: [
             "불 켜",
             "불켜",
             "led 켜",
-            "led on"
+            "led on",
+            "led켜",
+            "led 켜줘"
         ],
-
-        action:"LED_ON",
-
-        response:
-            "💡 LED를 켤게!"
+        action: "LED_ON",
+        response: "💡 LED를 켤게!"
     },
 
-
     {
-        name:"LED 끄기",
-
-        triggers:[
+        name: "LED 끄기",
+        triggers: [
             "불 꺼",
             "불꺼",
             "led 꺼",
-            "led off"
+            "led off",
+            "led꺼",
+            "led 꺼줘"
         ],
-
-        action:"LED_OFF",
-
-        response:
-            "🌑 LED를 끌게!"
+        action: "LED_OFF",
+        response: "🌑 LED를 끌게!"
     },
 
-
     {
-        name:"온도",
-
-        triggers:[
+        name: "온도",
+        triggers: [
             "온도",
             "몇 도",
+            "몇도",
             "temperature"
         ],
-
-        action:"TEMP",
-
-        response:
-            "🌡️ 온도를 확인할게!"
+        action: "TEMP",
+        response: "🌡️ 온도를 확인할게!"
     },
 
-
     {
-        name:"빛",
-
-        triggers:[
+        name: "빛",
+        triggers: [
             "빛",
             "밝기",
+            "조도",
             "light"
         ],
-
-        action:"LIGHT",
-
-        response:
-            "☀️ 빛 센서를 확인할게!"
+        action: "LIGHT",
+        response: "☀️ 빛 센서를 확인할게!"
     },
 
-
     {
-        name:"소리 센서",
-
-        triggers:[
+        name: "소리 센서",
+        triggers: [
             "소리 센서",
             "소리 크기",
             "sound"
         ],
-
-        action:"SOUND",
-
-        response:
-            "🔊 소리 센서를 확인할게!"
+        action: "SOUND",
+        response: "🔊 소리 센서를 확인할게!"
     },
 
-
     {
-        name:"센서",
-
-        triggers:[
+        name: "센서",
+        triggers: [
             "센서",
-            "sensor"
+            "sensor",
+            "센서 알려줘",
+            "센서 보여줘"
         ],
-
-        action:"SENSOR",
-
-        response:
-            "📊 센서 데이터를 가져올게!"
+        action: "SENSOR",
+        response: "📊 센서 데이터를 가져올게!"
     },
 
-
     {
-        name:"PING",
-
-        triggers:[
+        name: "PING",
+        triggers: [
             "ping",
             "연결 확인",
-            "연결됐어"
+            "연결됐어",
+            "연결 확인해"
         ],
-
-        action:"PING",
-
-        response:
-            "📡 연결을 확인할게!"
+        action: "PING",
+        response: "📡 연결을 확인할게!"
     }
 
 ];
 
 
-/* =====================================================
-   LOCAL STORAGE
-===================================================== */
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPanel(name) {
+
+    const panels = [
+        "chat",
+        "connect",
+        "led",
+        "sensors",
+        "commands",
+        "log"
+    ];
+
+    panels.forEach(panel => {
+
+        const element =
+            document.getElementById("panel-" + panel);
+
+        if (!element) return;
+
+        if (panel === "chat") {
+
+            if (name === "chat") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+
+        } else {
+
+            element.classList.toggle(
+                "active",
+                panel === name
+            );
+
+        }
+
+    });
+
+    const titleNames = {
+        chat: "💬 micro:bit AI",
+        connect: "📡 micro:bit 연결",
+        led: "🎨 LED 그리기",
+        sensors: "📊 센서",
+        commands: "⚙️ 명령 관리",
+        log: "📜 BLE 로그"
+    };
+
+    document.getElementById("topTitle").textContent =
+        titleNames[name] || "micro:bit AI";
+
+
+    document.querySelectorAll(".sidebar-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+
+    document.querySelectorAll(".mobile-nav button")
+        .forEach(btn => btn.classList.remove("active"));
+
+
+    const nav = document.getElementById("nav-" + name);
+
+    if (nav) {
+        nav.classList.add("active");
+    }
+
+
+    if (name === "commands") {
+        renderCommandManager();
+    }
+
+}
+
+
+/* =========================================================
+   BLE CONNECT
+========================================================= */
+
+async function connectBluetooth() {
+
+    if (!navigator.bluetooth) {
+
+        alert(
+            "이 브라우저는 Web Bluetooth를 지원하지 않습니다.\n" +
+            "Android에서는 Chrome을 사용해 주세요."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        addLog("📡 micro:bit 검색 시작");
+
+
+        bluetoothDevice =
+            await navigator.bluetooth.requestDevice({
+
+                acceptAllDevices: true,
+
+                optionalServices: [
+                    SERVICE_UUID
+                ]
+
+            });
+
+
+        addLog(
+            "🔎 발견: " +
+            (bluetoothDevice.name || "이름 없음")
+        );
+
+
+        bluetoothDevice.addEventListener(
+            "gattserverdisconnected",
+            handleDisconnected
+        );
+
+
+        gattServer =
+            await bluetoothDevice.gatt.connect();
+
+
+        addLog("🔗 GATT 연결 성공");
+
+
+        const service =
+            await gattServer.getPrimaryService(
+                SERVICE_UUID
+            );
+
+
+        addLog("🧩 UART 서비스 발견");
+
+
+        rxCharacteristic =
+            await service.getCharacteristic(
+                RX_UUID
+            );
+
+
+        txCharacteristic =
+            await service.getCharacteristic(
+                TX_UUID
+            );
+
+
+        addLog("📥 RX characteristic 발견");
+        addLog("📤 TX characteristic 발견");
+
+
+        await rxCharacteristic.startNotifications();
+
+
+        rxCharacteristic.addEventListener(
+            "characteristicvaluechanged",
+            handleBluetoothData
+        );
+
+
+        setConnected(true);
+
+
+        document.getElementById("deviceName").textContent =
+            bluetoothDevice.name || "micro:bit";
+
+
+        document.getElementById("connectionInfo").textContent =
+            "연결됨: " +
+            (bluetoothDevice.name || "micro:bit");
+
+
+        addLog("✅ micro:bit 연결 완료");
+
+
+        addBotMessage(
+            "📡 micro:bit 연결 완료!\n" +
+            "이제 명령을 보내거나 LED를 직접 그릴 수 있어."
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        addLog(
+            "❌ 연결 오류: " +
+            error.name +
+            " - " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DISCONNECT
+========================================================= */
+
+function disconnectBluetooth() {
+
+    if (
+        bluetoothDevice &&
+        bluetoothDevice.gatt &&
+        bluetoothDevice.gatt.connected
+    ) {
+
+        bluetoothDevice.gatt.disconnect();
+
+    }
+
+    handleDisconnected();
+}
+
+
+function handleDisconnected() {
+
+    setConnected(false);
+
+    rxCharacteristic = null;
+    txCharacteristic = null;
+    gattServer = null;
+
+    addLog("🔌 micro:bit 연결 해제");
+
+}
+
+
+function setConnected(connected) {
+
+    const dot =
+        document.getElementById("statusDot");
+
+    const text =
+        document.getElementById("statusText");
+
+
+    if (connected) {
+
+        dot.classList.add("connected");
+
+        text.textContent = "연결됨";
+
+    } else {
+
+        dot.classList.remove("connected");
+
+        text.textContent = "연결 안 됨";
+
+    }
+
+}
+
+
+/* =========================================================
+   BLE WRITE
+========================================================= */
+
+async function sendCommand(command) {
+
+    if (!txCharacteristic) {
+
+        addBotMessage(
+            "❌ micro:bit가 연결되어 있지 않아."
+        );
+
+        return false;
+    }
+
+
+    try {
+
+        const data =
+            new TextEncoder().encode(
+                command + "\n"
+            );
+
+
+        if (
+            txCharacteristic.properties &&
+            txCharacteristic.properties.writeWithoutResponse
+        ) {
+
+            await txCharacteristic.writeValueWithoutResponse(
+                data
+            );
+
+        } else {
+
+            await txCharacteristic.writeValue(
+                data
+            );
+
+        }
+
+
+        addLog(
+            "📤 SEND: " + command
+        );
+
+        return true;
+
+
+    } catch (error) {
+
+        addLog(
+            "❌ SEND ERROR: " +
+            error.message
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   BLE RECEIVE
+========================================================= */
+
+function handleBluetoothData(event) {
+
+    const decoder =
+        new TextDecoder();
+
+    const data =
+        decoder.decode(
+            event.target.value
+        ).trim();
+
+
+    if (!data) return;
+
+
+    addLog(
+        "📥 RECEIVE: " + data
+    );
+
+
+    const lines =
+        data.split(/\r?\n/);
+
+
+    lines.forEach(line => {
+
+        if (!line) return;
+
+        handleReceivedLine(line);
+
+    });
+
+}
+
+
+function handleReceivedLine(line) {
+
+    if (line === "PONG") {
+
+        addBotMessage(
+            "📡 연결 정상! PONG을 받았어."
+        );
+
+        return;
+    }
+
+
+    if (line.startsWith("RESULT,")) {
+
+        const result =
+            line.substring(7);
+
+        addLog(
+            "✅ RESULT: " + result
+        );
+
+        return;
+    }
+
+
+    if (line.startsWith("DATA,")) {
+
+        const parts =
+            line.split(",");
+
+
+        if (parts.length >= 7) {
+
+            sensorData.temperature =
+                Number(parts[1]);
+
+            sensorData.light =
+                Number(parts[2]);
+
+            sensorData.sound =
+                Number(parts[3]);
+
+            sensorData.x =
+                Number(parts[4]);
+
+            sensorData.y =
+                Number(parts[5]);
+
+            sensorData.z =
+                Number(parts[6]);
+
+
+            updateSensorUI();
+
+
+            addBotMessage(
+                "📊 센서 데이터\n" +
+                "🌡️ 온도: " +
+                sensorData.temperature +
+                "°C\n" +
+                "☀️ 빛: " +
+                sensorData.light +
+                "\n" +
+                "🔊 소리: " +
+                sensorData.sound +
+                "\n" +
+                "📈 X: " +
+                sensorData.x +
+                "\n" +
+                "📈 Y: " +
+                sensorData.y +
+                "\n" +
+                "📈 Z: " +
+                sensorData.z
+            );
+
+        }
+
+        return;
+    }
+
+}
+
+
+/* =========================================================
+   SENSOR UI
+========================================================= */
+
+function updateSensorUI() {
+
+    document.getElementById("tempValue").textContent =
+        sensorData.temperature;
+
+    document.getElementById("lightValue").textContent =
+        sensorData.light;
+
+    document.getElementById("soundValue").textContent =
+        sensorData.sound;
+
+    document.getElementById("accelX").textContent =
+        sensorData.x;
+
+    document.getElementById("accelY").textContent =
+        sensorData.y;
+
+    document.getElementById("accelZ").textContent =
+        sensorData.z;
+
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+async function sendChat() {
+
+    const input =
+        document.getElementById("chatInput");
+
+    const text =
+        input.value.trim();
+
+
+    if (!text) return;
+
+
+    input.value = "";
+
+
+    addUserMessage(text);
+
+
+    const command =
+        findCommand(text);
+
+
+    if (!command) {
+
+        addBotMessage(
+            "🤔 아직 그 명령은 모르겠어.\n" +
+            "명령 관리에서 새로운 명령을 추가할 수도 있어!"
+        );
+
+        return;
+    }
+
+
+    addBotMessage(
+        command.response
+    );
+
+
+    await sendCommand(
+        command.action
+    );
+
+}
+
+
+function findCommand(text) {
+
+    const lower =
+        text.toLowerCase();
+
+
+    const commands =
+        getAllCommands();
+
+
+    for (const command of commands) {
+
+        for (const trigger of command.triggers) {
+
+            if (
+                lower.includes(
+                    trigger.toLowerCase()
+                )
+            ) {
+
+                return command;
+
+            }
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   CHAT MESSAGE
+========================================================= */
+
+function addUserMessage(text) {
+
+    const chat =
+        document.getElementById("panel-chat");
+
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        "message user";
+
+
+    message.innerHTML = `
+
+        <div class="avatar">
+            👤
+        </div>
+
+        <div class="message-content">
+
+            <div class="message-name">
+                나
+            </div>
+
+            <div class="message-text">
+                ${escapeHtml(text)}
+            </div>
+
+        </div>
+
+    `;
+
+
+    chat.appendChild(message);
+
+    scrollChat();
+
+}
+
+
+function addBotMessage(text) {
+
+    const chat =
+        document.getElementById("panel-chat");
+
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        "message";
+
+
+    message.innerHTML = `
+
+        <div class="avatar">
+            🤖
+        </div>
+
+        <div class="message-content">
+
+            <div class="message-name">
+                micro:bit AI
+            </div>
+
+            <div class="message-text">
+                ${escapeHtml(text)}
+            </div>
+
+        </div>
+
+    `;
+
+
+    chat.appendChild(message);
+
+    scrollChat();
+
+}
+
+
+function scrollChat() {
+
+    const chat =
+        document.getElementById("panel-chat");
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
+
+
+/* =========================================================
+   LED EDITOR
+========================================================= */
+
+let ledMatrix = [
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0]
+];
+
+
+function createLEDGrid() {
+
+    const grid =
+        document.getElementById("ledGrid");
+
+
+    grid.innerHTML = "";
+
+
+    for (let y = 0; y < 5; y++) {
+
+        for (let x = 0; x < 5; x++) {
+
+            const cell =
+                document.createElement("button");
+
+
+            cell.className =
+                "led-cell";
+
+
+            cell.dataset.x = x;
+            cell.dataset.y = y;
+
+
+            cell.addEventListener(
+                "click",
+                () => toggleLED(x, y)
+            );
+
+
+            grid.appendChild(cell);
+
+        }
+
+    }
+
+
+    updateLEDGrid();
+
+}
+
+
+function toggleLED(x, y) {
+
+    ledMatrix[y][x] =
+        ledMatrix[y][x] ? 0 : 1;
+
+
+    updateLEDGrid();
+
+}
+
+
+function updateLEDGrid() {
+
+    const cells =
+        document.querySelectorAll(
+            ".led-cell"
+        );
+
+
+    cells.forEach(cell => {
+
+        const x =
+            Number(cell.dataset.x);
+
+        const y =
+            Number(cell.dataset.y);
+
+
+        cell.classList.toggle(
+            "on",
+            ledMatrix[y][x] === 1
+        );
+
+    });
+
+
+    updateLEDCode();
+
+}
+
+
+function clearLED() {
+
+    for (let y = 0; y < 5; y++) {
+
+        for (let x = 0; x < 5; x++) {
+
+            ledMatrix[y][x] = 0;
+
+        }
+
+    }
+
+
+    updateLEDGrid();
+
+}
+
+
+function fillLED() {
+
+    for (let y = 0; y < 5; y++) {
+
+        for (let x = 0; x < 5; x++) {
+
+            ledMatrix[y][x] = 1;
+
+        }
+
+    }
+
+
+    updateLEDGrid();
+
+}
+
+
+function getLEDCode() {
+
+    return ledMatrix
+        .map(row => row.join(""))
+        .join(",");
+
+}
+
+
+function updateLEDCode() {
+
+    const code =
+        getLEDCode();
+
+
+    document.getElementById("ledCode").textContent =
+        "LED_DRAW," + code;
+
+}
+
+
+async function sendLED() {
+
+    const code =
+        getLEDCode();
+
+
+    const success =
+        await sendCommand(
+            "LED_DRAW," + code
+        );
+
+
+    if (success) {
+
+        addBotMessage(
+            "🎨 LED 그림을 micro:bit에 전송했어!"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COMMAND STORAGE
+========================================================= */
+
+const COMMAND_STORAGE_KEY =
+    "microbit_custom_commands";
+
 
 function getCustomCommands() {
 
@@ -2021,7 +2076,7 @@ function getCustomCommands() {
 
         return JSON.parse(
             localStorage.getItem(
-                "microbit_custom_commands"
+                COMMAND_STORAGE_KEY
             ) || "[]"
         );
 
@@ -2034,12 +2089,10 @@ function getCustomCommands() {
 }
 
 
-function saveCustomCommands(
-    commands
-) {
+function saveCustomCommands(commands) {
 
     localStorage.setItem(
-        "microbit_custom_commands",
+        COMMAND_STORAGE_KEY,
         JSON.stringify(commands)
     );
 
@@ -2056,1237 +2109,87 @@ function getAllCommands() {
 }
 
 
-/* =====================================================
-   SIDEBAR COMMAND LIST
-===================================================== */
+/* =========================================================
+   COMMAND MANAGER
+========================================================= */
 
-function refreshCommandList() {
+function renderCommandManager() {
 
-    const list =
+    const container =
         document.getElementById(
             "commandList"
         );
 
-    list.innerHTML = "";
 
+    container.innerHTML = "";
 
-    getAllCommands().forEach(
-        command => {
 
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "command-item";
-
-
-            item.textContent =
-                "• " +
-                command.name;
-
-
-            item.onclick = () => {
-
-                const input =
-                    document.getElementById(
-                        "chatInput"
-                    );
-
-
-                input.value =
-                    command.triggers[0];
-
-
-                input.focus();
-
-            };
-
-
-            list.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   ENTER
-===================================================== */
-
-function handleEnter(event) {
-
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
-
-        event.preventDefault();
-
-        sendChat();
-
-    }
-
-}
-
-
-/* =====================================================
-   SEND CHAT
-===================================================== */
-
-async function sendChat() {
-
-    const input =
-        document.getElementById(
-            "chatInput"
-        );
-
-
-    const text =
-        input.value.trim();
-
-
-    if (!text) {
-        return;
-    }
-
-
-    addUserMessage(
-        text
-    );
-
-
-    input.value = "";
-
-
-    await processChat(
-        text
-    );
-
-}
-
-
-/* =====================================================
-   COMMAND PROCESSOR
-===================================================== */
-
-async function processChat(
-    text
-) {
-
-    const normalized =
-        text
-        .toLowerCase()
-        .trim();
-
-
-    const commands =
-        getAllCommands();
-
-
-    for (
-        const command of commands
-    ) {
-
-        for (
-            const trigger
-            of command.triggers
-        ) {
-
-            if (
-                normalized.includes(
-                    trigger.toLowerCase()
-                )
-            ) {
-
-                addBotMessage(
-                    command.response
-                );
-
-
-                await sendCommand(
-                    command.action
-                );
-
-
-                return;
-
-            }
-
-        }
-
-    }
-
-
-    addBotMessage(
-        "🤔 아직 그 명령은 몰라요.\n\n" +
-        "예:\n" +
-        "• 하트 보여줘\n" +
-        "• 불 켜줘\n" +
-        "• 온도 알려줘\n" +
-        "• 센서 보여줘\n\n" +
-        "⚙️ 명령 메뉴에서 새로운 명령도 만들 수 있어요!"
-    );
-
-}
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-function addUserMessage(
-    text
-) {
-
-    addMessage(
-        "👤",
-        "user-avatar",
-        text,
-        false
-    );
-
-}
-
-
-function addBotMessage(
-    text
-) {
-
-    addMessage(
-        "🤖",
-        "bot-avatar",
-        text,
-        true
-    );
-
-}
-
-
-function addMessage(
-    avatarText,
-    avatarClass,
-    text,
-    bot
-) {
-
-    const chat =
-        document.getElementById(
-            "chat"
-        );
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-
-    message.className =
-        "message" +
-        (
-            bot
-            ? " bot-message"
-            : ""
-        );
-
-
-    const avatar =
-        document.createElement(
-            "div"
-        );
-
-
-    avatar.className =
-        "avatar " +
-        avatarClass;
-
-
-    avatar.textContent =
-        avatarText;
-
-
-    const content =
-        document.createElement(
-            "div"
-        );
-
-
-    content.className =
-        "message-content";
-
-
-    content.textContent =
-        text;
-
-
-    message.appendChild(
-        avatar
-    );
-
-
-    message.appendChild(
-        content
-    );
-
-
-    chat.appendChild(
-        message
-    );
-
-
-    requestAnimationFrame(
-        scrollChat
-    );
-
-}
-
-
-function scrollChat() {
-
-    const chat =
-        document.getElementById(
-            "chat"
-        );
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
-
-}
-
-
-/* =====================================================
-   NEW CHAT
-===================================================== */
-
-function newChat() {
-
-    const chat =
-        document.getElementById(
-            "chat"
-        );
-
-
-    chat.innerHTML = "";
-
-
-    addBotMessage(
-        "새 채팅을 시작했어요! ✨\n\n" +
-        "micro:bit에게 무엇을 시킬까요?"
-    );
-
-}
-
-
-/* =====================================================
-   MODALS
-===================================================== */
-
-function openDeviceModal() {
-
-    document
-        .getElementById(
-            "deviceModal"
-        )
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-function closeDeviceModal() {
-
-    document
-        .getElementById(
-            "deviceModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-function openSensorModal() {
-
-    document
-        .getElementById(
-            "sensorModal"
-        )
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-function closeSensorModal() {
-
-    document
-        .getElementById(
-            "sensorModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-function openLogModal() {
-
-    document
-        .getElementById(
-            "logModal"
-        )
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-function closeLogModal() {
-
-    document
-        .getElementById(
-            "logModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-function openCommandManager() {
-
-    renderCommandManager();
-
-
-    document
-        .getElementById(
-            "commandModal"
-        )
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-function closeCommandManager() {
-
-    document
-        .getElementById(
-            "commandModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-/* =====================================================
-   BLE LOG
-===================================================== */
-
-function bleLog(
-    text
-) {
-
-    const time =
-        new Date()
-        .toLocaleTimeString();
-
-
-    const line =
-        "[" +
-        time +
-        "] " +
-        text +
-        "\n";
-
-
-    document.getElementById(
-        "bleLog"
-    ).textContent += line;
-
-
-    document.getElementById(
-        "fullLog"
-    ).textContent += line;
-
-
-    const small =
-        document.getElementById(
-            "bleLog"
-        );
-
-
-    const full =
-        document.getElementById(
-            "fullLog"
-        );
-
-
-    small.scrollTop =
-        small.scrollHeight;
-
-
-    full.scrollTop =
-        full.scrollHeight;
-
-}
-
-
-/* =====================================================
-   CONNECT
-===================================================== */
-
-async function connectBluetooth() {
-
-    try {
-
-        if (
-            !navigator.bluetooth
-        ) {
-
-            addBotMessage(
-                "❌ 이 브라우저에서는 Web Bluetooth를 사용할 수 없어요."
-            );
-
-            return;
-
-        }
-
-
-        bleLog(
-            "🔎 Bluetooth 검색 시작..."
-        );
-
-
-        /*
-         * 중요:
-         *
-         * filters를 사용하지 않고
-         * 모든 BLE 장치를 검색합니다.
-         *
-         * 필요한 UART 서비스는
-         * optionalServices에 등록합니다.
-         */
-
-        bluetoothDevice =
-            await navigator.bluetooth.requestDevice({
-
-                acceptAllDevices:
-                    true,
-
-                optionalServices:[
-                    SERVICE_UUID
-                ]
-
-            });
-
-
-        const name =
-            bluetoothDevice.name ||
-            "이름 없는 BLE 장치";
-
-
-        bleLog(
-            "✅ 선택됨: " +
-            name
-        );
-
-
-        document.getElementById(
-            "deviceName"
-        ).textContent =
-            name;
-
-
-        document.getElementById(
-            "deviceId"
-        ).textContent =
-            bluetoothDevice.id ||
-            "-";
-
-
-        bluetoothDevice.addEventListener(
-            "gattserverdisconnected",
-            handleDisconnected
-        );
-
-
-        bleLog(
-            "🔗 GATT 연결 중..."
-        );
-
-
-        gattServer =
-            await bluetoothDevice.gatt.connect();
-
-
-        bleLog(
-            "✅ GATT 연결 성공"
-        );
-
-
-        const service =
-            await gattServer.getPrimaryService(
-                SERVICE_UUID
-            );
-
-
-        bleLog(
-            "✅ UART 서비스 발견"
-        );
-
-
-        /*
-         * micro:bit → S25
-         *
-         * 002 = INDICATE
-         */
-
-        rxCharacteristic =
-            await service.getCharacteristic(
-                RX_UUID
-            );
-
-
-        bleLog(
-            "✅ RX 발견: " +
-            RX_UUID
-        );
-
-
-        /*
-         * S25 → micro:bit
-         *
-         * 003 = WRITE / WRITE_NO_RESPONSE
-         */
-
-        txCharacteristic =
-            await service.getCharacteristic(
-                TX_UUID
-            );
-
-
-        bleLog(
-            "✅ TX 발견: " +
-            TX_UUID
-        );
-
-
-        /*
-         * 현재 장치에서 002가 INDICATE이므로
-         * startNotifications()를 사용합니다.
-         *
-         * 브라우저가 해당 characteristic의
-         * 변경 이벤트를 처리합니다.
-         */
-
-        await rxCharacteristic.startNotifications();
-
-
-        rxCharacteristic.addEventListener(
-            "characteristicvaluechanged",
-            handleBluetoothData
-        );
-
-
-        bleLog(
-            "📡 수신 활성화"
-        );
-
-
-        document.getElementById(
-            "connectionDot"
-        ).classList.add(
-            "connected"
-        );
-
-
-        document.getElementById(
-            "connectionText"
-        ).textContent =
-            name;
-
-
-        addBotMessage(
-            "🟢 " +
-            name +
-            " 연결 완료!"
-        );
-
-
-        await sendCommand(
-            "PING"
-        );
-
-
-    } catch(error) {
-
-        bleLog(
-            "❌ " +
-            error.name +
-            ": " +
-            error.message
-        );
-
-
-        console.error(
-            "Bluetooth error:",
-            error
-        );
-
-
-        if (
-            error.name ===
-            "NotFoundError"
-        ) {
-
-            addBotMessage(
-                "🔎 Bluetooth 기기 선택이 취소됐어요."
-            );
-
-        } else {
-
-            addBotMessage(
-                "❌ Bluetooth 연결 실패\n\n" +
-                error.name +
-                ": " +
-                error.message
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-   DISCONNECT
-===================================================== */
-
-function disconnectBluetooth() {
-
-    try {
-
-        if (
-            bluetoothDevice &&
-            bluetoothDevice.gatt &&
-            bluetoothDevice.gatt.connected
-        ) {
-
-            bluetoothDevice.gatt.disconnect();
-
-        }
-
-    } catch(error) {
-
-        bleLog(
-            "❌ " +
-            error.message
-        );
-
-    }
-
-
-    bluetoothDevice =
-        null;
-
-    gattServer =
-        null;
-
-    rxCharacteristic =
-        null;
-
-    txCharacteristic =
-        null;
-
-
-    document.getElementById(
-        "connectionDot"
-    ).classList.remove(
-        "connected"
-    );
-
-
-    document.getElementById(
-        "connectionText"
-    ).textContent =
-        "연결 안 됨";
-
-
-    document.getElementById(
-        "deviceName"
-    ).textContent =
-        "연결된 기기 없음";
-
-
-    document.getElementById(
-        "deviceId"
-    ).textContent =
-        "-";
-
-
-    bleLog(
-        "🔌 연결 해제"
-    );
-
-}
-
-
-function handleDisconnected() {
-
-    document.getElementById(
-        "connectionDot"
-    ).classList.remove(
-        "connected"
-    );
-
-
-    document.getElementById(
-        "connectionText"
-    ).textContent =
-        "연결 끊김";
-
-
-    bleLog(
-        "❌ micro:bit 연결 끊김"
-    );
-
-
-    addBotMessage(
-        "🔴 micro:bit 연결이 끊어졌어요."
-    );
-
-}
-
-
-/* =====================================================
-   RECEIVE
-===================================================== */
-
-function handleBluetoothData(
-    event
-) {
-
-    const value =
-        new TextDecoder(
-            "utf-8"
-        ).decode(
-            event.target.value
-        );
-
-
-    bleLog(
-        "⬅️ RX: " +
-        value.trim()
-    );
-
-
-    receivedBuffer += value;
-
-
-    const lines =
-        receivedBuffer.split(
-            "\n"
-        );
-
-
-    receivedBuffer =
-        lines.pop() || "";
-
-
-    for (
-        const line of lines
-    ) {
-
-        const data =
-            line.trim();
-
-
-        if (
-            data
-        ) {
-
-            processReceivedData(
-                data
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-   DATA PROCESSING
-===================================================== */
-
-function processReceivedData(
-    data
-) {
-
-    /*
-     * 센서:
-     *
-     * DATA,temp,light,sound,x,y,z,a,b
-     */
-
-    if (
-        data.startsWith(
-            "DATA,"
-        )
-    ) {
-
-        const parts =
-            data.split(",");
-
-
-        if (
-            parts.length >= 7
-        ) {
-
-            document.getElementById(
-                "temperature"
-            ).textContent =
-                parts[1];
-
-
-            document.getElementById(
-                "light"
-            ).textContent =
-                parts[2];
-
-
-            document.getElementById(
-                "sound"
-            ).textContent =
-                parts[3];
-
-
-            document.getElementById(
-                "accelX"
-            ).textContent =
-                parts[4];
-
-
-            document.getElementById(
-                "accelY"
-            ).textContent =
-                parts[5];
-
-
-            document.getElementById(
-                "accelZ"
-            ).textContent =
-                parts[6];
-
-        }
-
-
-        return;
-
-    }
-
-
-    /*
-     * micro:bit가 받은 명령
-     */
-
-    if (
-        data.startsWith(
-            "RECEIVED,"
-        )
-    ) {
-
-        addBotMessage(
-            "micro:bit 📥\n" +
-            data.substring(9)
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-     * 명령 결과
-     */
-
-    if (
-        data.startsWith(
-            "RESULT,"
-        )
-    ) {
-
-        addBotMessage(
-            "micro:bit 결과 📡\n" +
-            data.substring(7)
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-     * PING
-     */
-
-    if (
-        data === "PONG" ||
-        data === "PING_OK"
-    ) {
-
-        addBotMessage(
-            "📡 micro:bit 응답: PONG 🟢"
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-     * 기타 데이터
-     */
-
-    addBotMessage(
-        "micro:bit 📥\n" +
-        data
-    );
-
-}
-
-
-/* =====================================================
-   SEND COMMAND
-===================================================== */
-
-async function sendCommand(
-    command
-) {
-
-    if (
-        !txCharacteristic
-    ) {
-
-        addBotMessage(
-            "🔵 먼저 micro:bit를 연결해주세요."
-        );
-
-
-        return false;
-
-    }
-
-
-    try {
-
-        const data =
-            new TextEncoder()
-            .encode(
-                command +
-                "\n"
-            );
-
-
-        /*
-         * 003 characteristic:
-         *
-         * WRITE
-         * WRITE_NO_RESPONSE
-         */
-
-        if (
-            txCharacteristic
-                .properties
-                .writeWithoutResponse
-        ) {
-
-            await txCharacteristic
-                .writeValueWithoutResponse(
-                    data
-                );
-
-        } else {
-
-            await txCharacteristic
-                .writeValue(
-                    data
-                );
-
-        }
-
-
-        bleLog(
-            "➡️ TX: " +
-            command
-        );
-
-
-        return true;
-
-    } catch(error) {
-
-        bleLog(
-            "❌ TX 오류: " +
-            error.name +
-            ": " +
-            error.message
-        );
-
-
-        return false;
-
-    }
-
-}
-
-
-/* =====================================================
-   COMMAND MANAGER
-===================================================== */
-
-function renderCommandManager() {
-
-    const box =
-        document.getElementById(
-            "commandManagerList"
-        );
-
-
-    box.innerHTML = "";
-
-
-    const commands =
+    const custom =
         getCustomCommands();
 
 
-    if (
-        commands.length === 0
-    ) {
+    if (custom.length === 0) {
 
-        box.innerHTML = `
+        container.innerHTML = `
 
-            <div
-                style="
-                    padding:20px 5px;
-                    text-align:center;
-                    color:#71717a;
-                    font-size:13px;
-                "
-            >
-
-                아직 직접 만든 명령이 없어요.
-
+            <div class="card">
+                아직 사용자 명령이 없어.
             </div>
 
         `;
 
-
-        return;
-
     }
 
 
-    commands.forEach(
-        (
-            command,
-            index
-        ) => {
+    custom.forEach((command, index) => {
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+        const item =
+            document.createElement("div");
 
 
-            card.className =
-                "command-card";
+        item.className =
+            "command-item";
 
 
-            card.innerHTML = `
+        item.innerHTML = `
 
-                <div class="command-card-name">
+            <div class="command-info">
 
-                    ${escapeHtml(
-                        command.name
-                    )}
-
+                <div class="command-name">
+                    ${escapeHtml(command.name)}
                 </div>
 
-
-                <div class="command-card-trigger">
-
-                    ${escapeHtml(
-                        command.triggers.join(
-                            ", "
-                        )
-                    )}
-
+                <div class="command-trigger">
+                    ${escapeHtml(command.triggers.join(", "))}
+                    →
+                    ${escapeHtml(command.action)}
                 </div>
 
+            </div>
 
-                <div class="command-card-action">
+            <button
+                class="delete-btn"
+                onclick="deleteCommand(${index})"
+            >
+                🗑️
+            </button>
 
-                    ${escapeHtml(
-                        command.action
-                    )}
-
-                </div>
-
-
-                <button
-                    class="btn btn-red"
-                    style="
-                        width:100%;
-                        margin-top:10px;
-                    "
-                    onclick="deleteCommand(${index})"
-                >
-
-                    🗑️ 삭제
-
-                </button>
-
-            `;
+        `;
 
 
-            box.appendChild(
-                card
-            );
+        container.appendChild(item);
 
-        }
-    );
+    });
 
 }
 
 
-/* =====================================================
-   ADD COMMAND
-===================================================== */
-
 function openAddCommand() {
+
+    document.getElementById(
+        "commandModal"
+    ).classList.add("show");
+
 
     document.getElementById(
         "commandName"
@@ -3300,20 +2203,12 @@ function openAddCommand() {
 
     document.getElementById(
         "commandAction"
-    ).value =
-        "HELLO";
+    ).value = "";
 
 
     document.getElementById(
         "commandResponse"
     ).value = "";
-
-
-    document.getElementById(
-        "addCommandModal"
-    ).classList.add(
-        "show"
-    );
 
 }
 
@@ -3321,17 +2216,11 @@ function openAddCommand() {
 function closeAddCommand() {
 
     document.getElementById(
-        "addCommandModal"
-    ).classList.remove(
-        "show"
-    );
+        "commandModal"
+    ).classList.remove("show");
 
 }
 
-
-/* =====================================================
-   SAVE COMMAND
-===================================================== */
 
 function saveCommand() {
 
@@ -3350,7 +2239,7 @@ function saveCommand() {
     const action =
         document.getElementById(
             "commandAction"
-        ).value;
+        ).value.trim();
 
 
     const response =
@@ -3359,21 +2248,15 @@ function saveCommand() {
         ).value.trim();
 
 
-    if (!name) {
+    if (
+        !name ||
+        !triggerText ||
+        !action ||
+        !response
+    ) {
 
         alert(
-            "명령 이름을 입력해주세요."
-        );
-
-        return;
-
-    }
-
-
-    if (!triggerText) {
-
-        alert(
-            "사용자 표현을 입력해주세요."
+            "모든 항목을 입력해줘!"
         );
 
         return;
@@ -3383,13 +2266,9 @@ function saveCommand() {
 
     const triggers =
         triggerText
-        .split(",")
-        .map(
-            x => x.trim()
-        )
-        .filter(
-            Boolean
-        );
+            .split(",")
+            .map(x => x.trim())
+            .filter(Boolean);
 
 
     const commands =
@@ -3399,14 +2278,9 @@ function saveCommand() {
     commands.push({
 
         name,
-
         triggers,
-
         action,
-
-        response:
-            response ||
-            "명령을 실행했어요! 🤖"
+        response
 
     });
 
@@ -3418,48 +2292,21 @@ function saveCommand() {
 
     closeAddCommand();
 
-    refreshCommandList();
-
     renderCommandManager();
 
 
     addBotMessage(
-        `⚙️ "${name}" 명령을 추가했어요!`
+        "⚙️ 새로운 명령을 추가했어!\n" +
+        "이제 채팅에서 사용할 수 있어."
     );
 
 }
 
 
-/* =====================================================
-   DELETE COMMAND
-===================================================== */
-
-function deleteCommand(
-    index
-) {
+function deleteCommand(index) {
 
     const commands =
         getCustomCommands();
-
-
-    const command =
-        commands[index];
-
-
-    if (!command) {
-        return;
-    }
-
-
-    if (
-        !confirm(
-            `"${command.name}" 명령을 삭제할까요?`
-        )
-    ) {
-
-        return;
-
-    }
 
 
     commands.splice(
@@ -3473,49 +2320,40 @@ function deleteCommand(
     );
 
 
-    refreshCommandList();
-
     renderCommandManager();
 
 }
 
 
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
+/* =========================================================
+   LOG
+========================================================= */
 
-function escapeHtml(
-    text
-) {
+function addLog(text) {
 
-    return String(text)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
+    const log =
+        document.getElementById(
+            "bleLog"
         );
+
+
+    const now =
+        new Date();
+
+
+    const time =
+        now.toLocaleTimeString();
+
+
+    log.textContent +=
+        `[${time}] ${text}\n`;
+
+
+    log.scrollTop =
+        log.scrollHeight;
 
 }
 
-
-/* =====================================================
-   CLEAR LOG
-===================================================== */
 
 function clearLog() {
 
@@ -3523,126 +2361,99 @@ function clearLog() {
         "bleLog"
     ).textContent = "";
 
+}
 
-    document.getElementById(
-        "fullLog"
-    ).textContent = "";
+
+/* =========================================================
+   NEW CHAT
+========================================================= */
+
+function newChat() {
+
+    const chat =
+        document.getElementById(
+            "panel-chat"
+        );
+
+
+    chat.innerHTML = `
+
+        <div class="message">
+
+            <div class="avatar">
+                🤖
+            </div>
+
+            <div class="message-content">
+
+                <div class="message-name">
+                    micro:bit AI
+                </div>
+
+                <div class="message-text">
+                    새 채팅을 시작했어! 🚀<br><br>
+                    micro:bit에게 원하는 명령을 말해봐.
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
 
 }
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
 
-refreshCommandList();
+function escapeHtml(text) {
 
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
-window.addEventListener(
-    "load",
-    async () => {
-
-        bleLog(
-            "🤖 micro:bit AI 시작"
-        );
-
-
-        bleLog(
-            "📱 모바일 UI 활성화"
-        );
+}
 
 
-        bleLog(
-            "📡 BLE UART 준비 완료"
-        );
-
-
-        bleLog(
-            "Service: " +
-            SERVICE_UUID
-        );
-
-
-        bleLog(
-            "RX/INDICATE: " +
-            RX_UUID
-        );
-
-
-        bleLog(
-            "TX/WRITE: " +
-            TX_UUID
-        );
-
-
-        if (
-            navigator.bluetooth
-        ) {
-
-            try {
-
-                const available =
-                    await navigator.bluetooth
-                    .getAvailability();
-
-
-                bleLog(
-                    "Bluetooth 사용 가능: " +
-                    available
-                );
-
-            } catch(error) {
-
-                bleLog(
-                    "Bluetooth 상태 확인 실패"
-                );
-
-            }
-
-        } else {
-
-            bleLog(
-                "❌ Web Bluetooth 미지원"
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   CLOSE MODAL ON BACKGROUND TAP
-===================================================== */
+/* =========================================================
+   ENTER KEY
+========================================================= */
 
 document
-    .querySelectorAll(
-        ".modal"
-    )
-    .forEach(
-        modal => {
+    .getElementById("chatInput")
+    .addEventListener(
+        "keydown",
+        event => {
 
-            modal.addEventListener(
-                "click",
-                event => {
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
 
-                    if (
-                        event.target ===
-                        modal
-                    ) {
+                event.preventDefault();
 
-                        modal.classList.remove(
-                            "show"
-                        );
+                sendChat();
 
-                    }
-
-                }
-            );
+            }
 
         }
     );
 
+
+/* =========================================================
+   INIT
+========================================================= */
+
+createLEDGrid();
+
+renderCommandManager();
+
+addLog("🚀 micro:bit AI Dashboard 시작");
 
 </script>
 
