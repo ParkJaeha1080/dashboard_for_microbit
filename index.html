@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>micro:bit BLE Text Chat</title>
+<title>micro:bit BLE Dashboard</title>
 
 <style>
 * {
@@ -13,189 +13,297 @@
 
 body {
     margin: 0;
-    background: #101216;
-    color: white;
+    background: #101114;
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
 
 header {
-    padding: 22px;
-    text-align: center;
-    background: #181b21;
-    border-bottom: 1px solid #2c3038;
+    padding: 18px;
+    background: #181a20;
+    border-bottom: 1px solid #30333b;
 }
 
 header h1 {
-    margin: 0;
+    margin: 0 0 6px;
+    font-size: 24px;
 }
 
-header p {
-    color: #9298a3;
+#status {
+    font-size: 14px;
+    color: #ffcc66;
 }
 
 .container {
-    max-width: 900px;
+    padding: 14px;
+    max-width: 1000px;
     margin: auto;
-    padding: 18px;
 }
 
 button {
     border: 0;
-    border-radius: 12px;
-    padding: 13px 18px;
+    border-radius: 10px;
+    padding: 12px 16px;
     font-size: 15px;
     font-weight: bold;
-    color: white;
     cursor: pointer;
+    color: white;
+    background: #3b82f6;
 }
 
-button:disabled {
-    opacity: 0.4;
+button:active {
+    transform: scale(0.97);
 }
 
-#connect {
-    background: #20bd68;
+button.disconnect {
+    background: #dc3545;
 }
 
-#disconnect {
-    background: #e04444;
+button.command {
+    background: #7c3aed;
 }
 
-#send {
-    background: #5865f2;
+button.small {
+    padding: 8px 12px;
+    font-size: 13px;
 }
 
-.controls {
+.top-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
+    margin-bottom: 14px;
 }
 
-.status {
-    margin-top: 15px;
-    background: #181b21;
-    border: 1px solid #2c3038;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.card {
+    background: #181a20;
+    border: 1px solid #2c2f38;
     border-radius: 14px;
     padding: 15px;
 }
 
-#status {
+.card h2 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #bfc4d0;
+}
+
+.value {
+    font-size: 28px;
     font-weight: bold;
 }
 
-.device {
-    color: #9298a3;
-    margin-top: 6px;
+.unit {
+    font-size: 14px;
+    color: #888f9d;
+}
+
+.section {
+    margin-top: 14px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.sensor-ok {
+    color: #55e68b;
+}
+
+.sensor-off {
+    color: #ff7070;
 }
 
 .chat {
-    margin-top: 20px;
-    background: #181b21;
-    border: 1px solid #2c3038;
-    border-radius: 14px;
-    padding: 15px;
-}
-
-.messages {
-    height: 350px;
+    height: 330px;
     overflow-y: auto;
-    padding: 5px;
+    background: #0b0c0f;
+    border: 1px solid #2c2f38;
+    border-radius: 12px;
+    padding: 10px;
 }
 
 .message {
-    margin: 8px 0;
-    padding: 10px 13px;
-    border-radius: 12px;
-    max-width: 85%;
+    padding: 9px 11px;
+    margin: 6px 0;
+    border-radius: 10px;
+    max-width: 90%;
     word-break: break-word;
 }
 
-.phone {
+.message.me {
+    background: #17345f;
     margin-left: auto;
-    background: #5865f2;
 }
 
-.microbit {
+.message.micro {
+    background: #22262f;
     margin-right: auto;
-    background: #292e38;
 }
 
-.system {
-    margin: 8px auto;
-    background: #20242b;
-    color: #9298a3;
+.message.system {
+    background: #302a13;
+    color: #ffd966;
+    margin: auto;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
 }
 
-.time {
+.message small {
     display: block;
     margin-top: 4px;
+    opacity: 0.55;
     font-size: 10px;
-    opacity: 0.6;
 }
 
-.input-area {
+.input-row {
     display: flex;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 8px;
+    margin-top: 8px;
 }
 
-#textInput {
+.input-row input {
     flex: 1;
     min-width: 0;
-    background: #0c0e11;
-    border: 1px solid #363b45;
-    border-radius: 11px;
+    background: #181a20;
     color: white;
-    padding: 14px;
+    border: 1px solid #343842;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 15px;
     outline: none;
-    font-size: 16px;
 }
 
-#send {
-    min-width: 75px;
+.input-row input:focus {
+    border-color: #3b82f6;
 }
 
-.log-section {
-    margin-top: 20px;
+.commands {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.command-input {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.command-input input {
+    flex: 1;
+    min-width: 0;
+    background: #181a20;
+    color: white;
+    border: 1px solid #343842;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
 }
 
 .log {
-    background: #08090b;
-    border: 1px solid #2c3038;
-    border-radius: 14px;
-    padding: 12px;
-    height: 180px;
+    height: 190px;
     overflow-y: auto;
+    background: #08090b;
+    border: 1px solid #2c2f38;
+    border-radius: 10px;
+    padding: 10px;
     font-family: monospace;
     font-size: 12px;
     white-space: pre-wrap;
 }
 
-.info {
-    color: #66aaff;
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
 
-.success {
-    color: #35d07f;
+.axis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
 }
 
-.error {
-    color: #ff5555;
+.axis-box {
+    background: #101217;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
 }
 
-.warning {
-    color: #ffd24a;
+.axis-box b {
+    display: block;
+    color: #8fa7ff;
+    margin-bottom: 5px;
 }
 
-@media (max-width: 500px) {
-    .input-area {
-        flex-direction: column;
+.button-state {
+    display: flex;
+    gap: 10px;
+}
+
+.ab {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    background: #101217;
+}
+
+.ab.active {
+    background: #185c39;
+    color: #7dffb0;
+}
+
+.progress {
+    height: 8px;
+    background: #292c34;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #3b82f6;
+    transition: width 0.15s;
+}
+
+@media (max-width: 700px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    #send {
-        width: 100%;
+    .commands {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 420px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .value {
+        font-size: 23px;
+    }
+
+    button {
+        padding: 10px 12px;
     }
 }
 </style>
@@ -204,63 +312,147 @@ button:disabled {
 <body>
 
 <header>
-    <h1>📡 micro:bit BLE Chat</h1>
-    <p>문자 보내기 / 받기</p>
+    <h1>📡 micro:bit BLE Dashboard</h1>
+    <div id="status">🔴 연결되지 않음</div>
 </header>
 
 <div class="container">
 
-    <div class="controls">
-
-        <button id="connect">
-            🔵 연결
+    <div class="top-buttons">
+        <button id="connectBtn" onclick="connectBLE()">
+            🔵 micro:bit 연결
         </button>
 
-        <button id="disconnect" disabled>
-            🔴 연결 해제
+        <button
+            id="disconnectBtn"
+            class="disconnect"
+            onclick="disconnectBLE()"
+            disabled>
+            🔌 연결 해제
         </button>
-
     </div>
 
-    <div class="status">
+    <!-- 센서 -->
+    <div class="section">
+        <div class="section-title">📊 센서</div>
 
-        <div id="status">
-            연결되지 않음
+        <div class="grid">
+
+            <div class="card">
+                <h2>🌡️ 온도</h2>
+                <div class="value">
+                    <span id="temperature">--</span>
+                    <span class="unit">°C</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💡 밝기</h2>
+                <div class="value">
+                    <span id="light">--</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="lightBar"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔊 소리</h2>
+                <div class="value">
+                    <span id="sound">--</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="soundBar"></div>
+                </div>
+            </div>
+
         </div>
-
-        <div
-            id="deviceName"
-            class="device"
-        >
-            기기 없음
-        </div>
-
     </div>
 
+    <!-- 가속도 -->
+    <div class="section">
+        <div class="section-title">📐 가속도</div>
 
-    <div class="chat">
+        <div class="axis">
 
-        <h2>💬 메시지</h2>
+            <div class="axis-box">
+                <b>X</b>
+                <span id="accX">--</span>
+            </div>
 
-        <div
-            id="messages"
-            class="messages"
-        ></div>
+            <div class="axis-box">
+                <b>Y</b>
+                <span id="accY">--</span>
+            </div>
 
+            <div class="axis-box">
+                <b>Z</b>
+                <span id="accZ">--</span>
+            </div>
 
-        <div class="input-area">
+        </div>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="section">
+        <div class="section-title">🎮 버튼</div>
+
+        <div class="button-state">
+
+            <div class="ab" id="buttonA">
+                🔵 A<br>
+                <b>OFF</b>
+            </div>
+
+            <div class="ab" id="buttonB">
+                🟣 B<br>
+                <b>OFF</b>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 통계 -->
+    <div class="section">
+
+        <div class="section-title">📦 통신 상태</div>
+
+        <div class="stat-grid">
+
+            <div class="card">
+                <h2>패킷</h2>
+                <div class="value" id="packetCount">0</div>
+            </div>
+
+            <div class="card">
+                <h2>보낸 메시지</h2>
+                <div class="value" id="sentCount">0</div>
+            </div>
+
+            <div class="card">
+                <h2>받은 메시지</h2>
+                <div class="value" id="receivedCount">0</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 채팅 -->
+    <div class="section">
+
+        <div class="section-title">💬 micro:bit 채팅</div>
+
+        <div id="chat" class="chat"></div>
+
+        <div class="input-row">
 
             <input
-                id="textInput"
+                id="messageInput"
                 type="text"
-                placeholder="micro:bit로 보낼 글자를 입력..."
-                autocomplete="off"
-            >
+                placeholder="micro:bit로 보낼 글자..."
+                onkeydown="handleMessageKey(event)">
 
-            <button
-                id="send"
-                disabled
-            >
+            <button onclick="sendMessage()">
                 전송
             </button>
 
@@ -268,56 +460,104 @@ button:disabled {
 
     </div>
 
+    <!-- 명령어 -->
+    <div class="section">
 
-    <div class="log-section">
+        <div class="section-title">⚡ 명령어</div>
 
-        <h2>📜 BLE 로그</h2>
+        <div class="commands">
 
-        <div
-            id="log"
-            class="log"
-        ></div>
+            <button class="command" onclick="sendCommand('LED_ON')">
+                💡 LED ON
+            </button>
+
+            <button class="command" onclick="sendCommand('LED_OFF')">
+                🌑 LED OFF
+            </button>
+
+            <button class="command" onclick="sendCommand('HELLO')">
+                👋 HELLO
+            </button>
+
+            <button class="command" onclick="sendCommand('PING')">
+                📡 PING
+            </button>
+
+            <button class="command" onclick="sendCommand('CLEAR')">
+                🧹 CLEAR
+            </button>
+
+            <button class="command" onclick="sendCommand('STATUS')">
+                📊 STATUS
+            </button>
+
+            <button class="command" onclick="sendCommand('BEEP')">
+                🔔 BEEP
+            </button>
+
+            <button class="command" onclick="sendCommand('RESET')">
+                🔄 RESET
+            </button>
+
+        </div>
+
+        <div class="command-input">
+
+            <input
+                id="commandInput"
+                type="text"
+                placeholder="직접 명령어 입력..."
+                onkeydown="handleCommandKey(event)">
+
+            <button
+                class="command"
+                onclick="sendCustomCommand()">
+                실행
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- 로그 -->
+    <div class="section">
+
+        <div class="section-title">📜 BLE 로그</div>
+
+        <div id="log" class="log"></div>
+
+        <br>
+
+        <button
+            class="small"
+            onclick="clearLog()">
+            로그 지우기
+        </button>
 
     </div>
 
 </div>
 
-
 <script>
-
-/*
-========================================
-UUID
-========================================
-*/
 
 const SERVICE_UUID =
     "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 
-
 /*
-micro:bit → S25
-실제 장치에서 INDICATE
+    네 micro:bit에서 실제로 확인된 구조
+
+    002 = INDICATE
+    micro:bit → S25
+
+    003 = WRITE
+    S25 → micro:bit
 */
 
 const MICROBIT_TO_PHONE_UUID =
     "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
-
-/*
-S25 → micro:bit
-WRITE / WRITE WITHOUT RESPONSE
-*/
-
 const PHONE_TO_MICROBIT_UUID =
     "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
-
-/*
-========================================
-상태
-========================================
-*/
 
 let device = null;
 let server = null;
@@ -326,190 +566,62 @@ let service = null;
 let microbitToPhone = null;
 let phoneToMicrobit = null;
 
-let connected = false;
+let packetCount = 0;
+let sentCount = 0;
+let receivedCount = 0;
 
 let receiveBuffer = "";
 
 
-/*
-========================================
-HTML
-========================================
-*/
+/* =========================
+   로그
+========================= */
 
-const connectButton =
-    document.getElementById(
-        "connect"
-    );
+function log(message) {
 
-const disconnectButton =
-    document.getElementById(
-        "disconnect"
-    );
-
-const sendButton =
-    document.getElementById(
-        "send"
-    );
-
-const textInput =
-    document.getElementById(
-        "textInput"
-    );
-
-const statusElement =
-    document.getElementById(
-        "status"
-    );
-
-const deviceNameElement =
-    document.getElementById(
-        "deviceName"
-    );
-
-const messagesElement =
-    document.getElementById(
-        "messages"
-    );
-
-const logElement =
-    document.getElementById(
-        "log"
-    );
-
-
-/*
-========================================
-로그
-========================================
-*/
-
-function log(
-    text,
-    type = "info"
-) {
-
-    const line =
-        document.createElement(
-            "div"
-        );
-
-    line.className =
-        type;
+    const logBox = document.getElementById("log");
 
     const time =
-        new Date()
-        .toLocaleTimeString();
+        new Date().toLocaleTimeString();
 
-    line.textContent =
-        "[" +
-        time +
-        "] " +
-        text;
+    logBox.textContent +=
+        "[" + time + "] " + message + "\n";
 
-    logElement.appendChild(
-        line
-    );
+    logBox.scrollTop =
+        logBox.scrollHeight;
 
-    logElement.scrollTop =
-        logElement.scrollHeight;
-
+    console.log(message);
 }
 
 
-/*
-========================================
-채팅 메시지
-========================================
-*/
-
-function addMessage(
-    text,
-    type
-) {
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-    message.className =
-        "message " +
-        type;
-
-
-    message.textContent =
-        text;
-
-
-    const time =
-        document.createElement(
-            "span"
-        );
-
-    time.className =
-        "time";
-
-    time.textContent =
-        new Date()
-        .toLocaleTimeString();
-
-
-    message.appendChild(
-        time
-    );
-
-
-    messagesElement.appendChild(
-        message
-    );
-
-
-    messagesElement.scrollTop =
-        messagesElement.scrollHeight;
-
+function clearLog() {
+    document.getElementById("log").textContent = "";
 }
 
 
-/*
-========================================
-상태
-========================================
-*/
+/* =========================
+   상태
+========================= */
 
-function setStatus(
-    text,
-    type = ""
-) {
+function setStatus(text, color = "#ffcc66") {
 
-    statusElement.textContent =
-        text;
+    const status =
+        document.getElementById("status");
 
-    statusElement.className =
-        type;
-
+    status.textContent = text;
+    status.style.color = color;
 }
 
 
-/*
-========================================
-연결
-========================================
-*/
+/* =========================
+   BLE 연결
+========================= */
 
-connectButton.addEventListener(
-    "click",
-    connect
-);
-
-
-async function connect() {
+async function connectBLE() {
 
     try {
 
-        if (
-            !navigator.bluetooth
-        ) {
+        if (!navigator.bluetooth) {
 
             alert(
                 "이 브라우저는 Web Bluetooth를 지원하지 않습니다."
@@ -518,22 +630,12 @@ async function connect() {
             return;
         }
 
-
-        log(
-            "Bluetooth 기기 검색...",
-            "info"
-        );
-
-
         setStatus(
-            "🔍 기기 검색 중...",
-            "warning"
+            "🟡 micro:bit 검색 중...",
+            "#ffcc66"
         );
 
-
-        /*
-        모든 BLE 장치 검색
-        */
+        log("micro:bit 검색 시작");
 
         device =
             await navigator.bluetooth.requestDevice({
@@ -546,415 +648,123 @@ async function connect() {
 
             });
 
-
-        deviceNameElement.textContent =
-            device.name ||
-            "micro:bit";
-
-
         log(
-            "선택됨: " +
-            (
-                device.name ||
-                "이름 없음"
-            ),
-            "success"
+            "기기 발견: " +
+            (device.name || "이름 없음")
         );
-
-
-        /*
-        연결 끊김 이벤트
-        */
 
         device.addEventListener(
             "gattserverdisconnected",
-            disconnected
+            onDisconnected
         );
-
-
-        /*
-        GATT
-        */
 
         setStatus(
-            "🔌 GATT 연결 중...",
-            "warning"
+            "🟡 GATT 연결 중...",
+            "#ffcc66"
         );
-
 
         server =
             await device.gatt.connect();
 
-
-        log(
-            "✅ GATT 연결 성공",
-            "success"
-        );
-
-
-        /*
-        Service
-        */
+        log("GATT 연결 성공");
 
         service =
             await server.getPrimaryService(
                 SERVICE_UUID
             );
 
-
-        log(
-            "✅ UART Service 발견",
-            "success"
-        );
-
-
-        /*
-        micro:bit → S25
-        */
+        log("UART 서비스 발견");
 
         microbitToPhone =
             await service.getCharacteristic(
                 MICROBIT_TO_PHONE_UUID
             );
 
-
         log(
-            "✅ 6e400002 발견",
-            "success"
+            "002 characteristic 발견: INDICATE"
         );
-
-
-        /*
-        S25 → micro:bit
-        */
 
         phoneToMicrobit =
             await service.getCharacteristic(
                 PHONE_TO_MICROBIT_UUID
             );
 
-
         log(
-            "✅ 6e400003 발견",
-            "success"
+            "003 characteristic 발견: WRITE"
         );
 
-
         /*
-        INDICATE
+            002는 INDICATE이므로
+            startNotifications()를 사용해
+            indication subscription을 요청한다.
         */
 
         try {
 
-            await microbitToPhone
-                .startNotifications();
+            await microbitToPhone.startNotifications();
 
-            log(
-                "✅ INDICATE 활성화",
-                "success"
+            microbitToPhone.addEventListener(
+                "characteristicvaluechanged",
+                handleIncomingData
             );
+
+            log("INDICATE 활성화");
 
         } catch (error) {
 
             log(
                 "❌ INDICATE 활성화 실패: " +
-                error.name +
-                ": " +
-                error.message,
-                "error"
+                error.message
             );
 
+            /*
+                연결 자체는 유지하고
+                송신 기능은 사용할 수 있도록 한다.
+            */
         }
 
+        document.getElementById(
+            "connectBtn"
+        ).disabled = true;
 
-        /*
-        수신 이벤트
-        */
-
-        microbitToPhone
-            .addEventListener(
-                "characteristicvaluechanged",
-                receiveMessage
-            );
-
-
-        connected = true;
-
-
-        connectButton.disabled =
-            true;
-
-        disconnectButton.disabled =
-            false;
-
-        sendButton.disabled =
-            false;
-
+        document.getElementById(
+            "disconnectBtn"
+        ).disabled = false;
 
         setStatus(
-            "🟢 연결됨",
-            "success"
+            "🟢 연결됨: " +
+            (device.name || "micro:bit"),
+            "#55e68b"
         );
 
-
-        addMessage(
-            "micro:bit에 연결되었습니다.",
-            "system"
+        addSystemMessage(
+            "micro:bit에 연결되었습니다."
         );
-
-
-        log(
-            "🎉 BLE 문자 통신 준비 완료!",
-            "success"
-        );
-
-
-        textInput.focus();
-
 
     } catch (error) {
 
         console.error(error);
 
         log(
-            "❌ " +
+            "❌ 연결 실패: " +
             error.name +
-            ": " +
-            error.message,
-            "error"
+            " / " +
+            error.message
         );
-
 
         setStatus(
-            "❌ 연결 실패",
-            "error"
+            "🔴 연결 실패",
+            "#ff7070"
         );
-
     }
-
 }
 
 
-/*
-========================================
-문자 수신
-========================================
-*/
-
-function receiveMessage(
-    event
-) {
-
-    const value =
-        event.target.value;
-
-
-    const decoder =
-        new TextDecoder(
-            "utf-8"
-        );
-
-
-    const text =
-        decoder.decode(
-            value
-        );
-
-
-    log(
-        "← " +
-        text.replace(
-            /\r?\n/g,
-            "\\n"
-        ),
-        "info"
-    );
-
-
-    receiveBuffer +=
-        text;
-
-
-    const lines =
-        receiveBuffer.split(
-            "\n"
-        );
-
-
-    receiveBuffer =
-        lines.pop();
-
-
-    for (
-        const line of lines
-    ) {
-
-        const message =
-            line.trim();
-
-
-        if (
-            message.length === 0
-        ) {
-
-            continue;
-
-        }
-
-
-        addMessage(
-            "🔵 micro:bit: " +
-            message,
-            "microbit"
-        );
-
-    }
-
-}
-
-
-/*
-========================================
-문자 전송
-========================================
-*/
-
-sendButton.addEventListener(
-    "click",
-    sendMessage
-);
-
-
-textInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            sendMessage();
-
-        }
-
-    }
-);
-
-
-async function sendMessage() {
-
-    if (
-        !connected ||
-        !phoneToMicrobit
-    ) {
-
-        log(
-            "❌ micro:bit가 연결되지 않았습니다.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    const message =
-        textInput.value;
-
-
-    if (
-        message.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const encoder =
-            new TextEncoder();
-
-
-        const data =
-            encoder.encode(
-                message + "\n"
-            );
-
-
-        /*
-        WRITE WITHOUT RESPONSE
-        */
-
-        if (
-            phoneToMicrobit
-                .writeValueWithoutResponse
-        ) {
-
-            await phoneToMicrobit
-                .writeValueWithoutResponse(
-                    data
-                );
-
-        } else {
-
-            await phoneToMicrobit
-                .writeValue(
-                    data
-                );
-
-        }
-
-
-        addMessage(
-            "🟢 나: " +
-            message,
-            "phone"
-        );
-
-
-        log(
-            "→ " +
-            message,
-            "success"
-        );
-
-
-        textInput.value =
-            "";
-
-
-        textInput.focus();
-
-
-    } catch (error) {
-
-        log(
-            "❌ 문자 전송 실패: " +
-            error.name +
-            ": " +
-            error.message,
-            "error"
-        );
-
-    }
-
-}
-
-
-/*
-========================================
-연결 해제
-========================================
-*/
-
-disconnectButton.addEventListener(
-    "click",
-    disconnect
-);
-
-
-function disconnect() {
+/* =========================
+   연결 해제
+========================= */
+
+function disconnectBLE() {
 
     if (
         device &&
@@ -964,76 +774,615 @@ function disconnect() {
 
         device.gatt.disconnect();
 
-    }
+    } else {
 
+        onDisconnected();
+    }
 }
 
 
-/*
-========================================
-연결 끊김
-========================================
-*/
+function onDisconnected() {
 
-function disconnected() {
-
-    connected = false;
-
-
-    connectButton.disabled =
-        false;
-
-    disconnectButton.disabled =
-        true;
-
-    sendButton.disabled =
-        true;
-
+    log("🔴 micro:bit 연결 해제");
 
     setStatus(
-        "🔴 연결 끊김",
-        "error"
+        "🔴 연결되지 않음",
+        "#ff7070"
     );
 
+    document.getElementById(
+        "connectBtn"
+    ).disabled = false;
 
-    addMessage(
-        "micro:bit 연결이 끊어졌습니다.",
-        "system"
-    );
+    document.getElementById(
+        "disconnectBtn"
+    ).disabled = true;
 
-
-    log(
-        "Bluetooth 연결 해제",
-        "warning"
-    );
-
+    microbitToPhone = null;
+    phoneToMicrobit = null;
 }
 
 
-/*
-========================================
-시작
-========================================
-*/
+/* =========================
+   연결 확인
+========================= */
 
-log(
-    "micro:bit BLE Chat 준비 완료",
-    "success"
+function isConnected() {
+
+    return (
+        phoneToMicrobit &&
+        device &&
+        device.gatt &&
+        device.gatt.connected
+    );
+}
+
+
+/* =========================
+   문자열 전송
+========================= */
+
+async function sendText(text) {
+
+    if (!isConnected()) {
+
+        addSystemMessage(
+            "먼저 micro:bit를 연결하세요."
+        );
+
+        return false;
+    }
+
+    if (!text || text.length === 0) {
+        return false;
+    }
+
+    try {
+
+        const encoder =
+            new TextEncoder();
+
+        /*
+            micro:bit UART에서
+            한 줄 단위로 처리하기 위해
+            반드시 \n을 붙인다.
+        */
+
+        const data =
+            encoder.encode(text + "\n");
+
+        /*
+            003은 WRITE / WRITE_NO_RESPONSE
+        */
+
+        if (
+            phoneToMicrobit.writeValueWithoutResponse
+        ) {
+
+            await phoneToMicrobit
+                .writeValueWithoutResponse(data);
+
+        } else {
+
+            await phoneToMicrobit
+                .writeValue(data);
+        }
+
+        sentCount++;
+
+        document.getElementById(
+            "sentCount"
+        ).textContent = sentCount;
+
+        log(
+            "TX ← " + text
+        );
+
+        return true;
+
+    } catch (error) {
+
+        log(
+            "❌ TX 실패: " +
+            error.message
+        );
+
+        return false;
+    }
+}
+
+
+/* =========================
+   채팅 전송
+========================= */
+
+async function sendMessage() {
+
+    const input =
+        document.getElementById(
+            "messageInput"
+        );
+
+    const text =
+        input.value.trim();
+
+    if (!text) {
+        return;
+    }
+
+    const success =
+        await sendText(text);
+
+    if (success) {
+
+        addMessage(
+            "나",
+            text,
+            "me"
+        );
+
+        input.value = "";
+        input.focus();
+    }
+}
+
+
+function handleMessageKey(event) {
+
+    if (event.key === "Enter") {
+
+        event.preventDefault();
+
+        sendMessage();
+    }
+}
+
+
+/* =========================
+   명령어
+========================= */
+
+async function sendCommand(command) {
+
+    const success =
+        await sendText(command);
+
+    if (success) {
+
+        addMessage(
+            "명령어",
+            command,
+            "me"
+        );
+    }
+}
+
+
+async function sendCustomCommand() {
+
+    const input =
+        document.getElementById(
+            "commandInput"
+        );
+
+    const command =
+        input.value.trim();
+
+    if (!command) {
+        return;
+    }
+
+    const success =
+        await sendText(command);
+
+    if (success) {
+
+        addMessage(
+            "명령어",
+            command,
+            "me"
+        );
+
+        input.value = "";
+    }
+}
+
+
+function handleCommandKey(event) {
+
+    if (event.key === "Enter") {
+
+        event.preventDefault();
+
+        sendCustomCommand();
+    }
+}
+
+
+/* =========================
+   수신 데이터
+========================= */
+
+function handleIncomingData(event) {
+
+    const value =
+        event.target.value;
+
+    const decoder =
+        new TextDecoder();
+
+    const text =
+        decoder.decode(value);
+
+    log(
+        "RX → " +
+        text.replace(/\n/g, "\\n")
+    );
+
+    receiveBuffer += text;
+
+    /*
+        여러 줄이 한 번에 들어오는 경우 처리
+    */
+
+    const lines =
+        receiveBuffer.split("\n");
+
+    receiveBuffer =
+        lines.pop();
+
+    for (
+        const line of lines
+    ) {
+
+        const clean =
+            line.trim();
+
+        if (!clean) {
+            continue;
+        }
+
+        processIncomingLine(clean);
+    }
+}
+
+
+/* =========================
+   데이터 처리
+========================= */
+
+function processIncomingLine(line) {
+
+    receivedCount++;
+
+    document.getElementById(
+        "receivedCount"
+    ).textContent =
+        receivedCount;
+
+
+    /*
+        센서 패킷
+
+        DATA,
+        temperature,
+        light,
+        sound,
+        x,
+        y,
+        z,
+        a,
+        b
+    */
+
+    if (
+        line.startsWith("DATA,")
+    ) {
+
+        parseSensorData(line);
+
+        return;
+    }
+
+
+    /*
+        일반 텍스트
+    */
+
+    addMessage(
+        "micro:bit",
+        line,
+        "micro"
+    );
+}
+
+
+/* =========================
+   센서 데이터
+========================= */
+
+function parseSensorData(line) {
+
+    const parts =
+        line.split(",");
+
+    if (parts.length < 9) {
+
+        log(
+            "⚠️ 잘못된 DATA 패킷: " +
+            line
+        );
+
+        return;
+    }
+
+    const temperature =
+        parts[1];
+
+    const light =
+        Number(parts[2]);
+
+    const sound =
+        Number(parts[3]);
+
+    const x =
+        parts[4];
+
+    const y =
+        parts[5];
+
+    const z =
+        parts[6];
+
+    const a =
+        parts[7];
+
+    const b =
+        parts[8];
+
+
+    document.getElementById(
+        "temperature"
+    ).textContent =
+        temperature;
+
+
+    document.getElementById(
+        "light"
+    ).textContent =
+        light;
+
+
+    document.getElementById(
+        "sound"
+    ).textContent =
+        sound;
+
+
+    document.getElementById(
+        "accX"
+    ).textContent =
+        x;
+
+
+    document.getElementById(
+        "accY"
+    ).textContent =
+        y;
+
+
+    document.getElementById(
+        "accZ"
+    ).textContent =
+        z;
+
+
+    updateProgress(
+        "lightBar",
+        light
+    );
+
+
+    updateProgress(
+        "soundBar",
+        sound
+    );
+
+
+    updateButton(
+        "buttonA",
+        a
+    );
+
+
+    updateButton(
+        "buttonB",
+        b
+    );
+
+
+    packetCount++;
+
+    document.getElementById(
+        "packetCount"
+    ).textContent =
+        packetCount;
+}
+
+
+/* =========================
+   게이지
+========================= */
+
+function updateProgress(
+    id,
+    value
+) {
+
+    let percent =
+        Number(value);
+
+    if (isNaN(percent)) {
+        percent = 0;
+    }
+
+    percent =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                percent
+            )
+        );
+
+    document.getElementById(
+        id
+    ).style.width =
+        percent + "%";
+}
+
+
+/* =========================
+   버튼 표시
+========================= */
+
+function updateButton(
+    id,
+    value
+) {
+
+    const box =
+        document.getElementById(id);
+
+    const numeric =
+        Number(value);
+
+    if (
+        value === "1" ||
+        value === "true" ||
+        numeric === 1
+    ) {
+
+        box.classList.add("active");
+
+        box.innerHTML =
+            box.id === "buttonA"
+                ? "🔵 A<br><b>ON</b>"
+                : "🟣 B<br><b>ON</b>";
+
+    } else {
+
+        box.classList.remove("active");
+
+        box.innerHTML =
+            box.id === "buttonA"
+                ? "🔵 A<br><b>OFF</b>"
+                : "🟣 B<br><b>OFF</b>";
+    }
+}
+
+
+/* =========================
+   채팅 UI
+========================= */
+
+function addMessage(
+    sender,
+    text,
+    type
+) {
+
+    const chat =
+        document.getElementById(
+            "chat"
+        );
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        "message " + type;
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.textContent =
+        text;
+
+    const time =
+        document.createElement(
+            "small"
+        );
+
+    time.textContent =
+        new Date().toLocaleTimeString();
+
+    message.appendChild(content);
+    message.appendChild(time);
+
+    chat.appendChild(message);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+}
+
+
+function addSystemMessage(
+    text
+) {
+
+    const chat =
+        document.getElementById(
+            "chat"
+        );
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        "message system";
+
+    message.textContent =
+        text;
+
+    chat.appendChild(message);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+}
+
+
+/* =========================
+   시작 메시지
+========================= */
+
+addSystemMessage(
+    "micro:bit BLE Dashboard 준비 완료"
 );
 
 log(
-    "Service: 6e400001...",
-    "info"
+    "Dashboard 시작"
 );
 
 log(
-    "수신: 6e400002... INDICATE",
-    "info"
+    "UART Service: " +
+    SERVICE_UUID
 );
 
 log(
-    "송신: 6e400003... WRITE",
-    "info"
+    "RX / INDICATE: " +
+    MICROBIT_TO_PHONE_UUID
+);
+
+log(
+    "TX / WRITE: " +
+    PHONE_TO_MICROBIT_UUID
 );
 
 </script>
