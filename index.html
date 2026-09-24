@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>micro:bit BLE Dashboard</title>
+
+<title>micro:bit BLE Text Chat</title>
 
 <style>
 * {
@@ -12,39 +13,30 @@
 
 body {
     margin: 0;
-    background: #0f1115;
-    color: #ffffff;
+    background: #101216;
+    color: white;
     font-family: Arial, sans-serif;
 }
 
 header {
     padding: 22px;
-    background: #181b21;
-    border-bottom: 1px solid #2b2f38;
     text-align: center;
+    background: #181b21;
+    border-bottom: 1px solid #2c3038;
 }
 
 header h1 {
     margin: 0;
-    font-size: 25px;
 }
 
 header p {
-    margin: 8px 0 0;
-    color: #8e949f;
+    color: #9298a3;
 }
 
 .container {
-    width: min(1000px, 100%);
+    max-width: 900px;
     margin: auto;
-    padding: 20px;
-}
-
-.controls {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
+    padding: 18px;
 }
 
 button {
@@ -57,154 +49,128 @@ button {
     cursor: pointer;
 }
 
-#connectBtn {
-    background: #20b965;
-}
-
-#disconnectBtn {
-    background: #e04444;
-}
-
-#sendBtn {
-    background: #5865f2;
-}
-
 button:disabled {
     opacity: 0.4;
 }
 
-.status {
-    background: #181b21;
-    border: 1px solid #2b2f38;
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 18px;
+#connect {
+    background: #20bd68;
 }
 
-.status-title {
-    color: #999fa9;
-    font-size: 13px;
-    margin-bottom: 7px;
+#disconnect {
+    background: #e04444;
+}
+
+#send {
+    background: #5865f2;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.status {
+    margin-top: 15px;
+    background: #181b21;
+    border: 1px solid #2c3038;
+    border-radius: 14px;
+    padding: 15px;
 }
 
 #status {
-    font-size: 18px;
     font-weight: bold;
 }
 
 .device {
-    color: #8e949f;
+    color: #9298a3;
     margin-top: 6px;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(150px, 1fr)
-    );
-    gap: 12px;
-}
-
-.card {
+.chat {
+    margin-top: 20px;
     background: #181b21;
-    border: 1px solid #2b2f38;
+    border: 1px solid #2c3038;
     border-radius: 14px;
-    padding: 18px;
+    padding: 15px;
 }
 
-.card-title {
+.messages {
+    height: 350px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.message {
+    margin: 8px 0;
+    padding: 10px 13px;
+    border-radius: 12px;
+    max-width: 85%;
+    word-break: break-word;
+}
+
+.phone {
+    margin-left: auto;
+    background: #5865f2;
+}
+
+.microbit {
+    margin-right: auto;
+    background: #292e38;
+}
+
+.system {
+    margin: 8px auto;
+    background: #20242b;
     color: #9298a3;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.value {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.unit {
-    color: #858b96;
-    font-size: 13px;
-}
-
-.section {
-    margin-top: 22px;
-}
-
-.section h2 {
-    font-size: 18px;
-    margin-bottom: 12px;
-}
-
-.button-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.ab-card {
-    background: #181b21;
-    border: 1px solid #2b2f38;
-    border-radius: 14px;
-    padding: 20px;
     text-align: center;
+    font-size: 12px;
 }
 
-.ab-title {
-    color: #9298a3;
+.time {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    opacity: 0.6;
 }
 
-.ab-value {
-    margin-top: 8px;
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.command {
+.input-area {
     display: flex;
     gap: 10px;
+    margin-top: 12px;
 }
 
-.command input {
+#textInput {
     flex: 1;
     min-width: 0;
-    border: 1px solid #333844;
-    background: #0b0d10;
+    background: #0c0e11;
+    border: 1px solid #363b45;
+    border-radius: 11px;
     color: white;
-    border-radius: 10px;
-    padding: 13px;
+    padding: 14px;
     outline: none;
+    font-size: 16px;
 }
 
-.graph {
-    background: #181b21;
-    border: 1px solid #2b2f38;
-    border-radius: 14px;
-    padding: 10px;
+#send {
+    min-width: 75px;
 }
 
-canvas {
-    width: 100%;
-    height: 250px;
-    display: block;
+.log-section {
+    margin-top: 20px;
 }
 
 .log {
     background: #08090b;
-    border: 1px solid #2b2f38;
+    border: 1px solid #2c3038;
     border-radius: 14px;
     padding: 12px;
-    height: 250px;
+    height: 180px;
     overflow-y: auto;
     font-family: monospace;
     font-size: 12px;
     white-space: pre-wrap;
-}
-
-.log-line {
-    margin-bottom: 5px;
 }
 
 .info {
@@ -223,32 +189,12 @@ canvas {
     color: #ffd24a;
 }
 
-footer {
-    text-align: center;
-    padding: 30px;
-    color: #626873;
-    font-size: 12px;
-}
-
 @media (max-width: 500px) {
-
-    .container {
-        padding: 14px;
-    }
-
-    header h1 {
-        font-size: 21px;
-    }
-
-    .value {
-        font-size: 24px;
-    }
-
-    .command {
+    .input-area {
         flex-direction: column;
     }
 
-    #sendBtn {
+    #send {
         width: 100%;
     }
 }
@@ -258,19 +204,19 @@ footer {
 <body>
 
 <header>
-    <h1>📡 micro:bit BLE Dashboard</h1>
-    <p>Nordic UART Service</p>
+    <h1>📡 micro:bit BLE Chat</h1>
+    <p>문자 보내기 / 받기</p>
 </header>
 
 <div class="container">
 
     <div class="controls">
 
-        <button id="connectBtn">
-            🔵 micro:bit 연결
+        <button id="connect">
+            🔵 연결
         </button>
 
-        <button id="disconnectBtn" disabled>
+        <button id="disconnect" disabled>
             🔴 연결 해제
         </button>
 
@@ -278,212 +224,44 @@ footer {
 
     <div class="status">
 
-        <div class="status-title">
-            Bluetooth 상태
-        </div>
-
         <div id="status">
             연결되지 않음
         </div>
 
-        <div class="device" id="deviceName">
+        <div
+            id="deviceName"
+            class="device"
+        >
             기기 없음
         </div>
 
     </div>
 
 
-    <!-- 센서 -->
+    <div class="chat">
 
-    <div class="grid">
+        <h2>💬 메시지</h2>
 
-        <div class="card">
+        <div
+            id="messages"
+            class="messages"
+        ></div>
 
-            <div class="card-title">
-                🌡️ 온도
-            </div>
 
-            <div class="value">
-                <span id="temperature">--</span>
-                <span class="unit">°C</span>
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                💡 밝기
-            </div>
-
-            <div class="value">
-                <span id="light">--</span>
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                🎤 소리
-            </div>
-
-            <div class="value">
-                <span id="sound">--</span>
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                📦 패킷
-            </div>
-
-            <div class="value">
-                <span id="packets">0</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- 가속도 -->
-
-    <div class="section">
-
-        <h2>📐 가속도</h2>
-
-        <div class="grid">
-
-            <div class="card">
-
-                <div class="card-title">
-                    X
-                </div>
-
-                <div class="value">
-                    <span id="x">--</span>
-                    <span class="unit">mg</span>
-                </div>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-title">
-                    Y
-                </div>
-
-                <div class="value">
-                    <span id="y">--</span>
-                    <span class="unit">mg</span>
-                </div>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-title">
-                    Z
-                </div>
-
-                <div class="value">
-                    <span id="z">--</span>
-                    <span class="unit">mg</span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- 버튼 -->
-
-    <div class="section">
-
-        <h2>🎮 micro:bit 버튼</h2>
-
-        <div class="button-grid">
-
-            <div class="ab-card">
-
-                <div class="ab-title">
-                    BUTTON A
-                </div>
-
-                <div
-                    id="buttonA"
-                    class="ab-value"
-                >
-                    OFF
-                </div>
-
-            </div>
-
-
-            <div class="ab-card">
-
-                <div class="ab-title">
-                    BUTTON B
-                </div>
-
-                <div
-                    id="buttonB"
-                    class="ab-value"
-                >
-                    OFF
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- 그래프 -->
-
-    <div class="section">
-
-        <h2>📈 센서 그래프</h2>
-
-        <div class="graph">
-
-            <canvas id="graph"></canvas>
-
-        </div>
-
-    </div>
-
-
-    <!-- 명령 -->
-
-    <div class="section">
-
-        <h2>📤 micro:bit로 보내기</h2>
-
-        <div class="command">
+        <div class="input-area">
 
             <input
-                id="commandInput"
-                placeholder="예: HELLO"
+                id="textInput"
+                type="text"
+                placeholder="micro:bit로 보낼 글자를 입력..."
                 autocomplete="off"
             >
 
             <button
-                id="sendBtn"
+                id="send"
                 disabled
             >
-                보내기
+                전송
             </button>
 
         </div>
@@ -491,11 +269,9 @@ footer {
     </div>
 
 
-    <!-- 로그 -->
+    <div class="log-section">
 
-    <div class="section">
-
-        <h2>📜 BLE 통신 로그</h2>
+        <h2>📜 BLE 로그</h2>
 
         <div
             id="log"
@@ -506,38 +282,31 @@ footer {
 
 </div>
 
-<footer>
-    micro:bit V2 • BLE • Nordic UART Service
-</footer>
-
 
 <script>
 
 /*
 ========================================
-실제 확인된 UUID
+UUID
 ========================================
 */
 
-const UART_SERVICE_UUID =
+const SERVICE_UUID =
     "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
 
 /*
 micro:bit → S25
-
-실제 속성:
-INDICATE
+실제 장치에서 INDICATE
 */
 
 const MICROBIT_TO_PHONE_UUID =
     "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
+
 /*
 S25 → micro:bit
-
-실제 속성:
-WRITE
-WRITE WITHOUT RESPONSE
+WRITE / WRITE WITHOUT RESPONSE
 */
 
 const PHONE_TO_MICROBIT_UUID =
@@ -546,7 +315,7 @@ const PHONE_TO_MICROBIT_UUID =
 
 /*
 ========================================
-BLE 변수
+상태
 ========================================
 */
 
@@ -554,12 +323,10 @@ let device = null;
 let server = null;
 let service = null;
 
-let phoneToMicrobit = null;
 let microbitToPhone = null;
+let phoneToMicrobit = null;
 
 let connected = false;
-
-let packetCount = 0;
 
 let receiveBuffer = "";
 
@@ -570,24 +337,24 @@ HTML
 ========================================
 */
 
-const connectBtn =
+const connectButton =
     document.getElementById(
-        "connectBtn"
+        "connect"
     );
 
-const disconnectBtn =
+const disconnectButton =
     document.getElementById(
-        "disconnectBtn"
+        "disconnect"
     );
 
-const sendBtn =
+const sendButton =
     document.getElementById(
-        "sendBtn"
+        "send"
     );
 
-const commandInput =
+const textInput =
     document.getElementById(
-        "commandInput"
+        "textInput"
     );
 
 const statusElement =
@@ -600,54 +367,14 @@ const deviceNameElement =
         "deviceName"
     );
 
+const messagesElement =
+    document.getElementById(
+        "messages"
+    );
+
 const logElement =
     document.getElementById(
         "log"
-    );
-
-const temperatureElement =
-    document.getElementById(
-        "temperature"
-    );
-
-const lightElement =
-    document.getElementById(
-        "light"
-    );
-
-const soundElement =
-    document.getElementById(
-        "sound"
-    );
-
-const xElement =
-    document.getElementById(
-        "x"
-    );
-
-const yElement =
-    document.getElementById(
-        "y"
-    );
-
-const zElement =
-    document.getElementById(
-        "z"
-    );
-
-const buttonAElement =
-    document.getElementById(
-        "buttonA"
-    );
-
-const buttonBElement =
-    document.getElementById(
-        "buttonB"
-    );
-
-const packetsElement =
-    document.getElementById(
-        "packets"
     );
 
 
@@ -658,7 +385,7 @@ const packetsElement =
 */
 
 function log(
-    message,
+    text,
     type = "info"
 ) {
 
@@ -668,7 +395,7 @@ function log(
         );
 
     line.className =
-        "log-line " + type;
+        type;
 
     const time =
         new Date()
@@ -678,7 +405,7 @@ function log(
         "[" +
         time +
         "] " +
-        message;
+        text;
 
     logElement.appendChild(
         line
@@ -686,6 +413,60 @@ function log(
 
     logElement.scrollTop =
         logElement.scrollHeight;
+
+}
+
+
+/*
+========================================
+채팅 메시지
+========================================
+*/
+
+function addMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        "message " +
+        type;
+
+
+    message.textContent =
+        text;
+
+
+    const time =
+        document.createElement(
+            "span"
+        );
+
+    time.className =
+        "time";
+
+    time.textContent =
+        new Date()
+        .toLocaleTimeString();
+
+
+    message.appendChild(
+        time
+    );
+
+
+    messagesElement.appendChild(
+        message
+    );
+
+
+    messagesElement.scrollTop =
+        messagesElement.scrollHeight;
 
 }
 
@@ -712,11 +493,11 @@ function setStatus(
 
 /*
 ========================================
-연결 버튼
+연결
 ========================================
 */
 
-connectBtn.addEventListener(
+connectButton.addEventListener(
     "click",
     connect
 );
@@ -739,9 +520,10 @@ async function connect() {
 
 
         log(
-            "Bluetooth 기기 검색 시작...",
+            "Bluetooth 기기 검색...",
             "info"
         );
+
 
         setStatus(
             "🔍 기기 검색 중...",
@@ -750,7 +532,7 @@ async function connect() {
 
 
         /*
-        모든 BLE 장치를 검색
+        모든 BLE 장치 검색
         */
 
         device =
@@ -759,14 +541,19 @@ async function connect() {
                 acceptAllDevices: true,
 
                 optionalServices: [
-                    UART_SERVICE_UUID
+                    SERVICE_UUID
                 ]
 
             });
 
 
+        deviceNameElement.textContent =
+            device.name ||
+            "micro:bit";
+
+
         log(
-            "선택된 기기: " +
+            "선택됨: " +
             (
                 device.name ||
                 "이름 없음"
@@ -775,10 +562,9 @@ async function connect() {
         );
 
 
-        deviceNameElement.textContent =
-            device.name ||
-            "micro:bit";
-
+        /*
+        연결 끊김 이벤트
+        */
 
         device.addEventListener(
             "gattserverdisconnected",
@@ -793,11 +579,6 @@ async function connect() {
         setStatus(
             "🔌 GATT 연결 중...",
             "warning"
-        );
-
-        log(
-            "GATT 연결...",
-            "info"
         );
 
 
@@ -815,15 +596,9 @@ async function connect() {
         Service
         */
 
-        log(
-            "UART Service 검색...",
-            "info"
-        );
-
-
         service =
             await server.getPrimaryService(
-                UART_SERVICE_UUID
+                SERVICE_UUID
             );
 
 
@@ -836,12 +611,6 @@ async function connect() {
         /*
         micro:bit → S25
         */
-
-        log(
-            "6e400002 Characteristic 검색...",
-            "info"
-        );
-
 
         microbitToPhone =
             await service.getCharacteristic(
@@ -859,12 +628,6 @@ async function connect() {
         S25 → micro:bit
         */
 
-        log(
-            "6e400003 Characteristic 검색...",
-            "info"
-        );
-
-
         phoneToMicrobit =
             await service.getCharacteristic(
                 PHONE_TO_MICROBIT_UUID
@@ -878,16 +641,8 @@ async function connect() {
 
 
         /*
-        ====================================
-        INDICATE 시작
-        ====================================
+        INDICATE
         */
-
-        log(
-            "6e400002 INDICATE 시작...",
-            "info"
-        );
-
 
         try {
 
@@ -895,47 +650,44 @@ async function connect() {
                 .startNotifications();
 
             log(
-                "✅ INDICATE 활성화 성공",
+                "✅ INDICATE 활성화",
                 "success"
             );
 
         } catch (error) {
 
             log(
-                "⚠️ INDICATE 활성화 실패: " +
+                "❌ INDICATE 활성화 실패: " +
                 error.name +
                 ": " +
                 error.message,
                 "error"
             );
 
-            /*
-            여기서 종료하지 않는다.
-            */
-
         }
 
 
         /*
-        데이터 수신
+        수신 이벤트
         */
 
         microbitToPhone
             .addEventListener(
                 "characteristicvaluechanged",
-                receiveData
+                receiveMessage
             );
 
 
         connected = true;
 
-        connectBtn.disabled =
+
+        connectButton.disabled =
             true;
 
-        disconnectBtn.disabled =
+        disconnectButton.disabled =
             false;
 
-        sendBtn.disabled =
+        sendButton.disabled =
             false;
 
 
@@ -945,10 +697,19 @@ async function connect() {
         );
 
 
+        addMessage(
+            "micro:bit에 연결되었습니다.",
+            "system"
+        );
+
+
         log(
-            "🎉 micro:bit 연결 완료!",
+            "🎉 BLE 문자 통신 준비 완료!",
             "success"
         );
+
+
+        textInput.focus();
 
 
     } catch (error) {
@@ -963,6 +724,7 @@ async function connect() {
             "error"
         );
 
+
         setStatus(
             "❌ 연결 실패",
             "error"
@@ -975,11 +737,13 @@ async function connect() {
 
 /*
 ========================================
-수신
+문자 수신
 ========================================
 */
 
-function receiveData(event) {
+function receiveMessage(
+    event
+) {
 
     const value =
         event.target.value;
@@ -1025,19 +789,23 @@ function receiveData(event) {
         const line of lines
     ) {
 
-        const clean =
+        const message =
             line.trim();
 
 
         if (
-            clean.length === 0
+            message.length === 0
         ) {
+
             continue;
+
         }
 
 
-        processData(
-            clean
+        addMessage(
+            "🔵 micro:bit: " +
+            message,
+            "microbit"
         );
 
     }
@@ -1047,129 +815,17 @@ function receiveData(event) {
 
 /*
 ========================================
-센서 데이터
-========================================
-
-DATA,TEMP,LIGHT,SOUND,X,Y,Z,A,B
-*/
-
-function processData(
-    data
-) {
-
-    if (
-        !data.startsWith(
-            "DATA,"
-        )
-    ) {
-
-        log(
-            "일반 데이터: " +
-            data,
-            "warning"
-        );
-
-        return;
-    }
-
-
-    const parts =
-        data.split(",");
-
-
-    if (
-        parts.length < 9
-    ) {
-
-        log(
-            "DATA 형식 오류: " +
-            data,
-            "error"
-        );
-
-        return;
-    }
-
-
-    const temperature =
-        Number(parts[1]);
-
-    const light =
-        Number(parts[2]);
-
-    const sound =
-        Number(parts[3]);
-
-    const x =
-        Number(parts[4]);
-
-    const y =
-        Number(parts[5]);
-
-    const z =
-        Number(parts[6]);
-
-    const a =
-        Number(parts[7]);
-
-    const b =
-        Number(parts[8]);
-
-
-    temperatureElement.textContent =
-        temperature;
-
-    lightElement.textContent =
-        light;
-
-    soundElement.textContent =
-        sound;
-
-    xElement.textContent =
-        x;
-
-    yElement.textContent =
-        y;
-
-    zElement.textContent =
-        z;
-
-
-    buttonAElement.textContent =
-        a ? "ON" : "OFF";
-
-    buttonBElement.textContent =
-        b ? "ON" : "OFF";
-
-
-    packetCount++;
-
-    packetsElement.textContent =
-        packetCount;
-
-
-    addGraphData(
-        temperature,
-        sound,
-        light
-    );
-
-}
-
-
-/*
-========================================
-명령 전송
+문자 전송
 ========================================
 */
 
-sendBtn.addEventListener(
+sendButton.addEventListener(
     "click",
-    sendCommand
+    sendMessage
 );
 
 
-commandInput.addEventListener(
+textInput.addEventListener(
     "keydown",
     event => {
 
@@ -1177,7 +833,7 @@ commandInput.addEventListener(
             event.key === "Enter"
         ) {
 
-            sendCommand();
+            sendMessage();
 
         }
 
@@ -1185,7 +841,7 @@ commandInput.addEventListener(
 );
 
 
-async function sendCommand() {
+async function sendMessage() {
 
     if (
         !connected ||
@@ -1201,12 +857,12 @@ async function sendCommand() {
     }
 
 
-    const command =
-        commandInput.value.trim();
+    const message =
+        textInput.value;
 
 
     if (
-        !command
+        message.length === 0
     ) {
 
         return;
@@ -1222,9 +878,13 @@ async function sendCommand() {
 
         const data =
             encoder.encode(
-                command + "\n"
+                message + "\n"
             );
 
+
+        /*
+        WRITE WITHOUT RESPONSE
+        */
 
         if (
             phoneToMicrobit
@@ -1246,21 +906,31 @@ async function sendCommand() {
         }
 
 
+        addMessage(
+            "🟢 나: " +
+            message,
+            "phone"
+        );
+
+
         log(
             "→ " +
-            command,
+            message,
             "success"
         );
 
 
-        commandInput.value =
+        textInput.value =
             "";
+
+
+        textInput.focus();
 
 
     } catch (error) {
 
         log(
-            "❌ 전송 실패: " +
+            "❌ 문자 전송 실패: " +
             error.name +
             ": " +
             error.message,
@@ -1278,44 +948,62 @@ async function sendCommand() {
 ========================================
 */
 
-disconnectBtn.addEventListener(
+disconnectButton.addEventListener(
     "click",
-    () => {
-
-        if (
-            device &&
-            device.gatt &&
-            device.gatt.connected
-        ) {
-
-            device.gatt.disconnect();
-
-        }
-
-    }
+    disconnect
 );
 
+
+function disconnect() {
+
+    if (
+        device &&
+        device.gatt &&
+        device.gatt.connected
+    ) {
+
+        device.gatt.disconnect();
+
+    }
+
+}
+
+
+/*
+========================================
+연결 끊김
+========================================
+*/
 
 function disconnected() {
 
     connected = false;
 
-    connectBtn.disabled =
+
+    connectButton.disabled =
         false;
 
-    disconnectBtn.disabled =
+    disconnectButton.disabled =
         true;
 
-    sendBtn.disabled =
+    sendButton.disabled =
         true;
+
 
     setStatus(
         "🔴 연결 끊김",
         "error"
     );
 
+
+    addMessage(
+        "micro:bit 연결이 끊어졌습니다.",
+        "system"
+    );
+
+
     log(
-        "micro:bit 연결 해제",
+        "Bluetooth 연결 해제",
         "warning"
     );
 
@@ -1324,286 +1012,12 @@ function disconnected() {
 
 /*
 ========================================
-그래프
-========================================
-*/
-
-const canvas =
-    document.getElementById(
-        "graph"
-    );
-
-const ctx =
-    canvas.getContext(
-        "2d"
-    );
-
-
-let temperatureData = [];
-let soundData = [];
-let lightData = [];
-
-
-const MAX_POINTS = 80;
-
-
-function addGraphData(
-    temperature,
-    sound,
-    light
-) {
-
-    temperatureData.push(
-        temperature
-    );
-
-    soundData.push(
-        sound
-    );
-
-    lightData.push(
-        light
-    );
-
-
-    if (
-        temperatureData.length >
-        MAX_POINTS
-    ) {
-
-        temperatureData.shift();
-        soundData.shift();
-        lightData.shift();
-
-    }
-
-
-    drawGraph();
-
-}
-
-
-function resizeCanvas() {
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-
-    const ratio =
-        window.devicePixelRatio ||
-        1;
-
-
-    canvas.width =
-        rect.width * ratio;
-
-    canvas.height =
-        rect.height * ratio;
-
-
-    ctx.setTransform(
-        ratio,
-        0,
-        0,
-        ratio,
-        0,
-        0
-    );
-
-
-    drawGraph();
-
-}
-
-
-function drawGraph() {
-
-    const width =
-        canvas.clientWidth;
-
-    const height =
-        canvas.clientHeight;
-
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    /*
-    Grid
-    */
-
-    ctx.strokeStyle =
-        "#292d35";
-
-    ctx.lineWidth =
-        1;
-
-
-    for (
-        let i = 0;
-        i <= 5;
-        i++
-    ) {
-
-        const y =
-            height *
-            i /
-            5;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            0,
-            y
-        );
-
-        ctx.lineTo(
-            width,
-            y
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    drawLine(
-        temperatureData,
-        height,
-        50
-    );
-
-    drawLine(
-        soundData,
-        height,
-        255
-    );
-
-    drawLine(
-        lightData,
-        height,
-        255
-    );
-
-}
-
-
-function drawLine(
-    data,
-    height,
-    max
-) {
-
-    if (
-        data.length < 2
-    ) {
-
-        return;
-
-    }
-
-
-    ctx.beginPath();
-
-    ctx.strokeStyle =
-        "#ffffff";
-
-    ctx.lineWidth =
-        2;
-
-
-    for (
-        let i = 0;
-        i < data.length;
-        i++
-    ) {
-
-        const x =
-            i /
-            (MAX_POINTS - 1) *
-            canvas.clientWidth;
-
-
-        let value =
-            Number(
-                data[i]
-            );
-
-
-        if (
-            value < 0
-        ) {
-
-            value = 0;
-
-        }
-
-
-        if (
-            value > max
-        ) {
-
-            value = max;
-
-        }
-
-
-        const y =
-            height -
-            value /
-            max *
-            height;
-
-
-        if (
-            i === 0
-        ) {
-
-            ctx.moveTo(
-                x,
-                y
-            );
-
-        } else {
-
-            ctx.lineTo(
-                x,
-                y
-            );
-
-        }
-
-    }
-
-
-    ctx.stroke();
-
-}
-
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-
-resizeCanvas();
-
-
-/*
-========================================
-시작 로그
+시작
 ========================================
 */
 
 log(
-    "Dashboard 준비 완료",
+    "micro:bit BLE Chat 준비 완료",
     "success"
 );
 
@@ -1613,12 +1027,12 @@ log(
 );
 
 log(
-    "micro:bit → S25: 6e400002... INDICATE",
+    "수신: 6e400002... INDICATE",
     "info"
 );
 
 log(
-    "S25 → micro:bit: 6e400003... WRITE",
+    "송신: 6e400003... WRITE",
     "info"
 );
 
