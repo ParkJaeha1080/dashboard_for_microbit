@@ -3,282 +3,1264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>micro:bit GATT Scanner</title>
+<title>micro:bit BLE Dashboard</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    padding: 20px;
-    background: #101114;
-    color: white;
+    background: #0f1115;
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
 
-h1 {
+header {
+    padding: 22px;
+    background: #181b21;
+    border-bottom: 1px solid #2b2f38;
     text-align: center;
 }
 
+header h1 {
+    margin: 0;
+    font-size: 25px;
+}
+
+header p {
+    margin: 8px 0 0;
+    color: #8e949f;
+}
+
+.container {
+    width: min(1000px, 100%);
+    margin: auto;
+    padding: 20px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
 button {
-    width: 100%;
-    padding: 16px;
-    margin: 10px 0;
     border: 0;
     border-radius: 12px;
-    background: #2ecc71;
-    color: white;
-    font-size: 17px;
+    padding: 13px 18px;
+    font-size: 15px;
     font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+#connectBtn {
+    background: #20b965;
+}
+
+#disconnectBtn {
+    background: #e04444;
+}
+
+#sendBtn {
+    background: #5865f2;
+}
+
+button:disabled {
+    opacity: 0.4;
+}
+
+.status {
+    background: #181b21;
+    border: 1px solid #2b2f38;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 18px;
+}
+
+.status-title {
+    color: #999fa9;
+    font-size: 13px;
+    margin-bottom: 7px;
 }
 
 #status {
-    margin-top: 15px;
-    padding: 15px;
-    background: #181a20;
-    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-#services {
-    margin-top: 15px;
+.device {
+    color: #8e949f;
+    margin-top: 6px;
 }
 
-.service {
-    margin: 10px 0;
-    padding: 15px;
-    background: #181a20;
-    border: 1px solid #30333b;
-    border-radius: 12px;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(150px, 1fr)
+    );
+    gap: 12px;
 }
 
-.uuid {
-    word-break: break-all;
-    color: #66aaff;
-    font-family: monospace;
+.card {
+    background: #181b21;
+    border: 1px solid #2b2f38;
+    border-radius: 14px;
+    padding: 18px;
 }
 
-.characteristic {
-    margin-top: 10px;
-    padding: 10px;
-    background: #0d0e11;
-    border-radius: 8px;
+.card-title {
+    color: #9298a3;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
-.props {
-    color: #aaa;
+.value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.unit {
+    color: #858b96;
     font-size: 13px;
-    margin-top: 5px;
+}
+
+.section {
+    margin-top: 22px;
+}
+
+.section h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.ab-card {
+    background: #181b21;
+    border: 1px solid #2b2f38;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+}
+
+.ab-title {
+    color: #9298a3;
+}
+
+.ab-value {
+    margin-top: 8px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.command {
+    display: flex;
+    gap: 10px;
+}
+
+.command input {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #333844;
+    background: #0b0d10;
+    color: white;
+    border-radius: 10px;
+    padding: 13px;
+    outline: none;
+}
+
+.graph {
+    background: #181b21;
+    border: 1px solid #2b2f38;
+    border-radius: 14px;
+    padding: 10px;
+}
+
+canvas {
+    width: 100%;
+    height: 250px;
+    display: block;
+}
+
+.log {
+    background: #08090b;
+    border: 1px solid #2b2f38;
+    border-radius: 14px;
+    padding: 12px;
+    height: 250px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+}
+
+.log-line {
+    margin-bottom: 5px;
+}
+
+.info {
+    color: #66aaff;
+}
+
+.success {
+    color: #35d07f;
 }
 
 .error {
     color: #ff5555;
 }
 
-.success {
-    color: #2ecc71;
+.warning {
+    color: #ffd24a;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #626873;
+    font-size: 12px;
+}
+
+@media (max-width: 500px) {
+
+    .container {
+        padding: 14px;
+    }
+
+    header h1 {
+        font-size: 21px;
+    }
+
+    .value {
+        font-size: 24px;
+    }
+
+    .command {
+        flex-direction: column;
+    }
+
+    #sendBtn {
+        width: 100%;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<h1>📡 micro:bit GATT Scanner</h1>
+<header>
+    <h1>📡 micro:bit BLE Dashboard</h1>
+    <p>Nordic UART Service</p>
+</header>
 
-<button id="scan">
-Bluetooth 기기 검색
-</button>
+<div class="container">
 
-<div id="status">
-대기 중...
+    <div class="controls">
+
+        <button id="connectBtn">
+            🔵 micro:bit 연결
+        </button>
+
+        <button id="disconnectBtn" disabled>
+            🔴 연결 해제
+        </button>
+
+    </div>
+
+    <div class="status">
+
+        <div class="status-title">
+            Bluetooth 상태
+        </div>
+
+        <div id="status">
+            연결되지 않음
+        </div>
+
+        <div class="device" id="deviceName">
+            기기 없음
+        </div>
+
+    </div>
+
+
+    <!-- 센서 -->
+
+    <div class="grid">
+
+        <div class="card">
+
+            <div class="card-title">
+                🌡️ 온도
+            </div>
+
+            <div class="value">
+                <span id="temperature">--</span>
+                <span class="unit">°C</span>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                💡 밝기
+            </div>
+
+            <div class="value">
+                <span id="light">--</span>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                🎤 소리
+            </div>
+
+            <div class="value">
+                <span id="sound">--</span>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                📦 패킷
+            </div>
+
+            <div class="value">
+                <span id="packets">0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 가속도 -->
+
+    <div class="section">
+
+        <h2>📐 가속도</h2>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <div class="card-title">
+                    X
+                </div>
+
+                <div class="value">
+                    <span id="x">--</span>
+                    <span class="unit">mg</span>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    Y
+                </div>
+
+                <div class="value">
+                    <span id="y">--</span>
+                    <span class="unit">mg</span>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    Z
+                </div>
+
+                <div class="value">
+                    <span id="z">--</span>
+                    <span class="unit">mg</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 버튼 -->
+
+    <div class="section">
+
+        <h2>🎮 micro:bit 버튼</h2>
+
+        <div class="button-grid">
+
+            <div class="ab-card">
+
+                <div class="ab-title">
+                    BUTTON A
+                </div>
+
+                <div
+                    id="buttonA"
+                    class="ab-value"
+                >
+                    OFF
+                </div>
+
+            </div>
+
+
+            <div class="ab-card">
+
+                <div class="ab-title">
+                    BUTTON B
+                </div>
+
+                <div
+                    id="buttonB"
+                    class="ab-value"
+                >
+                    OFF
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 그래프 -->
+
+    <div class="section">
+
+        <h2>📈 센서 그래프</h2>
+
+        <div class="graph">
+
+            <canvas id="graph"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- 명령 -->
+
+    <div class="section">
+
+        <h2>📤 micro:bit로 보내기</h2>
+
+        <div class="command">
+
+            <input
+                id="commandInput"
+                placeholder="예: HELLO"
+                autocomplete="off"
+            >
+
+            <button
+                id="sendBtn"
+                disabled
+            >
+                보내기
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- 로그 -->
+
+    <div class="section">
+
+        <h2>📜 BLE 통신 로그</h2>
+
+        <div
+            id="log"
+            class="log"
+        ></div>
+
+    </div>
+
 </div>
 
-<div id="services"></div>
+<footer>
+    micro:bit V2 • BLE • Nordic UART Service
+</footer>
+
 
 <script>
 
+/*
+========================================
+실제 확인된 UUID
+========================================
+*/
+
+const UART_SERVICE_UUID =
+    "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+/*
+micro:bit → S25
+
+실제 속성:
+INDICATE
+*/
+
+const MICROBIT_TO_PHONE_UUID =
+    "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+/*
+S25 → micro:bit
+
+실제 속성:
+WRITE
+WRITE WITHOUT RESPONSE
+*/
+
+const PHONE_TO_MICROBIT_UUID =
+    "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+
+/*
+========================================
+BLE 변수
+========================================
+*/
+
+let device = null;
+let server = null;
+let service = null;
+
+let phoneToMicrobit = null;
+let microbitToPhone = null;
+
+let connected = false;
+
+let packetCount = 0;
+
+let receiveBuffer = "";
+
+
+/*
+========================================
+HTML
+========================================
+*/
+
+const connectBtn =
+    document.getElementById(
+        "connectBtn"
+    );
+
+const disconnectBtn =
+    document.getElementById(
+        "disconnectBtn"
+    );
+
+const sendBtn =
+    document.getElementById(
+        "sendBtn"
+    );
+
+const commandInput =
+    document.getElementById(
+        "commandInput"
+    );
+
 const statusElement =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
 
-const servicesElement =
-    document.getElementById("services");
+const deviceNameElement =
+    document.getElementById(
+        "deviceName"
+    );
 
-function status(text, className = "") {
+const logElement =
+    document.getElementById(
+        "log"
+    );
 
-    statusElement.className = className;
+const temperatureElement =
+    document.getElementById(
+        "temperature"
+    );
 
-    statusElement.innerHTML =
-        text;
+const lightElement =
+    document.getElementById(
+        "light"
+    );
+
+const soundElement =
+    document.getElementById(
+        "sound"
+    );
+
+const xElement =
+    document.getElementById(
+        "x"
+    );
+
+const yElement =
+    document.getElementById(
+        "y"
+    );
+
+const zElement =
+    document.getElementById(
+        "z"
+    );
+
+const buttonAElement =
+    document.getElementById(
+        "buttonA"
+    );
+
+const buttonBElement =
+    document.getElementById(
+        "buttonB"
+    );
+
+const packetsElement =
+    document.getElementById(
+        "packets"
+    );
+
+
+/*
+========================================
+로그
+========================================
+*/
+
+function log(
+    message,
+    type = "info"
+) {
+
+    const line =
+        document.createElement(
+            "div"
+        );
+
+    line.className =
+        "log-line " + type;
+
+    const time =
+        new Date()
+        .toLocaleTimeString();
+
+    line.textContent =
+        "[" +
+        time +
+        "] " +
+        message;
+
+    logElement.appendChild(
+        line
+    );
+
+    logElement.scrollTop =
+        logElement.scrollHeight;
 
 }
 
-document
-.getElementById("scan")
-.addEventListener("click", async () => {
 
-    servicesElement.innerHTML = "";
+/*
+========================================
+상태
+========================================
+*/
+
+function setStatus(
+    text,
+    type = ""
+) {
+
+    statusElement.textContent =
+        text;
+
+    statusElement.className =
+        type;
+
+}
+
+
+/*
+========================================
+연결 버튼
+========================================
+*/
+
+connectBtn.addEventListener(
+    "click",
+    connect
+);
+
+
+async function connect() {
 
     try {
 
-        status(
-            "🔍 Bluetooth 기기 검색 중..."
+        if (
+            !navigator.bluetooth
+        ) {
+
+            alert(
+                "이 브라우저는 Web Bluetooth를 지원하지 않습니다."
+            );
+
+            return;
+        }
+
+
+        log(
+            "Bluetooth 기기 검색 시작...",
+            "info"
         );
 
-        const device =
-            await navigator.bluetooth.requestDevice({
-                acceptAllDevices: true
-            });
-
-        status(
-            "선택됨: " +
-            (device.name || "이름 없음")
+        setStatus(
+            "🔍 기기 검색 중...",
+            "warning"
         );
 
-        console.log("Device:", device);
-
-        status(
-            "🔌 GATT 연결 중..."
-        );
-
-        const server =
-            await device.gatt.connect();
-
-        status(
-            "✅ GATT 연결 성공<br>" +
-            "서비스 검색 중..."
-        );
 
         /*
-        모든 Primary Service 검색
+        모든 BLE 장치를 검색
         */
 
-        const services =
-            await server.getPrimaryServices();
+        device =
+            await navigator.bluetooth.requestDevice({
 
-        status(
-            "✅ 서비스 검색 완료<br>" +
-            "총 " +
-            services.length +
-            "개"
+                acceptAllDevices: true,
+
+                optionalServices: [
+                    UART_SERVICE_UUID
+                ]
+
+            });
+
+
+        log(
+            "선택된 기기: " +
+            (
+                device.name ||
+                "이름 없음"
+            ),
+            "success"
         );
 
-        for (const service of services) {
 
-            const serviceBox =
-                document.createElement("div");
+        deviceNameElement.textContent =
+            device.name ||
+            "micro:bit";
 
-            serviceBox.className =
-                "service";
 
-            serviceBox.innerHTML =
-                "<b>Service</b><br>" +
-                "<div class='uuid'>" +
-                service.uuid +
-                "</div>";
+        device.addEventListener(
+            "gattserverdisconnected",
+            disconnected
+        );
 
-            servicesElement.appendChild(
-                serviceBox
+
+        /*
+        GATT
+        */
+
+        setStatus(
+            "🔌 GATT 연결 중...",
+            "warning"
+        );
+
+        log(
+            "GATT 연결...",
+            "info"
+        );
+
+
+        server =
+            await device.gatt.connect();
+
+
+        log(
+            "✅ GATT 연결 성공",
+            "success"
+        );
+
+
+        /*
+        Service
+        */
+
+        log(
+            "UART Service 검색...",
+            "info"
+        );
+
+
+        service =
+            await server.getPrimaryService(
+                UART_SERVICE_UUID
+            );
+
+
+        log(
+            "✅ UART Service 발견",
+            "success"
+        );
+
+
+        /*
+        micro:bit → S25
+        */
+
+        log(
+            "6e400002 Characteristic 검색...",
+            "info"
+        );
+
+
+        microbitToPhone =
+            await service.getCharacteristic(
+                MICROBIT_TO_PHONE_UUID
+            );
+
+
+        log(
+            "✅ 6e400002 발견",
+            "success"
+        );
+
+
+        /*
+        S25 → micro:bit
+        */
+
+        log(
+            "6e400003 Characteristic 검색...",
+            "info"
+        );
+
+
+        phoneToMicrobit =
+            await service.getCharacteristic(
+                PHONE_TO_MICROBIT_UUID
+            );
+
+
+        log(
+            "✅ 6e400003 발견",
+            "success"
+        );
+
+
+        /*
+        ====================================
+        INDICATE 시작
+        ====================================
+        */
+
+        log(
+            "6e400002 INDICATE 시작...",
+            "info"
+        );
+
+
+        try {
+
+            await microbitToPhone
+                .startNotifications();
+
+            log(
+                "✅ INDICATE 활성화 성공",
+                "success"
+            );
+
+        } catch (error) {
+
+            log(
+                "⚠️ INDICATE 활성화 실패: " +
+                error.name +
+                ": " +
+                error.message,
+                "error"
             );
 
             /*
-            Characteristic 검색
+            여기서 종료하지 않는다.
             */
 
-            try {
-
-                const characteristics =
-                    await service.getCharacteristics();
-
-                for (
-                    const characteristic
-                    of characteristics
-                ) {
-
-                    const charBox =
-                        document.createElement("div");
-
-                    charBox.className =
-                        "characteristic";
-
-                    const properties =
-                        [];
-
-                    if (
-                        characteristic.properties
-                        .read
-                    ) {
-                        properties.push("READ");
-                    }
-
-                    if (
-                        characteristic.properties
-                       .write
-                    ) {
-                        properties.push("WRITE");
-                    }
-
-                    if (
-                        characteristic.properties
-                       .writeWithoutResponse
-                    ) {
-                        properties.push(
-                            "WRITE_NO_RESPONSE"
-                        );
-                    }
-
-                    if (
-                        characteristic.properties
-                       .notify
-                    ) {
-                        properties.push("NOTIFY");
-                    }
-
-                    if (
-                        characteristic.properties
-                       .indicate
-                    ) {
-                        properties.push("INDICATE");
-                    }
-
-                    charBox.innerHTML =
-                        "<b>Characteristic</b><br>" +
-                        "<div class='uuid'>" +
-                        characteristic.uuid +
-                        "</div>" +
-                        "<div class='props'>" +
-                        properties.join(", ") +
-                        "</div>";
-
-                    serviceBox.appendChild(
-                        charBox
-                    );
-
-                }
-
-            } catch (error) {
-
-                const errorBox =
-                    document.createElement("div");
-
-                errorBox.className =
-                    "error";
-
-                errorBox.textContent =
-                    "Characteristic 검색 실패: " +
-                    error.message;
-
-                serviceBox.appendChild(
-                    errorBox
-                );
-
-            }
-
         }
+
+
+        /*
+        데이터 수신
+        */
+
+        microbitToPhone
+            .addEventListener(
+                "characteristicvaluechanged",
+                receiveData
+            );
+
+
+        connected = true;
+
+        connectBtn.disabled =
+            true;
+
+        disconnectBtn.disabled =
+            false;
+
+        sendBtn.disabled =
+            false;
+
+
+        setStatus(
+            "🟢 연결됨",
+            "success"
+        );
+
+
+        log(
+            "🎉 micro:bit 연결 완료!",
+            "success"
+        );
+
 
     } catch (error) {
 
         console.error(error);
 
-        status(
+        log(
             "❌ " +
+            error.name +
+            ": " +
+            error.message,
+            "error"
+        );
+
+        setStatus(
+            "❌ 연결 실패",
+            "error"
+        );
+
+    }
+
+}
+
+
+/*
+========================================
+수신
+========================================
+*/
+
+function receiveData(event) {
+
+    const value =
+        event.target.value;
+
+
+    const decoder =
+        new TextDecoder(
+            "utf-8"
+        );
+
+
+    const text =
+        decoder.decode(
+            value
+        );
+
+
+    log(
+        "← " +
+        text.replace(
+            /\r?\n/g,
+            "\\n"
+        ),
+        "info"
+    );
+
+
+    receiveBuffer +=
+        text;
+
+
+    const lines =
+        receiveBuffer.split(
+            "\n"
+        );
+
+
+    receiveBuffer =
+        lines.pop();
+
+
+    for (
+        const line of lines
+    ) {
+
+        const clean =
+            line.trim();
+
+
+        if (
+            clean.length === 0
+        ) {
+            continue;
+        }
+
+
+        processData(
+            clean
+        );
+
+    }
+
+}
+
+
+/*
+========================================
+센서 데이터
+========================================
+
+DATA,TEMP,LIGHT,SOUND,X,Y,Z,A,B
+*/
+
+function processData(
+    data
+) {
+
+    if (
+        !data.startsWith(
+            "DATA,"
+        )
+    ) {
+
+        log(
+            "일반 데이터: " +
+            data,
+            "warning"
+        );
+
+        return;
+    }
+
+
+    const parts =
+        data.split(",");
+
+
+    if (
+        parts.length < 9
+    ) {
+
+        log(
+            "DATA 형식 오류: " +
+            data,
+            "error"
+        );
+
+        return;
+    }
+
+
+    const temperature =
+        Number(parts[1]);
+
+    const light =
+        Number(parts[2]);
+
+    const sound =
+        Number(parts[3]);
+
+    const x =
+        Number(parts[4]);
+
+    const y =
+        Number(parts[5]);
+
+    const z =
+        Number(parts[6]);
+
+    const a =
+        Number(parts[7]);
+
+    const b =
+        Number(parts[8]);
+
+
+    temperatureElement.textContent =
+        temperature;
+
+    lightElement.textContent =
+        light;
+
+    soundElement.textContent =
+        sound;
+
+    xElement.textContent =
+        x;
+
+    yElement.textContent =
+        y;
+
+    zElement.textContent =
+        z;
+
+
+    buttonAElement.textContent =
+        a ? "ON" : "OFF";
+
+    buttonBElement.textContent =
+        b ? "ON" : "OFF";
+
+
+    packetCount++;
+
+    packetsElement.textContent =
+        packetCount;
+
+
+    addGraphData(
+        temperature,
+        sound,
+        light
+    );
+
+}
+
+
+/*
+========================================
+명령 전송
+========================================
+*/
+
+sendBtn.addEventListener(
+    "click",
+    sendCommand
+);
+
+
+commandInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            sendCommand();
+
+        }
+
+    }
+);
+
+
+async function sendCommand() {
+
+    if (
+        !connected ||
+        !phoneToMicrobit
+    ) {
+
+        log(
+            "❌ micro:bit가 연결되지 않았습니다.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const command =
+        commandInput.value.trim();
+
+
+    if (
+        !command
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const encoder =
+            new TextEncoder();
+
+
+        const data =
+            encoder.encode(
+                command + "\n"
+            );
+
+
+        if (
+            phoneToMicrobit
+                .writeValueWithoutResponse
+        ) {
+
+            await phoneToMicrobit
+                .writeValueWithoutResponse(
+                    data
+                );
+
+        } else {
+
+            await phoneToMicrobit
+                .writeValue(
+                    data
+                );
+
+        }
+
+
+        log(
+            "→ " +
+            command,
+            "success"
+        );
+
+
+        commandInput.value =
+            "";
+
+
+    } catch (error) {
+
+        log(
+            "❌ 전송 실패: " +
             error.name +
             ": " +
             error.message,
@@ -287,64 +1269,358 @@ document
 
     }
 
-});
+}
 
-</script>
 
-</body>
-</html>
-        const rx =
-            await service.getCharacteristic(
-                RX_UUID
-            );
+/*
+========================================
+연결 해제
+========================================
+*/
 
-        log("✅ RX 발견");
+disconnectBtn.addEventListener(
+    "click",
+    () => {
 
-        const tx =
-            await service.getCharacteristic(
-                TX_UUID
-            );
+        if (
+            device &&
+            device.gatt &&
+            device.gatt.connected
+        ) {
 
-        log("✅ TX 발견");
+            device.gatt.disconnect();
 
-        await tx.startNotifications();
+        }
 
-        tx.addEventListener(
-            "characteristicvaluechanged",
-            event => {
+    }
+);
 
-                const decoder =
-                    new TextDecoder();
 
-                const text =
-                    decoder.decode(
-                        event.target.value
-                    );
+function disconnected() {
 
-                log(
-                    "📥 " + text
-                );
-            }
-        );
+    connected = false;
 
-        log(
-            "🎉 micro:bit UART 연결 완료!"
-        );
+    connectBtn.disabled =
+        false;
 
-    } catch (error) {
+    disconnectBtn.disabled =
+        true;
 
-        log(
-            "❌ " +
-            error.name +
-            ": " +
-            error.message
-        );
+    sendBtn.disabled =
+        true;
 
-        console.error(error);
+    setStatus(
+        "🔴 연결 끊김",
+        "error"
+    );
+
+    log(
+        "micro:bit 연결 해제",
+        "warning"
+    );
+
+}
+
+
+/*
+========================================
+그래프
+========================================
+*/
+
+const canvas =
+    document.getElementById(
+        "graph"
+    );
+
+const ctx =
+    canvas.getContext(
+        "2d"
+    );
+
+
+let temperatureData = [];
+let soundData = [];
+let lightData = [];
+
+
+const MAX_POINTS = 80;
+
+
+function addGraphData(
+    temperature,
+    sound,
+    light
+) {
+
+    temperatureData.push(
+        temperature
+    );
+
+    soundData.push(
+        sound
+    );
+
+    lightData.push(
+        light
+    );
+
+
+    if (
+        temperatureData.length >
+        MAX_POINTS
+    ) {
+
+        temperatureData.shift();
+        soundData.shift();
+        lightData.shift();
 
     }
 
-});
+
+    drawGraph();
+
+}
+
+
+function resizeCanvas() {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    const ratio =
+        window.devicePixelRatio ||
+        1;
+
+
+    canvas.width =
+        rect.width * ratio;
+
+    canvas.height =
+        rect.height * ratio;
+
+
+    ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+
+
+    drawGraph();
+
+}
+
+
+function drawGraph() {
+
+    const width =
+        canvas.clientWidth;
+
+    const height =
+        canvas.clientHeight;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /*
+    Grid
+    */
+
+    ctx.strokeStyle =
+        "#292d35";
+
+    ctx.lineWidth =
+        1;
+
+
+    for (
+        let i = 0;
+        i <= 5;
+        i++
+    ) {
+
+        const y =
+            height *
+            i /
+            5;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            y
+        );
+
+        ctx.lineTo(
+            width,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    drawLine(
+        temperatureData,
+        height,
+        50
+    );
+
+    drawLine(
+        soundData,
+        height,
+        255
+    );
+
+    drawLine(
+        lightData,
+        height,
+        255
+    );
+
+}
+
+
+function drawLine(
+    data,
+    height,
+    max
+) {
+
+    if (
+        data.length < 2
+    ) {
+
+        return;
+
+    }
+
+
+    ctx.beginPath();
+
+    ctx.strokeStyle =
+        "#ffffff";
+
+    ctx.lineWidth =
+        2;
+
+
+    for (
+        let i = 0;
+        i < data.length;
+        i++
+    ) {
+
+        const x =
+            i /
+            (MAX_POINTS - 1) *
+            canvas.clientWidth;
+
+
+        let value =
+            Number(
+                data[i]
+            );
+
+
+        if (
+            value < 0
+        ) {
+
+            value = 0;
+
+        }
+
+
+        if (
+            value > max
+        ) {
+
+            value = max;
+
+        }
+
+
+        const y =
+            height -
+            value /
+            max *
+            height;
+
+
+        if (
+            i === 0
+        ) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+resizeCanvas();
+
+
+/*
+========================================
+시작 로그
+========================================
+*/
+
+log(
+    "Dashboard 준비 완료",
+    "success"
+);
+
+log(
+    "Service: 6e400001...",
+    "info"
+);
+
+log(
+    "micro:bit → S25: 6e400002... INDICATE",
+    "info"
+);
+
+log(
+    "S25 → micro:bit: 6e400003... WRITE",
+    "info"
+);
 
 </script>
 
