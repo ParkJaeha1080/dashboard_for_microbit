@@ -56,11 +56,9 @@ button {
     border: 0;
     color: inherit;
     cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
 }
-
-/* =====================================================
-   APP
-===================================================== */
 
 .app {
     display: flex;
@@ -68,20 +66,13 @@ button {
     height: 100dvh;
 }
 
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
 .sidebar {
     width: 260px;
     flex-shrink: 0;
-
     background: #090b10;
     border-right: 1px solid var(--border);
-
     display: flex;
     flex-direction: column;
-
     padding: 14px;
 }
 
@@ -89,9 +80,7 @@ button {
     display: flex;
     align-items: center;
     gap: 10px;
-
     padding: 12px 10px 20px;
-
     font-weight: 800;
     font-size: 17px;
 }
@@ -99,29 +88,21 @@ button {
 .logo-icon {
     width: 34px;
     height: 34px;
-
     display: grid;
     place-items: center;
-
     background: var(--accent);
-
     border-radius: 10px;
 }
 
 .sidebar-btn {
     width: 100%;
-
     text-align: left;
-
     padding: 13px;
-
     margin-bottom: 5px;
-
     background: transparent;
-
     border-radius: 9px;
-
     color: #c8ced9;
+    touch-action: manipulation;
 }
 
 .sidebar-btn:hover {
@@ -140,28 +121,19 @@ button {
 
 .connection-status {
     margin-top: 10px;
-
     padding: 12px;
-
     border: 1px solid var(--border);
-
     border-radius: 10px;
-
     font-size: 13px;
-
     color: var(--muted);
 }
 
 .status-dot {
     display: inline-block;
-
     width: 8px;
     height: 8px;
-
     border-radius: 50%;
-
     background: var(--danger);
-
     margin-right: 6px;
 }
 
@@ -169,40 +141,23 @@ button {
     background: var(--success);
 }
 
-/* =====================================================
-   MAIN
-===================================================== */
-
 .main {
     flex: 1;
-
     min-width: 0;
-
     display: flex;
     flex-direction: column;
-
     position: relative;
 }
 
-/* =====================================================
-   TOPBAR
-===================================================== */
-
 .topbar {
     height: 58px;
-
     flex-shrink: 0;
-
     border-bottom: 1px solid var(--border);
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 0 18px;
-
     z-index: 10;
-
     background: var(--bg);
 }
 
@@ -217,31 +172,21 @@ button {
 
 .small-btn {
     padding: 8px 12px;
-
     border-radius: 8px;
-
     background: var(--panel2);
-
     border: 1px solid var(--border);
+    touch-action: manipulation;
 }
 
 .small-btn:hover {
     background: #222733;
 }
 
-/* =====================================================
-   PANELS
-===================================================== */
-
 .panel {
     display: none;
-
     flex: 1;
-
     min-height: 0;
-
     overflow-y: auto;
-
     padding: 22px;
 }
 
@@ -249,21 +194,12 @@ button {
     display: block;
 }
 
-/* =====================================================
-   CHAT
-===================================================== */
-
 .chat {
     display: none;
-
     flex: 1;
-
     min-height: 0;
-
     overflow-y: auto;
-
     padding: 24px;
-
     padding-bottom: 110px;
 }
 
@@ -273,27 +209,19 @@ button {
 
 .message {
     max-width: 850px;
-
     margin: 0 auto 18px;
-
     display: flex;
-
     gap: 12px;
-
     align-items: flex-start;
 }
 
 .avatar {
     width: 36px;
     height: 36px;
-
     min-width: 36px;
-
     display: grid;
     place-items: center;
-
     border-radius: 10px;
-
     background: var(--accent);
 }
 
@@ -307,37 +235,25 @@ button {
 
 .message-content {
     max-width: min(75%, 650px);
-
     min-width: 0;
 }
 
 .message-name {
     font-size: 12px;
-
     color: var(--muted);
-
     margin-bottom: 5px;
 }
 
 .message-text {
     display: inline-block;
-
     font-size: 15px;
-
     line-height: 1.6;
-
     white-space: pre-wrap;
-
     word-break: break-word;
-
     background: #181c24;
-
     border: 1px solid var(--border);
-
     border-radius: 14px;
-
     padding: 11px 14px;
-
     color: var(--text);
 }
 
@@ -347,37 +263,25 @@ button {
 
 .message.user .message-text {
     background: var(--accent);
-
     border-color: var(--accent);
-
     text-align: left;
 }
 
-/* =====================================================
-   CHAT INPUT
-===================================================== */
-
 .input-area {
     position: fixed;
-
     left: 260px;
     right: 0;
-
     bottom: 0;
-
     padding:
         15px
         20px
         calc(15px + env(safe-area-inset-bottom));
-
     background:
         linear-gradient(
             transparent,
             rgba(11,13,18,.97) 30%
         );
-
     z-index: 20;
-
     display: none;
 }
 
@@ -387,35 +291,22 @@ body.chat-mode .input-area {
 
 .input-box {
     max-width: 850px;
-
     margin: 0 auto;
-
     display: flex;
-
     gap: 8px;
-
     background: #151922;
-
     border: 1px solid var(--border);
-
     border-radius: 15px;
-
     padding: 8px;
 }
 
 .chat-input {
     flex: 1;
-
     min-width: 0;
-
     background: transparent;
-
     border: 0;
-
     outline: none;
-
     color: white;
-
     padding: 9px;
 }
 
@@ -426,58 +317,43 @@ body.chat-mode .input-area {
 .send-btn {
     width: 42px;
     height: 42px;
-
     border-radius: 10px;
-
     background: var(--accent);
+    touch-action: manipulation;
 }
 
 .send-btn:hover {
     background: var(--accent2);
 }
 
-/* =====================================================
-   CARD
-===================================================== */
-
 .panel-title {
     font-size: 22px;
-
     font-weight: 800;
-
     margin-bottom: 18px;
 }
 
 .card {
     background: var(--panel);
-
     border: 1px solid var(--border);
-
     border-radius: 14px;
-
     padding: 16px;
-
     margin-bottom: 14px;
 }
 
 .card-title {
     font-weight: 700;
-
     margin-bottom: 10px;
 }
 
 .big-button {
     width: 100%;
-
     padding: 14px;
-
     border-radius: 10px;
-
     background: var(--accent);
-
     margin-top: 8px;
-
     touch-action: manipulation;
+    position: relative;
+    z-index: 1;
 }
 
 .big-button:hover {
@@ -486,7 +362,6 @@ body.chat-mode .input-area {
 
 .big-button.secondary {
     background: var(--panel2);
-
     border: 1px solid var(--border);
 }
 
@@ -494,63 +369,39 @@ body.chat-mode .input-area {
     background: var(--danger);
 }
 
-/* =====================================================
-   SENSOR
-===================================================== */
-
 .sensor-grid {
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
-
     gap: 10px;
 }
 
 .sensor {
     background: var(--panel2);
-
     border: 1px solid var(--border);
-
     border-radius: 12px;
-
     padding: 15px;
 }
 
 .sensor-label {
     color: var(--muted);
-
     font-size: 13px;
 }
 
 .sensor-value {
     margin-top: 7px;
-
     font-size: 24px;
-
     font-weight: 800;
 }
 
-/* =====================================================
-   COMMAND
-===================================================== */
-
 .command-item {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     gap: 10px;
-
     background: var(--panel2);
-
     border: 1px solid var(--border);
-
     border-radius: 10px;
-
     padding: 12px;
-
     margin-bottom: 8px;
 }
 
@@ -564,64 +415,42 @@ body.chat-mode .input-area {
 
 .command-trigger {
     color: var(--muted);
-
     font-size: 12px;
-
     margin-top: 3px;
-
     word-break: break-word;
 }
 
 .delete-btn {
     flex-shrink: 0;
-
     background: #352027;
-
     color: #ff8798;
-
     border-radius: 8px;
-
     padding: 8px 10px;
+    touch-action: manipulation;
 }
-
-/* =====================================================
-   LED DRAW
-===================================================== */
 
 .led-editor {
     display: flex;
-
     justify-content: center;
-
     padding: 15px 0;
 }
 
 .led-grid {
     display: grid;
-
     grid-template-columns: repeat(5, 52px);
-
     grid-template-rows: repeat(5, 52px);
-
     gap: 7px;
-
     touch-action: manipulation;
 }
 
 .led-cell {
     width: 52px;
     height: 52px;
-
     border-radius: 9px;
-
     background: #20242c;
-
     border: 2px solid #343a46;
-
     transition: .1s;
-
     padding: 0;
-
     touch-action: manipulation;
 }
 
@@ -631,9 +460,7 @@ body.chat-mode .input-area {
 
 .led-cell.on {
     background: white;
-
     border-color: white;
-
     box-shadow:
         0 0 12px rgba(255,255,255,.8),
         0 0 25px rgba(255,255,255,.35);
@@ -641,29 +468,25 @@ body.chat-mode .input-area {
 
 .led-tools {
     display: flex;
-
     gap: 8px;
-
     margin-top: 10px;
+    position: relative;
+    z-index: 2;
 }
 
 .led-tools button {
     flex: 1;
-
     padding: 11px;
-
     border-radius: 9px;
-
     background: var(--panel2);
-
     border: 1px solid var(--border);
-
     touch-action: manipulation;
+    position: relative;
+    z-index: 3;
 }
 
 .led-tools button.primary {
     background: var(--accent);
-
     color: white;
 }
 
@@ -673,69 +496,37 @@ body.chat-mode .input-area {
 
 .led-preview-code {
     margin-top: 12px;
-
     font-family: monospace;
-
     background: #090b10;
-
     border: 1px solid var(--border);
-
     padding: 10px;
-
     border-radius: 8px;
-
     color: #aeb6c5;
-
     font-size: 12px;
-
     white-space: pre-wrap;
-
     word-break: break-all;
 }
 
-/* =====================================================
-   LOG
-===================================================== */
-
 .log {
     font-family: monospace;
-
     font-size: 12px;
-
     background: #07090d;
-
     border: 1px solid var(--border);
-
     border-radius: 10px;
-
     padding: 12px;
-
     min-height: 300px;
-
     white-space: pre-wrap;
-
     overflow-y: auto;
 }
 
-/* =====================================================
-   MODAL
-===================================================== */
-
 .modal {
     position: fixed;
-
     inset: 0;
-
     background: rgba(0,0,0,.65);
-
     display: none;
-
     align-items: center;
-
     justify-content: center;
-
     z-index: 100;
-
     padding: 18px;
 }
 
@@ -745,89 +536,58 @@ body.chat-mode .input-area {
 
 .modal-box {
     width: min(500px, 100%);
-
     max-height: 90dvh;
-
     overflow-y: auto;
-
     background: #11141b;
-
     border: 1px solid var(--border);
-
     border-radius: 16px;
-
     padding: 18px;
 }
 
 .modal-title {
     font-size: 20px;
-
     font-weight: 800;
-
     margin-bottom: 15px;
 }
 
 .form-label {
     display: block;
-
     margin: 12px 0 6px;
-
     color: var(--muted);
-
     font-size: 13px;
 }
 
 .form-input {
     width: 100%;
-
     background: #0b0d12;
-
     color: white;
-
     border: 1px solid var(--border);
-
     border-radius: 9px;
-
     padding: 11px;
-
     outline: none;
 }
 
 .modal-actions {
     display: flex;
-
     gap: 8px;
-
     margin-top: 16px;
 }
 
 .modal-actions button {
     flex: 1;
-
     padding: 12px;
-
     border-radius: 9px;
-
     background: var(--accent);
 }
 
 .modal-actions .cancel {
     background: var(--panel2);
-
     border: 1px solid var(--border);
 }
-
-/* =====================================================
-   MOBILE NAV
-===================================================== */
 
 .mobile-nav {
     display: none;
 }
-
-/* =====================================================
-   MOBILE
-===================================================== */
 
 @media (max-width: 700px) {
 
@@ -837,13 +597,11 @@ body.chat-mode .input-area {
 
     .topbar {
         height: 55px;
-
         padding: 0 12px;
     }
 
     .chat {
         padding: 15px;
-
         padding-bottom: 120px;
     }
 
@@ -853,15 +611,12 @@ body.chat-mode .input-area {
 
     .message-text {
         font-size: 14px;
-
         padding: 10px 12px;
     }
 
     .input-area {
         left: 0;
-
         bottom: 58px;
-
         padding: 8px 10px;
     }
 
@@ -871,38 +626,27 @@ body.chat-mode .input-area {
 
     .mobile-nav {
         display: flex;
-
         position: fixed;
-
         left: 0;
         right: 0;
         bottom: 0;
-
         height:
             calc(
                 58px +
                 env(safe-area-inset-bottom)
             );
-
         padding-bottom:
             env(safe-area-inset-bottom);
-
         background: #090b10;
-
         border-top: 1px solid var(--border);
-
         z-index: 50;
     }
 
     .mobile-nav button {
         flex: 1;
-
         background: transparent;
-
         color: var(--muted);
-
         font-size: 11px;
-
         touch-action: manipulation;
     }
 
@@ -912,15 +656,12 @@ body.chat-mode .input-area {
 
     .mobile-nav-icon {
         display: block;
-
         font-size: 19px;
-
         margin-bottom: 2px;
     }
 
     .panel {
         padding: 15px;
-
         padding-bottom: 80px;
     }
 
@@ -930,9 +671,7 @@ body.chat-mode .input-area {
 
     .led-grid {
         grid-template-columns: repeat(5, 46px);
-
         grid-template-rows: repeat(5, 46px);
-
         gap: 6px;
     }
 
@@ -958,10 +697,6 @@ body.chat-mode .input-area {
 
 <div class="app">
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
 <aside class="sidebar">
 
     <div class="logo">
@@ -976,14 +711,12 @@ body.chat-mode .input-area {
 
     </div>
 
-
     <button
         class="sidebar-btn active"
         onclick="showPanel('chat')"
     >
         💬 채팅
     </button>
-
 
     <button
         class="sidebar-btn"
@@ -992,14 +725,12 @@ body.chat-mode .input-area {
         📡 연결
     </button>
 
-
     <button
         class="sidebar-btn"
         onclick="showPanel('led')"
     >
         🎨 LED 그리기
     </button>
-
 
     <button
         class="sidebar-btn"
@@ -1008,7 +739,6 @@ body.chat-mode .input-area {
         📊 센서
     </button>
 
-
     <button
         class="sidebar-btn"
         onclick="showPanel('commands')"
@@ -1016,14 +746,12 @@ body.chat-mode .input-area {
         ⚙️ 명령 관리
     </button>
 
-
     <button
         class="sidebar-btn"
         onclick="showPanel('log')"
     >
         📜 BLE 로그
     </button>
-
 
     <div class="sidebar-bottom">
 
@@ -1033,7 +761,6 @@ body.chat-mode .input-area {
         >
             🔄 새 채팅
         </button>
-
 
         <div class="connection-status">
 
@@ -1052,11 +779,6 @@ body.chat-mode .input-area {
 
 </aside>
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main class="main">
 
 <header class="topbar">
@@ -1068,10 +790,10 @@ body.chat-mode .input-area {
         💬 micro:bit AI
     </div>
 
-
     <div class="top-actions">
 
         <button
+            type="button"
             class="small-btn"
             onclick="connectBluetooth()"
         >
@@ -1081,11 +803,6 @@ body.chat-mode .input-area {
     </div>
 
 </header>
-
-
-<!-- =====================================================
-     CHAT
-===================================================== -->
 
 <section
     id="panel-chat"
@@ -1098,13 +815,11 @@ body.chat-mode .input-area {
             🤖
         </div>
 
-
         <div class="message-content">
 
             <div class="message-name">
                 micro:bit AI
             </div>
-
 
             <div class="message-text">
 안녕! 👋
@@ -1130,11 +845,6 @@ micro:bit에게 자연스럽게 말해봐.
 
 </section>
 
-
-<!-- =====================================================
-     CONNECT
-===================================================== -->
-
 <section
     id="panel-connect"
     class="panel"
@@ -1144,28 +854,26 @@ micro:bit에게 자연스럽게 말해봐.
         📡 micro:bit 연결
     </div>
 
-
     <div class="card">
 
         <div class="card-title">
             Bluetooth
         </div>
 
-
         <div id="deviceName">
             연결된 기기 없음
         </div>
 
-
         <button
+            type="button"
             class="big-button"
             onclick="connectBluetooth()"
         >
             📡 micro:bit 검색 및 연결
         </button>
 
-
         <button
+            type="button"
             class="big-button secondary"
             onclick="disconnectBluetooth()"
         >
@@ -1174,13 +882,11 @@ micro:bit에게 자연스럽게 말해봐.
 
     </div>
 
-
     <div class="card">
 
         <div class="card-title">
             연결 상태
         </div>
-
 
         <div id="connectionInfo">
             연결되지 않았습니다.
@@ -1189,11 +895,6 @@ micro:bit에게 자연스럽게 말해봐.
     </div>
 
 </section>
-
-
-<!-- =====================================================
-     LED
-===================================================== -->
 
 <section
     id="panel-led"
@@ -1204,13 +905,11 @@ micro:bit에게 자연스럽게 말해봐.
         🎨 LED 직접 그리기
     </div>
 
-
     <div class="card">
 
         <div class="card-title">
             5 × 5 LED
         </div>
-
 
         <div class="led-editor">
 
@@ -1221,7 +920,6 @@ micro:bit에게 자연스럽게 말해봐.
 
         </div>
 
-
         <div class="led-tools">
 
             <button
@@ -1231,14 +929,12 @@ micro:bit에게 자연스럽게 말해봐.
                 🧹 지우기
             </button>
 
-
             <button
                 type="button"
                 onclick="fillLED()"
             >
                 ⬜ 전체 켜기
             </button>
-
 
             <button
                 type="button"
@@ -1250,7 +946,6 @@ micro:bit에게 자연스럽게 말해봐.
 
         </div>
 
-
         <div
             id="ledCode"
             class="led-preview-code"
@@ -1260,11 +955,6 @@ micro:bit에게 자연스럽게 말해봐.
 
 </section>
 
-
-<!-- =====================================================
-     SENSORS
-===================================================== -->
-
 <section
     id="panel-sensors"
     class="panel"
@@ -1273,7 +963,6 @@ micro:bit에게 자연스럽게 말해봐.
     <div class="panel-title">
         📊 센서
     </div>
-
 
     <div class="sensor-grid">
 
@@ -1289,7 +978,6 @@ micro:bit에게 자연스럽게 말해봐.
 
         </div>
 
-
         <div class="sensor">
 
             <div class="sensor-label">
@@ -1301,7 +989,6 @@ micro:bit에게 자연스럽게 말해봐.
             </div>
 
         </div>
-
 
         <div class="sensor">
 
@@ -1315,7 +1002,6 @@ micro:bit에게 자연스럽게 말해봐.
 
         </div>
 
-
         <div class="sensor">
 
             <div class="sensor-label">
@@ -1328,7 +1014,6 @@ micro:bit에게 자연스럽게 말해봐.
 
         </div>
 
-
         <div class="sensor">
 
             <div class="sensor-label">
@@ -1340,7 +1025,6 @@ micro:bit에게 자연스럽게 말해봐.
             </div>
 
         </div>
-
 
         <div class="sensor">
 
@@ -1356,8 +1040,8 @@ micro:bit에게 자연스럽게 말해봐.
 
     </div>
 
-
     <button
+        type="button"
         class="big-button"
         onclick="sendCommand('SENSOR')"
     >
@@ -1365,11 +1049,6 @@ micro:bit에게 자연스럽게 말해봐.
     </button>
 
 </section>
-
-
-<!-- =====================================================
-     COMMANDS
-===================================================== -->
 
 <section
     id="panel-commands"
@@ -1380,15 +1059,14 @@ micro:bit에게 자연스럽게 말해봐.
         ⚙️ 명령 관리
     </div>
 
-
     <div class="card">
 
         <div class="card-title">
             사용자 명령
         </div>
 
-
         <button
+            type="button"
             class="big-button"
             onclick="openAddCommand()"
         >
@@ -1397,15 +1075,9 @@ micro:bit에게 자연스럽게 말해봐.
 
     </div>
 
-
     <div id="commandList"></div>
 
 </section>
-
-
-<!-- =====================================================
-     LOG
-===================================================== -->
 
 <section
     id="panel-log"
@@ -1416,14 +1088,13 @@ micro:bit에게 자연스럽게 말해봐.
         📜 BLE 로그
     </div>
 
-
     <div
         id="bleLog"
         class="log"
     ></div>
 
-
     <button
+        type="button"
         class="big-button danger"
         onclick="clearLog()"
     >
@@ -1436,11 +1107,6 @@ micro:bit에게 자연스럽게 말해봐.
 
 </div>
 
-
-<!-- =====================================================
-     CHAT INPUT
-===================================================== -->
-
 <div class="input-area">
 
     <div class="input-box">
@@ -1451,7 +1117,6 @@ micro:bit에게 자연스럽게 말해봐.
             placeholder="micro:bit에게 말해보세요..."
             autocomplete="off"
         >
-
 
         <button
             type="button"
@@ -1464,11 +1129,6 @@ micro:bit에게 자연스럽게 말해봐.
     </div>
 
 </div>
-
-
-<!-- =====================================================
-     MOBILE NAV
-===================================================== -->
 
 <nav class="mobile-nav">
 
@@ -1483,7 +1143,6 @@ micro:bit에게 자연스럽게 말해봐.
         채팅
     </button>
 
-
     <button
         id="nav-connect"
         onclick="showPanel('connect')"
@@ -1493,7 +1152,6 @@ micro:bit에게 자연스럽게 말해봐.
         </span>
         연결
     </button>
-
 
     <button
         id="nav-led"
@@ -1505,7 +1163,6 @@ micro:bit에게 자연스럽게 말해봐.
         LED
     </button>
 
-
     <button
         id="nav-sensors"
         onclick="showPanel('sensors')"
@@ -1515,7 +1172,6 @@ micro:bit에게 자연스럽게 말해봐.
         </span>
         센서
     </button>
-
 
     <button
         id="nav-commands"
@@ -1529,11 +1185,6 @@ micro:bit에게 자연스럽게 말해봐.
 
 </nav>
 
-
-<!-- =====================================================
-     COMMAND MODAL
-===================================================== -->
-
 <div
     id="commandModal"
     class="modal"
@@ -1545,11 +1196,9 @@ micro:bit에게 자연스럽게 말해봐.
             ➕ 명령 추가
         </div>
 
-
         <label class="form-label">
             명령 이름
         </label>
-
 
         <input
             id="commandName"
@@ -1557,11 +1206,9 @@ micro:bit에게 자연스럽게 말해봐.
             placeholder="예: 웃기"
         >
 
-
         <label class="form-label">
             인식할 단어
         </label>
-
 
         <input
             id="commandTriggers"
@@ -1569,11 +1216,9 @@ micro:bit에게 자연스럽게 말해봐.
             placeholder="예: 웃어, 웃기, smile"
         >
 
-
         <label class="form-label">
             micro:bit 명령
         </label>
-
 
         <input
             id="commandAction"
@@ -1581,11 +1226,9 @@ micro:bit에게 자연스럽게 말해봐.
             placeholder="예: SMILE"
         >
 
-
         <label class="form-label">
             채팅 응답
         </label>
-
 
         <input
             id="commandResponse"
@@ -1593,18 +1236,18 @@ micro:bit에게 자연스럽게 말해봐.
             placeholder="예: 😄 웃어볼게!"
         >
 
-
         <div class="modal-actions">
 
             <button
+                type="button"
                 class="cancel"
                 onclick="closeAddCommand()"
             >
                 취소
             </button>
 
-
             <button
+                type="button"
                 onclick="saveCommand()"
             >
                 저장
@@ -1616,12 +1259,7 @@ micro:bit에게 자연스럽게 말해봐.
 
 </div>
 
-
 <script>
-
-/* =====================================================
-   BLE UUID
-===================================================== */
 
 const SERVICE_UUID =
     "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -1632,11 +1270,6 @@ const RX_UUID =
 const TX_UUID =
     "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
-
-/* =====================================================
-   BLE STATE
-===================================================== */
-
 let bluetoothDevice = null;
 
 let gattServer = null;
@@ -1645,118 +1278,56 @@ let rxCharacteristic = null;
 
 let txCharacteristic = null;
 
-
-/* =====================================================
-   SENSOR DATA
-===================================================== */
+let receiveBuffer = "";
 
 let sensorData = {
-
     temperature: 0,
-
     light: 0,
-
     sound: 0,
-
     x: 0,
-
     y: 0,
-
     z: 0
-
 };
-
-
-/* =====================================================
-   DEFAULT COMMANDS
-===================================================== */
 
 const defaultCommands = [
 
     {
         name: "인사",
-
-        triggers: [
-            "안녕",
-            "hello",
-            "hi"
-        ],
-
+        triggers: ["안녕", "hello", "hi"],
         action: "HELLO",
-
         response: "안녕! 👋"
     },
 
-
     {
         name: "하트",
-
-        triggers: [
-            "하트",
-            "사랑",
-            "heart"
-        ],
-
+        triggers: ["하트", "사랑", "heart"],
         action: "HEART",
-
         response: "❤️ 하트를 보여줄게!"
     },
 
-
     {
         name: "뭐하지",
-
-        triggers: [
-            "뭐하지",
-            "뭐 해",
-            "뭐해",
-            "what"
-        ],
-
+        triggers: ["뭐하지", "뭐 해", "뭐해", "what"],
         action: "WHAT",
-
-        response:
-            "🤔 재미있는 걸 해보자!"
+        response: "🤔 재미있는 걸 해보자!"
     },
-
 
     {
         name: "춤",
-
-        triggers: [
-            "춤",
-            "댄스",
-            "dance",
-            "춤춰"
-        ],
-
+        triggers: ["춤", "댄스", "dance", "춤춰"],
         action: "DANCE",
-
-        response:
-            "💃 춤춰볼게!"
+        response: "💃 춤춰볼게!"
     },
-
 
     {
         name: "소리",
-
-        triggers: [
-            "삐",
-            "beep",
-            "삐 소리",
-            "소리 내"
-        ],
-
+        triggers: ["삐", "beep", "삐 소리", "소리 내"],
         action: "BEEP",
-
-        response:
-            "🔊 삐!"
+        response: "🔊 삐!"
     },
-
 
     {
         name: "LED 켜기",
-
         triggers: [
             "불 켜",
             "불켜",
@@ -1765,17 +1336,12 @@ const defaultCommands = [
             "led켜",
             "led 켜줘"
         ],
-
         action: "LED_ON",
-
-        response:
-            "💡 LED를 켤게!"
+        response: "💡 LED를 켤게!"
     },
-
 
     {
         name: "LED 끄기",
-
         triggers: [
             "불 꺼",
             "불꺼",
@@ -1784,103 +1350,70 @@ const defaultCommands = [
             "led꺼",
             "led 꺼줘"
         ],
-
         action: "LED_OFF",
-
-        response:
-            "🌑 LED를 끌게!"
+        response: "🌑 LED를 끌게!"
     },
-
 
     {
         name: "온도",
-
         triggers: [
             "온도",
             "몇 도",
             "몇도",
             "temperature"
         ],
-
         action: "TEMP",
-
-        response:
-            "🌡️ 온도를 확인할게!"
+        response: "🌡️ 온도를 확인할게!"
     },
-
 
     {
         name: "빛",
-
         triggers: [
             "빛",
             "밝기",
             "조도",
             "light"
         ],
-
         action: "LIGHT",
-
-        response:
-            "☀️ 빛 센서를 확인할게!"
+        response: "☀️ 빛 센서를 확인할게!"
     },
-
 
     {
         name: "소리 센서",
-
         triggers: [
             "소리 센서",
             "소리 크기",
             "sound"
         ],
-
         action: "SOUND",
-
-        response:
-            "🔊 소리 센서를 확인할게!"
+        response: "🔊 소리 센서를 확인할게!"
     },
-
 
     {
         name: "센서",
-
         triggers: [
             "센서",
             "sensor",
             "센서 알려줘",
             "센서 보여줘"
         ],
-
         action: "SENSOR",
-
-        response:
-            "📊 센서 데이터를 가져올게!"
+        response: "📊 센서 데이터를 가져올게!"
     },
-
 
     {
         name: "PING",
-
         triggers: [
             "ping",
             "연결 확인",
             "연결됐어",
             "연결 확인해"
         ],
-
         action: "PING",
-
-        response:
-            "📡 연결을 확인할게!"
+        response: "📡 연결을 확인할게!"
     }
 
 ];
-
-
-/* =====================================================
-   PANEL
-===================================================== */
 
 function showPanel(name) {
 
@@ -1893,7 +1426,6 @@ function showPanel(name) {
         "log"
     ];
 
-
     panels.forEach(panel => {
 
         const element =
@@ -1901,9 +1433,7 @@ function showPanel(name) {
                 "panel-" + panel
             );
 
-
         if (!element) return;
-
 
         element.classList.toggle(
             "active",
@@ -1911,7 +1441,6 @@ function showPanel(name) {
         );
 
     });
-
 
     const titleNames = {
 
@@ -1929,13 +1458,11 @@ function showPanel(name) {
 
     };
 
-
     document.getElementById(
         "topTitle"
     ).textContent =
         titleNames[name] ||
         "micro:bit AI";
-
 
     document
         .querySelectorAll(".sidebar-btn")
@@ -1947,7 +1474,6 @@ function showPanel(name) {
 
         });
 
-
     document
         .querySelectorAll(".mobile-nav button")
         .forEach(button => {
@@ -1958,12 +1484,10 @@ function showPanel(name) {
 
         });
 
-
     const nav =
         document.getElementById(
             "nav-" + name
         );
-
 
     if (nav) {
 
@@ -1972,9 +1496,6 @@ function showPanel(name) {
         );
 
     }
-
-
-    /* 채팅일 때만 입력창 표시 */
 
     if (name === "chat") {
 
@@ -1990,7 +1511,6 @@ function showPanel(name) {
 
     }
 
-
     if (name === "commands") {
 
         renderCommandManager();
@@ -1999,31 +1519,23 @@ function showPanel(name) {
 
 }
 
-
-/* =====================================================
-   BLUETOOTH CONNECT
-===================================================== */
-
 async function connectBluetooth() {
 
     if (!navigator.bluetooth) {
 
         alert(
-            "이 브라우저는 Web Bluetooth를 지원하지 않습니다.\n\n" +
-            "Android에서는 Chrome을 사용해 주세요."
+            "이 브라우저는 Web Bluetooth를 지원하지 않습니다."
         );
 
         return;
 
     }
 
-
     try {
 
         addLog(
             "📡 micro:bit 검색 시작"
         );
-
 
         bluetoothDevice =
             await navigator.bluetooth.requestDevice({
@@ -2036,7 +1548,6 @@ async function connectBluetooth() {
 
             });
 
-
         addLog(
             "🔎 발견: " +
             (
@@ -2045,73 +1556,61 @@ async function connectBluetooth() {
             )
         );
 
-
         bluetoothDevice.addEventListener(
             "gattserverdisconnected",
             handleDisconnected
         );
 
-
         gattServer =
             await bluetoothDevice.gatt.connect();
-
 
         addLog(
             "🔗 GATT 연결 성공"
         );
-
 
         const service =
             await gattServer.getPrimaryService(
                 SERVICE_UUID
             );
 
-
         addLog(
             "🧩 UART 서비스 발견"
         );
-
 
         rxCharacteristic =
             await service.getCharacteristic(
                 RX_UUID
             );
 
-
         txCharacteristic =
             await service.getCharacteristic(
                 TX_UUID
             );
 
-
         addLog(
-            "📥 RX characteristic 발견"
+            "📥 RX 발견: " +
+            RX_UUID
         );
 
-
         addLog(
-            "📤 TX characteristic 발견"
+            "📤 TX 발견: " +
+            TX_UUID
         );
-
 
         await rxCharacteristic.startNotifications();
-
 
         rxCharacteristic.addEventListener(
             "characteristicvaluechanged",
             handleBluetoothData
         );
 
-
         setConnected(true);
-
 
         document.getElementById(
             "deviceName"
         ).textContent =
             bluetoothDevice.name ||
             "micro:bit";
-
 
         document.getElementById(
             "connectionInfo"
@@ -2122,22 +1621,18 @@ async function connectBluetooth() {
                 "micro:bit"
             );
 
-
         addLog(
             "✅ micro:bit 연결 완료"
         );
-
 
         addBotMessage(
             "📡 micro:bit 연결 완료!\n\n" +
             "이제 명령을 보내거나 LED를 직접 그릴 수 있어."
         );
 
-
     } catch (error) {
 
         console.error(error);
-
 
         addLog(
             "❌ 연결 오류: " +
@@ -2150,11 +1645,6 @@ async function connectBluetooth() {
 
 }
 
-
-/* =====================================================
-   DISCONNECT
-===================================================== */
-
 function disconnectBluetooth() {
 
     if (
@@ -2165,13 +1655,13 @@ function disconnectBluetooth() {
 
         bluetoothDevice.gatt.disconnect();
 
+    } else {
+
+        handleDisconnected();
+
     }
 
-
-    handleDisconnected();
-
 }
-
 
 function handleDisconnected() {
 
@@ -2183,29 +1673,23 @@ function handleDisconnected() {
 
     gattServer = null;
 
+    receiveBuffer = "";
 
     document.getElementById(
         "deviceName"
     ).textContent =
         "연결된 기기 없음";
 
-
     document.getElementById(
         "connectionInfo"
     ).textContent =
         "연결되지 않았습니다.";
-
 
     addLog(
         "🔌 micro:bit 연결 해제"
     );
 
 }
-
-
-/* =====================================================
-   CONNECTION STATUS
-===================================================== */
 
 function setConnected(connected) {
 
@@ -2214,19 +1698,16 @@ function setConnected(connected) {
             "statusDot"
         );
 
-
     const text =
         document.getElementById(
             "statusText"
         );
-
 
     if (connected) {
 
         dot.classList.add(
             "connected"
         );
-
 
         text.textContent =
             "연결됨";
@@ -2237,7 +1718,6 @@ function setConnected(connected) {
             "connected"
         );
 
-
         text.textContent =
             "연결 안 됨";
 
@@ -2246,9 +1726,12 @@ function setConnected(connected) {
 }
 
 
-/* =====================================================
-   SEND BLE
-===================================================== */
+/*
+    BLE UART 전송
+
+    긴 메시지를 20바이트씩 나눠서 전송한다.
+    마지막에는 반드시 \n을 붙인다.
+*/
 
 async function sendCommand(command) {
 
@@ -2262,54 +1745,99 @@ async function sendCommand(command) {
 
     }
 
-
     try {
 
+        command =
+            String(command).trim();
+
+        const message =
+            command + "\n";
+
+        const encoder =
+            new TextEncoder();
+
         const data =
-            new TextEncoder().encode(
-                command + "\n"
-            );
-
-
-        if (
-            txCharacteristic.properties &&
-            txCharacteristic.properties.writeWithoutResponse
-        ) {
-
-            await txCharacteristic.writeValueWithoutResponse(
-                data
-            );
-
-        } else {
-
-            await txCharacteristic.writeValue(
-                data
-            );
-
-        }
-
+            encoder.encode(message);
 
         addLog(
             "📤 SEND: " +
             command
         );
 
+        addLog(
+            "📦 전송 크기: " +
+            data.length +
+            " bytes"
+        );
+
+        const chunkSize = 20;
+
+        for (
+            let offset = 0;
+            offset < data.length;
+            offset += chunkSize
+        ) {
+
+            const chunk =
+                data.slice(
+                    offset,
+                    Math.min(
+                        offset + chunkSize,
+                        data.length
+                    )
+                );
+
+            if (
+                txCharacteristic.properties &&
+                txCharacteristic.properties.writeWithoutResponse
+            ) {
+
+                await txCharacteristic.writeValueWithoutResponse(
+                    chunk
+                );
+
+            } else if (
+                txCharacteristic.properties &&
+                txCharacteristic.properties.write
+            ) {
+
+                await txCharacteristic.writeValue(
+                    chunk
+                );
+
+            } else {
+
+                throw new Error(
+                    "TX characteristic이 WRITE를 지원하지 않습니다."
+                );
+
+            }
+
+            await sleep(25);
+
+        }
+
+        addLog(
+            "✅ 전송 완료"
+        );
 
         return true;
 
     } catch (error) {
 
+        console.error(error);
+
         addLog(
             "❌ SEND ERROR: " +
+            error.name +
+            " - " +
             error.message
         );
-
 
         addBotMessage(
-            "❌ 명령 전송 실패:\n" +
+            "❌ micro:bit 전송 실패\n\n" +
             error.message
         );
-
 
         return false;
 
@@ -2317,52 +1845,79 @@ async function sendCommand(command) {
 
 }
 
+function sleep(ms) {
 
-/* =====================================================
-   RECEIVE BLE
-===================================================== */
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                ms
+            )
+    );
+
+}
 
 function handleBluetoothData(event) {
 
     const decoder =
         new TextDecoder();
 
-
     const data =
         decoder.decode(
             event.target.value
-        ).trim();
-
+        );
 
     if (!data) return;
 
-
     addLog(
-        "📥 RECEIVE: " +
-        data
+        "📥 RECEIVE CHUNK: " +
+        JSON.stringify(data)
     );
 
+    receiveBuffer += data;
 
-    const lines =
-        data.split(/\r?\n/);
+    let index;
 
+    while (
+        (index =
+            receiveBuffer.indexOf("\n")) !== -1
+    ) {
 
-    lines.forEach(line => {
+        let line =
+            receiveBuffer.slice(
+                0,
+                index
+            );
 
-        if (!line) return;
+        receiveBuffer =
+            receiveBuffer.slice(
+                index + 1
+            );
 
-        handleReceivedLine(line);
+        line =
+            line.replace(
+                /\r$/,
+                ""
+            );
 
-    });
+        if (line.length > 0) {
+
+            handleReceivedLine(
+                line
+            );
+
+        }
+
+    }
 
 }
 
-
-/* =====================================================
-   RECEIVE LINE
-===================================================== */
-
 function handleReceivedLine(line) {
+
+    addLog(
+        "📥 RECEIVE: " +
+        line
+    );
 
     if (line === "PONG") {
 
@@ -2374,120 +1929,101 @@ function handleReceivedLine(line) {
 
     }
 
-
     if (
-        line.startsWith(
-            "RESULT,"
-        )
+        line.indexOf("RESULT,") === 0
     ) {
 
         const result =
-            line.substring(7);
-
+            line.slice(7);
 
         addLog(
             "✅ RESULT: " +
             result
         );
 
+        if (
+            result ===
+            "LED_DRAW"
+        ) {
+
+            addBotMessage(
+                "🎨 LED 그림을 micro:bit가 표시했어!"
+            );
+
+        }
 
         return;
 
     }
 
-
     if (
-        line.startsWith(
-            "RECEIVED,"
-        )
-    ) {
-
-        addLog(
-            "📨 micro:bit가 명령을 받음: " +
-            line.substring(9)
-        );
-
-
-        return;
-
-    }
-
-
-    if (
-        line.startsWith(
-            "DATA,"
-        )
+        line.indexOf("DATA,") === 0
     ) {
 
         const parts =
             line.split(",");
-
 
         if (parts.length >= 7) {
 
             sensorData.temperature =
                 Number(parts[1]);
 
-
             sensorData.light =
                 Number(parts[2]);
-
 
             sensorData.sound =
                 Number(parts[3]);
 
-
             sensorData.x =
                 Number(parts[4]);
-
 
             sensorData.y =
                 Number(parts[5]);
 
-
             sensorData.z =
                 Number(parts[6]);
 
-
             updateSensorUI();
 
-
             addBotMessage(
-
                 "📊 센서 데이터\n\n" +
-
                 "🌡️ 온도: " +
                 sensorData.temperature +
                 "°C\n" +
-
                 "☀️ 빛: " +
                 sensorData.light +
                 "\n" +
-
                 "🔊 소리: " +
                 sensorData.sound +
                 "\n" +
-
                 "📈 X: " +
                 sensorData.x +
                 "\n" +
-
                 "📈 Y: " +
                 sensorData.y +
                 "\n" +
-
                 "📈 Z: " +
                 sensorData.z
-
             );
 
         }
-
 
         return;
 
     }
 
+    if (
+        line.indexOf("RECEIVED,") === 0
+    ) {
+
+        addLog(
+            "📨 micro:bit 수신: " +
+            line.slice(9)
+        );
+
+        return;
+
+    }
 
     addBotMessage(
         "📥 micro:bit: " +
@@ -2496,11 +2032,6 @@ function handleReceivedLine(line) {
 
 }
 
-
-/* =====================================================
-   SENSOR UI
-===================================================== */
-
 function updateSensorUI() {
 
     document.getElementById(
@@ -2508,30 +2039,25 @@ function updateSensorUI() {
     ).textContent =
         sensorData.temperature;
 
-
     document.getElementById(
         "lightValue"
     ).textContent =
         sensorData.light;
-
 
     document.getElementById(
         "soundValue"
     ).textContent =
         sensorData.sound;
 
-
     document.getElementById(
         "accelX"
     ).textContent =
         sensorData.x;
 
-
     document.getElementById(
         "accelY"
     ).textContent =
         sensorData.y;
-
 
     document.getElementById(
         "accelZ"
@@ -2540,11 +2066,6 @@ function updateSensorUI() {
 
 }
 
-
-/* =====================================================
-   CHAT
-===================================================== */
-
 async function sendChat() {
 
     const input =
@@ -2552,25 +2073,19 @@ async function sendChat() {
             "chatInput"
         );
 
-
     const text =
         input.value.trim();
 
-
     if (!text) return;
 
-
     input.value = "";
-
 
     addUserMessage(
         text
     );
 
-
     const command =
         findCommand(text);
-
 
     if (!command) {
 
@@ -2579,16 +2094,13 @@ async function sendChat() {
             "⚙️ 명령 관리에서 새로운 명령을 추가할 수도 있어!"
         );
 
-
         return;
 
     }
 
-
     addBotMessage(
         command.response
     );
-
 
     await sendCommand(
         command.action
@@ -2596,20 +2108,13 @@ async function sendChat() {
 
 }
 
-
-/* =====================================================
-   FIND COMMAND
-===================================================== */
-
 function findCommand(text) {
 
     const lower =
         text.toLowerCase();
 
-
     const commands =
         getAllCommands();
-
 
     for (
         const command
@@ -2622,9 +2127,9 @@ function findCommand(text) {
         ) {
 
             if (
-                lower.includes(
+                lower.indexOf(
                     trigger.toLowerCase()
-                )
+                ) !== -1
             ) {
 
                 return command;
@@ -2635,15 +2140,9 @@ function findCommand(text) {
 
     }
 
-
     return null;
 
 }
-
-
-/* =====================================================
-   USER MESSAGE
-===================================================== */
 
 function addUserMessage(text) {
 
@@ -2652,51 +2151,35 @@ function addUserMessage(text) {
             "panel-chat"
         );
 
-
     const message =
         document.createElement(
             "div"
         );
 
-
     message.className =
         "message user";
 
+    message.innerHTML =
 
-    message.innerHTML = `
+        '<div class="avatar">👤</div>' +
 
-        <div class="avatar">
-            👤
-        </div>
+        '<div class="message-content">' +
 
-        <div class="message-content">
+        '<div class="message-name">나</div>' +
 
-            <div class="message-name">
-                나
-            </div>
+        '<div class="message-text">' +
+        escapeHtml(text) +
+        '</div>' +
 
-            <div class="message-text">
-                ${escapeHtml(text)}
-            </div>
-
-        </div>
-
-    `;
-
+        '</div>';
 
     chat.appendChild(
         message
     );
 
-
     scrollChat();
 
 }
-
-
-/* =====================================================
-   BOT MESSAGE
-===================================================== */
 
 function addBotMessage(text) {
 
@@ -2705,51 +2188,35 @@ function addBotMessage(text) {
             "panel-chat"
         );
 
-
     const message =
         document.createElement(
             "div"
         );
 
-
     message.className =
         "message";
 
+    message.innerHTML =
 
-    message.innerHTML = `
+        '<div class="avatar">🤖</div>' +
 
-        <div class="avatar">
-            🤖
-        </div>
+        '<div class="message-content">' +
 
-        <div class="message-content">
+        '<div class="message-name">micro:bit AI</div>' +
 
-            <div class="message-name">
-                micro:bit AI
-            </div>
+        '<div class="message-text">' +
+        escapeHtml(text) +
+        '</div>' +
 
-            <div class="message-text">
-                ${escapeHtml(text)}
-            </div>
-
-        </div>
-
-    `;
-
+        '</div>';
 
     chat.appendChild(
         message
     );
 
-
     scrollChat();
 
 }
-
-
-/* =====================================================
-   SCROLL CHAT
-===================================================== */
 
 function scrollChat() {
 
@@ -2758,20 +2225,16 @@ function scrollChat() {
             "panel-chat"
         );
 
+    requestAnimationFrame(
+        function() {
 
-    requestAnimationFrame(() => {
+            chat.scrollTop =
+                chat.scrollHeight;
 
-        chat.scrollTop =
-            chat.scrollHeight;
-
-    });
+        }
+    );
 
 }
-
-
-/* =====================================================
-   LED MATRIX
-===================================================== */
 
 let ledMatrix = [
 
@@ -2787,11 +2250,6 @@ let ledMatrix = [
 
 ];
 
-
-/* =====================================================
-   CREATE LED GRID
-===================================================== */
-
 function createLEDGrid() {
 
     const grid =
@@ -2799,9 +2257,7 @@ function createLEDGrid() {
             "ledGrid"
         );
 
-
     grid.innerHTML = "";
-
 
     for (
         let y = 0;
@@ -2820,22 +2276,17 @@ function createLEDGrid() {
                     "button"
                 );
 
-
             cell.type =
                 "button";
-
 
             cell.className =
                 "led-cell";
 
-
             cell.dataset.x =
                 x;
 
-
             cell.dataset.y =
                 y;
-
 
             cell.addEventListener(
                 "click",
@@ -2849,7 +2300,6 @@ function createLEDGrid() {
                 }
             );
 
-
             grid.appendChild(
                 cell
             );
@@ -2858,15 +2308,9 @@ function createLEDGrid() {
 
     }
 
-
     updateLEDGrid();
 
 }
-
-
-/* =====================================================
-   TOGGLE LED
-===================================================== */
 
 function toggleLED(x, y) {
 
@@ -2875,15 +2319,9 @@ function toggleLED(x, y) {
             ? 0
             : 1;
 
-
     updateLEDGrid();
 
 }
-
-
-/* =====================================================
-   UPDATE LED GRID
-===================================================== */
 
 function updateLEDGrid() {
 
@@ -2892,37 +2330,30 @@ function updateLEDGrid() {
             ".led-cell"
         );
 
+    cells.forEach(
+        function(cell) {
 
-    cells.forEach(cell => {
+            const x =
+                Number(
+                    cell.dataset.x
+                );
 
-        const x =
-            Number(
-                cell.dataset.x
+            const y =
+                Number(
+                    cell.dataset.y
+                );
+
+            cell.classList.toggle(
+                "on",
+                ledMatrix[y][x] === 1
             );
 
-
-        const y =
-            Number(
-                cell.dataset.y
-            );
-
-
-        cell.classList.toggle(
-            "on",
-            ledMatrix[y][x] === 1
-        );
-
-    });
-
+        }
+    );
 
     updateLEDCode();
 
 }
-
-
-/* =====================================================
-   CLEAR LED
-===================================================== */
 
 function clearLED() {
 
@@ -2945,15 +2376,9 @@ function clearLED() {
 
     }
 
-
     updateLEDGrid();
 
 }
-
-
-/* =====================================================
-   FILL LED
-===================================================== */
 
 function fillLED() {
 
@@ -2976,30 +2401,23 @@ function fillLED() {
 
     }
 
-
     updateLEDGrid();
 
 }
-
-
-/* =====================================================
-   LED CODE
-===================================================== */
 
 function getLEDCode() {
 
     return ledMatrix
         .map(
-            row => row.join("")
+            function(row) {
+
+                return row.join("");
+
+            }
         )
         .join(",");
 
 }
-
-
-/* =====================================================
-   UPDATE LED CODE
-===================================================== */
 
 function updateLEDCode() {
 
@@ -3011,29 +2429,24 @@ function updateLEDCode() {
 
 }
 
-
-/* =====================================================
-   SEND LED
-===================================================== */
-
 async function sendLED() {
 
     const code =
         getLEDCode();
 
+    const command =
+        "LED_DRAW," +
+        code;
 
     addLog(
-        "🎨 LED 패턴: " +
-        code
+        "🎨 LED COMMAND: " +
+        command
     );
-
 
     const success =
         await sendCommand(
-            "LED_DRAW," +
-            code
+            command
         );
-
 
     if (success) {
 
@@ -3045,14 +2458,8 @@ async function sendLED() {
 
 }
 
-
-/* =====================================================
-   COMMAND STORAGE
-===================================================== */
-
 const COMMAND_STORAGE_KEY =
     "microbit_custom_commands";
-
 
 function getCustomCommands() {
 
@@ -3074,8 +2481,9 @@ function getCustomCommands() {
 
 }
 
-
-function saveCustomCommands(commands) {
+function saveCustomCommands(
+    commands
+) {
 
     localStorage.setItem(
 
@@ -3089,7 +2497,6 @@ function saveCustomCommands(commands) {
 
 }
 
-
 function getAllCommands() {
 
     return [
@@ -3102,11 +2509,6 @@ function getAllCommands() {
 
 }
 
-
-/* =====================================================
-   COMMAND MANAGER
-===================================================== */
-
 function renderCommandManager() {
 
     const container =
@@ -3114,85 +2516,65 @@ function renderCommandManager() {
             "commandList"
         );
 
-
     container.innerHTML = "";
-
 
     const custom =
         getCustomCommands();
-
 
     if (
         custom.length === 0
     ) {
 
-        container.innerHTML = `
+        container.innerHTML =
 
-            <div class="card">
+            '<div class="card">' +
 
-                아직 사용자 명령이 없어.
+            '아직 사용자 명령이 없어.' +
 
-                <br><br>
+            '<br><br>' +
 
-                위의
-                <b>➕ 명령 추가</b>
-                버튼으로 만들어봐!
+            '위의 <b>➕ 명령 추가</b> 버튼으로 만들어봐!' +
 
-            </div>
-
-        `;
+            '</div>';
 
     }
 
-
     custom.forEach(
-        (command, index) => {
+        function(command, index) {
 
             const item =
                 document.createElement(
                     "div"
                 );
 
-
             item.className =
                 "command-item";
 
+            item.innerHTML =
 
-            item.innerHTML = `
+                '<div class="command-info">' +
 
-                <div class="command-info">
+                '<div class="command-name">' +
+                escapeHtml(
+                    command.name
+                ) +
+                '</div>' +
 
-                    <div class="command-name">
-                        ${escapeHtml(
-                            command.name
-                        )}
-                    </div>
+                '<div class="command-trigger">' +
+                escapeHtml(
+                    command.triggers.join(", ")
+                ) +
+                ' → ' +
+                escapeHtml(
+                    command.action
+                ) +
+                '</div>' +
 
-                    <div class="command-trigger">
-                        ${escapeHtml(
-                            command.triggers.join(", ")
-                        )}
+                '</div>' +
 
-                        →
-
-                        ${escapeHtml(
-                            command.action
-                        )}
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="delete-btn"
-                    onclick="deleteCommand(${index})"
-                >
-                    🗑️
-                </button>
-
-            `;
-
+                '<button type="button" class="delete-btn" onclick="deleteCommand(' +
+                index +
+                ')">🗑️</button>';
 
             container.appendChild(
                 item
@@ -3203,11 +2585,6 @@ function renderCommandManager() {
 
 }
 
-
-/* =====================================================
-   OPEN COMMAND MODAL
-===================================================== */
-
 function openAddCommand() {
 
     document.getElementById(
@@ -3216,32 +2593,23 @@ function openAddCommand() {
         "show"
     );
 
-
     document.getElementById(
         "commandName"
     ).value = "";
-
 
     document.getElementById(
         "commandTriggers"
     ).value = "";
 
-
     document.getElementById(
         "commandAction"
     ).value = "";
-
 
     document.getElementById(
         "commandResponse"
     ).value = "";
 
 }
-
-
-/* =====================================================
-   CLOSE COMMAND MODAL
-===================================================== */
 
 function closeAddCommand() {
 
@@ -3253,11 +2621,6 @@ function closeAddCommand() {
 
 }
 
-
-/* =====================================================
-   SAVE COMMAND
-===================================================== */
-
 function saveCommand() {
 
     const name =
@@ -3265,24 +2628,20 @@ function saveCommand() {
             "commandName"
         ).value.trim();
 
-
     const triggerText =
         document.getElementById(
             "commandTriggers"
         ).value.trim();
-
 
     const action =
         document.getElementById(
             "commandAction"
         ).value.trim();
 
-
     const response =
         document.getElementById(
             "commandResponse"
         ).value.trim();
-
 
     if (
         !name ||
@@ -3299,83 +2658,66 @@ function saveCommand() {
 
     }
 
-
     const triggers =
         triggerText
             .split(",")
             .map(
-                x => x.trim()
+                function(x) {
+
+                    return x.trim();
+
+                }
             )
             .filter(
                 Boolean
             );
 
-
     const commands =
         getCustomCommands();
 
-
     commands.push({
 
-        name,
+        name: name,
 
-        triggers,
+        triggers: triggers,
 
-        action,
+        action: action,
 
-        response
+        response: response
 
     });
-
 
     saveCustomCommands(
         commands
     );
 
-
     closeAddCommand();
-
 
     renderCommandManager();
 
-
     addBotMessage(
-        "⚙️ 새로운 명령을 추가했어!\n\n" +
-        "이제 채팅에서 사용할 수 있어."
+        "⚙️ 새로운 명령을 추가했어!"
     );
 
 }
-
-
-/* =====================================================
-   DELETE COMMAND
-===================================================== */
 
 function deleteCommand(index) {
 
     const commands =
         getCustomCommands();
 
-
     commands.splice(
         index,
         1
     );
 
-
     saveCustomCommands(
         commands
     );
 
-
     renderCommandManager();
 
 }
-
-
-/* =====================================================
-   LOG
-===================================================== */
 
 function addLog(text) {
 
@@ -3384,14 +2726,11 @@ function addLog(text) {
             "bleLog"
         );
 
-
     const now =
         new Date();
 
-
     const time =
         now.toLocaleTimeString();
-
 
     log.textContent +=
         "[" +
@@ -3400,16 +2739,10 @@ function addLog(text) {
         text +
         "\n";
 
-
     log.scrollTop =
         log.scrollHeight;
 
 }
-
-
-/* =====================================================
-   CLEAR LOG
-===================================================== */
 
 function clearLog() {
 
@@ -3419,11 +2752,6 @@ function clearLog() {
 
 }
 
-
-/* =====================================================
-   NEW CHAT
-===================================================== */
-
 function newChat() {
 
     const chat =
@@ -3431,36 +2759,27 @@ function newChat() {
             "panel-chat"
         );
 
+    chat.innerHTML =
 
-    chat.innerHTML = `
+        '<div class="message">' +
 
-        <div class="message">
+        '<div class="avatar">🤖</div>' +
 
-            <div class="avatar">
-                🤖
-            </div>
+        '<div class="message-content">' +
 
-            <div class="message-content">
+        '<div class="message-name">micro:bit AI</div>' +
 
-                <div class="message-name">
-                    micro:bit AI
-                </div>
+        '<div class="message-text">' +
 
-                <div class="message-text">
-                    새 채팅을 시작했어! 🚀
+        '새 채팅을 시작했어! 🚀\n\n' +
 
-                    <br><br>
+        'micro:bit에게 원하는 명령을 말해봐.' +
 
-                    micro:bit에게
-                    원하는 명령을 말해봐.
-                </div>
+        '</div>' +
 
-            </div>
+        '</div>' +
 
-        </div>
-
-    `;
-
+        '</div>';
 
     showPanel(
         "chat"
@@ -3468,46 +2787,31 @@ function newChat() {
 
 }
 
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
 function escapeHtml(text) {
 
     return String(text)
-
-        .replaceAll(
-            "&",
+        .replace(
+            /&/g,
             "&amp;"
         )
-
-        .replaceAll(
-            "<",
+        .replace(
+            /</g,
             "&lt;"
         )
-
-        .replaceAll(
-            ">",
+        .replace(
+            />/g,
             "&gt;"
         )
-
-        .replaceAll(
-            '"',
+        .replace(
+            /"/g,
             "&quot;"
         )
-
-        .replaceAll(
-            "'",
+        .replace(
+            /'/g,
             "&#039;"
         );
 
 }
-
-
-/* =====================================================
-   ENTER KEY
-===================================================== */
 
 document
     .getElementById(
@@ -3530,11 +2834,6 @@ document
 
         }
     );
-
-
-/* =====================================================
-   INIT
-===================================================== */
 
 createLEDGrid();
 
