@@ -3,20 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>micro:bit BLE Test</title>
+
+<title>micro:bit GATT Scanner</title>
 
 <style>
 body {
     margin: 0;
-    padding: 25px;
-    background: #111;
+    padding: 20px;
+    background: #101114;
     color: white;
     font-family: Arial, sans-serif;
+}
+
+h1 {
     text-align: center;
 }
 
 button {
-    padding: 15px 25px;
+    width: 100%;
+    padding: 16px;
+    margin: 10px 0;
     border: 0;
     border-radius: 12px;
     background: #2ecc71;
@@ -25,86 +31,268 @@ button {
     font-weight: bold;
 }
 
-#log {
-    margin-top: 20px;
+#status {
+    margin-top: 15px;
     padding: 15px;
-    background: #1c1c1c;
+    background: #181a20;
     border-radius: 12px;
-    text-align: left;
-    white-space: pre-wrap;
+}
+
+#services {
+    margin-top: 15px;
+}
+
+.service {
+    margin: 10px 0;
+    padding: 15px;
+    background: #181a20;
+    border: 1px solid #30333b;
+    border-radius: 12px;
+}
+
+.uuid {
+    word-break: break-all;
+    color: #66aaff;
+    font-family: monospace;
+}
+
+.characteristic {
+    margin-top: 10px;
+    padding: 10px;
+    background: #0d0e11;
+    border-radius: 8px;
+}
+
+.props {
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.error {
+    color: #ff5555;
+}
+
+.success {
+    color: #2ecc71;
 }
 </style>
 </head>
 
 <body>
 
-<h1>📡 micro:bit BLE 테스트</h1>
+<h1>📡 micro:bit GATT Scanner</h1>
 
-<button id="connect">
-    Bluetooth 기기 검색
+<button id="scan">
+Bluetooth 기기 검색
 </button>
 
-<div id="log">대기 중...</div>
+<div id="status">
+대기 중...
+</div>
+
+<div id="services"></div>
 
 <script>
 
-const SERVICE_UUID =
-    "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+const statusElement =
+    document.getElementById("status");
 
-const RX_UUID =
-    "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+const servicesElement =
+    document.getElementById("services");
 
-const TX_UUID =
-    "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+function status(text, className = "") {
 
-const logElement =
-    document.getElementById("log");
+    statusElement.className = className;
 
-function log(text) {
-    logElement.textContent +=
-        "\n" + text;
+    statusElement.innerHTML =
+        text;
+
 }
 
 document
-.getElementById("connect")
+.getElementById("scan")
 .addEventListener("click", async () => {
+
+    servicesElement.innerHTML = "";
 
     try {
 
-        log("Bluetooth 검색 시작...");
+        status(
+            "🔍 Bluetooth 기기 검색 중..."
+        );
 
         const device =
             await navigator.bluetooth.requestDevice({
-                acceptAllDevices: true,
-                optionalServices: [
-                    SERVICE_UUID
-                ]
+                acceptAllDevices: true
             });
 
-        log(
-            "✅ 발견: " +
+        status(
+            "선택됨: " +
             (device.name || "이름 없음")
         );
 
-        log(
-            "ID: " +
-            device.id
-        );
+        console.log("Device:", device);
 
-        log("GATT 연결 중...");
+        status(
+            "🔌 GATT 연결 중..."
+        );
 
         const server =
             await device.gatt.connect();
 
-        log("✅ GATT 연결 성공");
+        status(
+            "✅ GATT 연결 성공<br>" +
+            "서비스 검색 중..."
+        );
 
-        const service =
-            await server.getPrimaryService(
-                SERVICE_UUID
+        /*
+        모든 Primary Service 검색
+        */
+
+        const services =
+            await server.getPrimaryServices();
+
+        status(
+            "✅ 서비스 검색 완료<br>" +
+            "총 " +
+            services.length +
+            "개"
+        );
+
+        for (const service of services) {
+
+            const serviceBox =
+                document.createElement("div");
+
+            serviceBox.className =
+                "service";
+
+            serviceBox.innerHTML =
+                "<b>Service</b><br>" +
+                "<div class='uuid'>" +
+                service.uuid +
+                "</div>";
+
+            servicesElement.appendChild(
+                serviceBox
             );
 
-        log("✅ UART Service 발견");
+            /*
+            Characteristic 검색
+            */
 
+            try {
+
+                const characteristics =
+                    await service.getCharacteristics();
+
+                for (
+                    const characteristic
+                    of characteristics
+                ) {
+
+                    const charBox =
+                        document.createElement("div");
+
+                    charBox.className =
+                        "characteristic";
+
+                    const properties =
+                        [];
+
+                    if (
+                        characteristic.properties
+                        .read
+                    ) {
+                        properties.push("READ");
+                    }
+
+                    if (
+                        characteristic.properties
+                       .write
+                    ) {
+                        properties.push("WRITE");
+                    }
+
+                    if (
+                        characteristic.properties
+                       .writeWithoutResponse
+                    ) {
+                        properties.push(
+                            "WRITE_NO_RESPONSE"
+                        );
+                    }
+
+                    if (
+                        characteristic.properties
+                       .notify
+                    ) {
+                        properties.push("NOTIFY");
+                    }
+
+                    if (
+                        characteristic.properties
+                       .indicate
+                    ) {
+                        properties.push("INDICATE");
+                    }
+
+                    charBox.innerHTML =
+                        "<b>Characteristic</b><br>" +
+                        "<div class='uuid'>" +
+                        characteristic.uuid +
+                        "</div>" +
+                        "<div class='props'>" +
+                        properties.join(", ") +
+                        "</div>";
+
+                    serviceBox.appendChild(
+                        charBox
+                    );
+
+                }
+
+            } catch (error) {
+
+                const errorBox =
+                    document.createElement("div");
+
+                errorBox.className =
+                    "error";
+
+                errorBox.textContent =
+                    "Characteristic 검색 실패: " +
+                    error.message;
+
+                serviceBox.appendChild(
+                    errorBox
+                );
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        status(
+            "❌ " +
+            error.name +
+            ": " +
+            error.message,
+            "error"
+        );
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
         const rx =
             await service.getCharacteristic(
                 RX_UUID
