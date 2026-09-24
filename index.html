@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
@@ -12,10 +13,6 @@
 <title>micro:bit AI</title>
 
 <style>
-
-/* =====================================================
-   RESET
-===================================================== */
 
 * {
     box-sizing: border-box;
@@ -56,6 +53,7 @@ button {
     touch-action: manipulation;
 }
 
+
 /* =====================================================
    APP
 ===================================================== */
@@ -68,6 +66,7 @@ button {
 
     background: #09090b;
 }
+
 
 /* =====================================================
    DESKTOP SIDEBAR
@@ -170,6 +169,7 @@ button {
     background: #27272a;
 }
 
+
 /* =====================================================
    MAIN
 ===================================================== */
@@ -185,6 +185,7 @@ button {
     position: relative;
 }
 
+
 /* =====================================================
    TOP BAR
 ===================================================== */
@@ -198,8 +199,7 @@ button {
     align-items: center;
     justify-content: space-between;
 
-    padding:
-        0 18px;
+    padding: 0 18px;
 
     border-bottom: 1px solid #27272a;
 
@@ -222,7 +222,7 @@ button {
 
     gap: 7px;
 
-    max-width: 170px;
+    max-width: 200px;
 
     font-size: 12px;
 
@@ -258,6 +258,7 @@ button {
         rgba(34,197,94,.7);
 }
 
+
 /* =====================================================
    CHAT
 ===================================================== */
@@ -280,8 +281,7 @@ button {
     width: 100%;
     max-width: 850px;
 
-    margin:
-        0 auto;
+    margin: 0 auto;
 
     display: flex;
 
@@ -345,8 +345,9 @@ button {
     padding-right: 14px;
 }
 
+
 /* =====================================================
-   INPUT AREA
+   INPUT
 ===================================================== */
 
 .input-area {
@@ -360,7 +361,10 @@ button {
 
     padding:
         12px 18px
-        calc(15px + env(safe-area-inset-bottom));
+        calc(
+            15px +
+            env(safe-area-inset-bottom)
+        );
 
     background:
         linear-gradient(
@@ -401,8 +405,7 @@ button {
 
     min-width: 0;
 
-    padding:
-        11px 10px;
+    padding: 11px 10px;
 
     border: 0;
     outline: 0;
@@ -440,13 +443,15 @@ button {
     transform: scale(.94);
 }
 
+
 /* =====================================================
-   MOBILE BOTTOM NAV
+   MOBILE NAV
 ===================================================== */
 
 .mobile-nav {
     display: none;
 }
+
 
 /* =====================================================
    MODAL
@@ -506,6 +511,7 @@ button {
     font-weight: 750;
 }
 
+
 /* =====================================================
    FIELDS
 ===================================================== */
@@ -557,6 +563,7 @@ button {
     resize: vertical;
 }
 
+
 /* =====================================================
    BUTTONS
 ===================================================== */
@@ -564,8 +571,7 @@ button {
 .btn {
     min-height: 44px;
 
-    padding:
-        10px 15px;
+    padding: 10px 15px;
 
     border: 0;
 
@@ -605,6 +611,7 @@ button {
 
     margin-top: 18px;
 }
+
 
 /* =====================================================
    DEVICE
@@ -660,6 +667,7 @@ button {
     transform: scale(.98);
 }
 
+
 /* =====================================================
    SENSOR
 ===================================================== */
@@ -697,6 +705,7 @@ button {
     font-weight: 700;
 }
 
+
 /* =====================================================
    LOG
 ===================================================== */
@@ -723,6 +732,7 @@ button {
 
     white-space: pre-wrap;
 }
+
 
 /* =====================================================
    COMMAND CARD
@@ -761,62 +771,33 @@ button {
     font-size: 12px;
 }
 
+
 /* =====================================================
    MOBILE
 ===================================================== */
 
 @media (max-width: 700px) {
 
-    body {
-        background: #09090b;
-    }
-
-    .app {
-        display: block;
-    }
-
-    /* -------------------------
-       숨김
-    ------------------------- */
-
     .sidebar {
         display: none;
     }
 
-    /* -------------------------
-       TOP
-    ------------------------- */
-
     .topbar {
-        height: 56px;
-
-        padding:
-            0 14px;
-
-        padding-top:
-            env(safe-area-inset-top);
-
         height:
             calc(
                 56px +
                 env(safe-area-inset-top)
             );
-    }
 
-    .title {
-        font-size: 16px;
+        padding:
+            env(safe-area-inset-top)
+            14px
+            0;
     }
-
-    /* -------------------------
-       CHAT
-    ------------------------- */
 
     .chat {
         padding:
             12px 13px
-            145px;
-
-        padding-bottom:
             calc(
                 145px +
                 env(safe-area-inset-bottom)
@@ -843,20 +824,11 @@ button {
         font-size: 15px;
     }
 
-    .bot-message {
-        padding-right: 11px;
-    }
-
-    /* -------------------------
-       INPUT
-    ------------------------- */
-
     .input-area {
         left: 0;
         right: 0;
 
-        bottom:
-            62px;
+        bottom: 62px;
 
         padding:
             8px 10px;
@@ -885,10 +857,6 @@ button {
         width: 42px;
         height: 42px;
     }
-
-    /* -------------------------
-       BOTTOM NAV
-    ------------------------- */
 
     .mobile-nav {
         position: fixed;
@@ -958,10 +926,6 @@ button {
         transform: scale(.94);
     }
 
-    /* -------------------------
-       MODAL → BOTTOM SHEET
-    ------------------------- */
-
     .modal {
         align-items: flex-end;
 
@@ -971,8 +935,7 @@ button {
     .modal-box {
         max-width: none;
 
-        max-height:
-            88dvh;
+        max-height: 88dvh;
 
         padding:
             20px 16px
@@ -1011,34 +974,10 @@ button {
         flex: 1;
     }
 
-    /* -------------------------
-       DEVICE
-    ------------------------- */
-
-    .device-info {
-        padding: 15px;
-    }
-
     .connect-button {
         min-height: 50px;
 
         font-size: 15px;
-    }
-
-    /* -------------------------
-       SENSOR
-    ------------------------- */
-
-    .sensor-grid {
-        gap: 8px;
-    }
-
-    .sensor-card {
-        padding: 13px;
-    }
-
-    .sensor-value {
-        font-size: 19px;
     }
 
 }
@@ -1061,31 +1000,6 @@ button {
 
     .sensor-value {
         font-size: 17px;
-    }
-
-}
-
-
-/* =====================================================
-   LANDSCAPE PHONE
-===================================================== */
-
-@media (
-    max-width: 900px
-) and (
-    orientation: landscape
-) {
-
-    .mobile-nav {
-        height: 55px;
-    }
-
-    .input-area {
-        bottom: 55px;
-    }
-
-    .chat {
-        padding-bottom: 120px;
     }
 
 }
@@ -1115,7 +1029,9 @@ button {
 
 <body>
 
+
 <div class="app">
+
 
     <!-- =================================================
          DESKTOP SIDEBAR
@@ -1127,6 +1043,7 @@ button {
             🤖 micro:bit AI
         </div>
 
+
         <button
             class="new-chat"
             onclick="newChat()">
@@ -1135,14 +1052,17 @@ button {
 
         </button>
 
+
         <div class="sidebar-section">
             명령
         </div>
+
 
         <div
             class="command-list"
             id="commandList">
         </div>
+
 
         <div class="sidebar-bottom">
 
@@ -1154,6 +1074,7 @@ button {
 
             </button>
 
+
             <button
                 class="sidebar-button"
                 onclick="openCommandManager()">
@@ -1162,6 +1083,7 @@ button {
 
             </button>
 
+
             <button
                 class="sidebar-button"
                 onclick="openSensorModal()">
@@ -1169,6 +1091,7 @@ button {
                 📊 센서
 
             </button>
+
 
             <button
                 class="sidebar-button"
@@ -1189,11 +1112,13 @@ button {
 
     <main class="main">
 
+
         <header class="topbar">
 
             <div class="title">
                 🤖 micro:bit AI
             </div>
+
 
             <div class="connection">
 
@@ -1201,6 +1126,7 @@ button {
                     class="dot"
                     id="connectionDot">
                 </div>
+
 
                 <span id="connectionText">
                     연결 안 됨
@@ -1224,6 +1150,7 @@ button {
                 <div class="avatar bot-avatar">
                     🤖
                 </div>
+
 
                 <div class="message-content">
                     안녕하세요! 👋
@@ -1258,6 +1185,7 @@ button {
                     onkeydown="handleEnter(event)"
                 >
 
+
                 <button
                     class="send"
                     onclick="sendChat()">
@@ -1280,6 +1208,7 @@ button {
 ====================================================== -->
 
 <nav class="mobile-nav">
+
 
     <button
         class="nav-button active"
@@ -1358,9 +1287,11 @@ button {
 
     <div class="modal-box">
 
+
         <div class="modal-title">
             📡 micro:bit 연결
         </div>
+
 
         <div
             style="
@@ -1384,6 +1315,7 @@ button {
                 연결된 기기 없음
 
             </div>
+
 
             <div
                 class="device-id"
@@ -1450,6 +1382,7 @@ button {
 
     <div class="modal-box">
 
+
         <div class="modal-title">
             ⚙️ 명령 관리
         </div>
@@ -1498,6 +1431,7 @@ button {
     id="addCommandModal">
 
     <div class="modal-box">
+
 
         <div class="modal-title">
             ＋ 새 명령
@@ -1600,7 +1534,6 @@ button {
             <textarea
                 id="commandResponse"
                 placeholder="🎉 생일 축하해!">
-
             </textarea>
 
         </div>
@@ -1615,6 +1548,7 @@ button {
                 취소
 
             </button>
+
 
             <button
                 class="btn btn-green"
@@ -1641,12 +1575,14 @@ button {
 
     <div class="modal-box">
 
+
         <div class="modal-title">
             📊 센서
         </div>
 
 
         <div class="sensor-grid">
+
 
             <div class="sensor-card">
 
@@ -1791,6 +1727,7 @@ button {
 
     <div class="modal-box">
 
+
         <div class="modal-title">
             📝 BLE 로그
         </div>
@@ -1814,6 +1751,7 @@ button {
 
             </button>
 
+
             <button
                 class="btn btn-gray"
                 onclick="closeLogModal()">
@@ -1831,9 +1769,25 @@ button {
 
 <script>
 
+
 /* =====================================================
    BLE UUID
 ===================================================== */
+
+/*
+    micro:bit UART Service
+
+    Service:
+    6e400001-b5a3-f393-e0a9-e50e24dcca9e
+
+    micro:bit -> S25:
+    6e400002-b5a3-f393-e0a9-e50e24dcca9e
+    INDICATE
+
+    S25 -> micro:bit:
+    6e400003-b5a3-f393-e0a9-e50e24dcca9e
+    WRITE / WRITE_NO_RESPONSE
+*/
 
 const SERVICE_UUID =
     "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -1842,7 +1796,7 @@ const RX_UUID =
     "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
 const TX_UUID =
-    "6e400003-b5a3-f393-e0a9-e50e";
+    "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
 
 let bluetoothDevice = null;
@@ -1864,143 +1818,201 @@ const defaultCommands = [
 
     {
         name:"인사",
+
         triggers:[
             "안녕",
             "hello",
             "hi"
         ],
+
         action:"HELLO",
+
         response:"안녕! 👋"
     },
 
+
     {
         name:"하트",
+
         triggers:[
             "하트",
             "사랑",
             "heart"
         ],
+
         action:"HEART",
-        response:"❤️ 하트를 보여줄게!"
+
+        response:
+            "❤️ 하트를 보여줄게!"
     },
+
 
     {
         name:"뭐하지",
+
         triggers:[
             "뭐하지",
             "뭐 해",
             "뭐해",
             "what"
         ],
+
         action:"WHAT",
-        response:"🤔 재미있는 걸 해보자!"
+
+        response:
+            "🤔 재미있는 걸 해보자!"
     },
+
 
     {
         name:"춤",
+
         triggers:[
             "춤",
             "댄스",
             "dance"
         ],
+
         action:"DANCE",
-        response:"💃 춤춰볼게!"
+
+        response:
+            "💃 춤춰볼게!"
     },
+
 
     {
         name:"소리",
+
         triggers:[
             "소리",
             "삐",
             "beep"
         ],
+
         action:"BEEP",
-        response:"🔊 삐!"
+
+        response:
+            "🔊 삐!"
     },
+
 
     {
         name:"LED 켜기",
+
         triggers:[
             "불 켜",
             "불켜",
             "led 켜",
             "led on"
         ],
+
         action:"LED_ON",
-        response:"💡 LED를 켤게!"
+
+        response:
+            "💡 LED를 켤게!"
     },
+
 
     {
         name:"LED 끄기",
+
         triggers:[
             "불 꺼",
             "불꺼",
             "led 꺼",
             "led off"
         ],
+
         action:"LED_OFF",
-        response:"🌑 LED를 끌게!"
+
+        response:
+            "🌑 LED를 끌게!"
     },
+
 
     {
         name:"온도",
+
         triggers:[
             "온도",
             "몇 도",
             "temperature"
         ],
+
         action:"TEMP",
-        response:"🌡️ 온도를 확인할게!"
+
+        response:
+            "🌡️ 온도를 확인할게!"
     },
+
 
     {
         name:"빛",
+
         triggers:[
             "빛",
             "밝기",
             "light"
         ],
+
         action:"LIGHT",
-        response:"☀️ 빛 센서를 확인할게!"
+
+        response:
+            "☀️ 빛 센서를 확인할게!"
     },
+
 
     {
         name:"소리 센서",
+
         triggers:[
             "소리 센서",
             "소리 크기",
             "sound"
         ],
+
         action:"SOUND",
-        response:"🔊 소리 센서를 확인할게!"
+
+        response:
+            "🔊 소리 센서를 확인할게!"
     },
+
 
     {
         name:"센서",
+
         triggers:[
             "센서",
             "sensor"
         ],
+
         action:"SENSOR",
-        response:"📊 센서 데이터를 가져올게!"
+
+        response:
+            "📊 센서 데이터를 가져올게!"
     },
+
 
     {
         name:"PING",
+
         triggers:[
             "ping",
             "연결 확인",
             "연결됐어"
         ],
+
         action:"PING",
-        response:"📡 연결을 확인할게!"
+
+        response:
+            "📡 연결을 확인할게!"
     }
 
 ];
 
 
 /* =====================================================
-   STORAGE
+   LOCAL STORAGE
 ===================================================== */
 
 function getCustomCommands() {
@@ -2022,7 +2034,9 @@ function getCustomCommands() {
 }
 
 
-function saveCustomCommands(commands) {
+function saveCustomCommands(
+    commands
+) {
 
     localStorage.setItem(
         "microbit_custom_commands",
@@ -2043,7 +2057,7 @@ function getAllCommands() {
 
 
 /* =====================================================
-   SIDEBAR
+   SIDEBAR COMMAND LIST
 ===================================================== */
 
 function refreshCommandList() {
@@ -2055,6 +2069,7 @@ function refreshCommandList() {
 
     list.innerHTML = "";
 
+
     getAllCommands().forEach(
         command => {
 
@@ -2063,24 +2078,32 @@ function refreshCommandList() {
                     "div"
                 );
 
+
             item.className =
                 "command-item";
 
+
             item.textContent =
-                "• " + command.name;
+                "• " +
+                command.name;
+
 
             item.onclick = () => {
 
-                document.getElementById(
-                    "chatInput"
-                ).value =
+                const input =
+                    document.getElementById(
+                        "chatInput"
+                    );
+
+
+                input.value =
                     command.triggers[0];
 
-                document.getElementById(
-                    "chatInput"
-                ).focus();
+
+                input.focus();
 
             };
+
 
             list.appendChild(
                 item
@@ -2093,7 +2116,7 @@ function refreshCommandList() {
 
 
 /* =====================================================
-   CHAT
+   ENTER
 ===================================================== */
 
 function handleEnter(event) {
@@ -2112,6 +2135,10 @@ function handleEnter(event) {
 }
 
 
+/* =====================================================
+   SEND CHAT
+===================================================== */
+
 async function sendChat() {
 
     const input =
@@ -2119,33 +2146,56 @@ async function sendChat() {
             "chatInput"
         );
 
+
     const text =
         input.value.trim();
+
 
     if (!text) {
         return;
     }
 
-    addUserMessage(text);
+
+    addUserMessage(
+        text
+    );
+
 
     input.value = "";
 
-    await processChat(text);
+
+    await processChat(
+        text
+    );
 
 }
 
 
-async function processChat(text) {
+/* =====================================================
+   COMMAND PROCESSOR
+===================================================== */
+
+async function processChat(
+    text
+) {
 
     const normalized =
-        text.toLowerCase().trim();
+        text
+        .toLowerCase()
+        .trim();
+
+
+    const commands =
+        getAllCommands();
+
 
     for (
-        const command of getAllCommands()
+        const command of commands
     ) {
 
         for (
-            const trigger of command.triggers
+            const trigger
+            of command.triggers
         ) {
 
             if (
@@ -2158,9 +2208,11 @@ async function processChat(text) {
                     command.response
                 );
 
+
                 await sendCommand(
                     command.action
                 );
+
 
                 return;
 
@@ -2169,6 +2221,7 @@ async function processChat(text) {
         }
 
     }
+
 
     addBotMessage(
         "🤔 아직 그 명령은 몰라요.\n\n" +
@@ -2187,7 +2240,9 @@ async function processChat(text) {
    MESSAGE
 ===================================================== */
 
-function addUserMessage(text) {
+function addUserMessage(
+    text
+) {
 
     addMessage(
         "👤",
@@ -2199,7 +2254,9 @@ function addUserMessage(text) {
 }
 
 
-function addBotMessage(text) {
+function addBotMessage(
+    text
+) {
 
     addMessage(
         "🤖",
@@ -2223,10 +2280,12 @@ function addMessage(
             "chat"
         );
 
+
     const message =
         document.createElement(
             "div"
         );
+
 
     message.className =
         "message" +
@@ -2242,9 +2301,11 @@ function addMessage(
             "div"
         );
 
+
     avatar.className =
         "avatar " +
         avatarClass;
+
 
     avatar.textContent =
         avatarText;
@@ -2255,8 +2316,10 @@ function addMessage(
             "div"
         );
 
+
     content.className =
         "message-content";
+
 
     content.textContent =
         text;
@@ -2266,9 +2329,11 @@ function addMessage(
         avatar
     );
 
+
     message.appendChild(
         content
     );
+
 
     chat.appendChild(
         message
@@ -2289,6 +2354,7 @@ function scrollChat() {
             "chat"
         );
 
+
     chat.scrollTop =
         chat.scrollHeight;
 
@@ -2306,7 +2372,9 @@ function newChat() {
             "chat"
         );
 
+
     chat.innerHTML = "";
+
 
     addBotMessage(
         "새 채팅을 시작했어요! ✨\n\n" +
@@ -2322,54 +2390,78 @@ function newChat() {
 
 function openDeviceModal() {
 
-    document.getElementById(
-        "deviceModal"
-    ).classList.add("show");
+    document
+        .getElementById(
+            "deviceModal"
+        )
+        .classList.add(
+            "show"
+        );
 
 }
 
 
 function closeDeviceModal() {
 
-    document.getElementById(
-        "deviceModal"
-    ).classList.remove("show");
+    document
+        .getElementById(
+            "deviceModal"
+        )
+        .classList.remove(
+            "show"
+        );
 
 }
 
 
 function openSensorModal() {
 
-    document.getElementById(
-        "sensorModal"
-    ).classList.add("show");
+    document
+        .getElementById(
+            "sensorModal"
+        )
+        .classList.add(
+            "show"
+        );
 
 }
 
 
 function closeSensorModal() {
 
-    document.getElementById(
-        "sensorModal"
-    ).classList.remove("show");
+    document
+        .getElementById(
+            "sensorModal"
+        )
+        .classList.remove(
+            "show"
+        );
 
 }
 
 
 function openLogModal() {
 
-    document.getElementById(
-        "logModal"
-    ).classList.add("show");
+    document
+        .getElementById(
+            "logModal"
+        )
+        .classList.add(
+            "show"
+        );
 
 }
 
 
 function closeLogModal() {
 
-    document.getElementById(
-        "logModal"
-    ).classList.remove("show");
+    document
+        .getElementById(
+            "logModal"
+        )
+        .classList.remove(
+            "show"
+        );
 
 }
 
@@ -2378,18 +2470,27 @@ function openCommandManager() {
 
     renderCommandManager();
 
-    document.getElementById(
-        "commandModal"
-    ).classList.add("show");
+
+    document
+        .getElementById(
+            "commandModal"
+        )
+        .classList.add(
+            "show"
+        );
 
 }
 
 
 function closeCommandManager() {
 
-    document.getElementById(
-        "commandModal"
-    ).classList.remove("show");
+    document
+        .getElementById(
+            "commandModal"
+        )
+        .classList.remove(
+            "show"
+        );
 
 }
 
@@ -2398,14 +2499,21 @@ function closeCommandManager() {
    BLE LOG
 ===================================================== */
 
-function bleLog(text) {
+function bleLog(
+    text
+) {
 
     const time =
         new Date()
         .toLocaleTimeString();
 
+
     const line =
-        `[${time}] ${text}\n`;
+        "[" +
+        time +
+        "] " +
+        text +
+        "\n";
 
 
     document.getElementById(
@@ -2423,6 +2531,7 @@ function bleLog(text) {
             "bleLog"
         );
 
+
     const full =
         document.getElementById(
             "fullLog"
@@ -2432,6 +2541,7 @@ function bleLog(text) {
     small.scrollTop =
         small.scrollHeight;
 
+
     full.scrollTop =
         full.scrollHeight;
 
@@ -2439,14 +2549,16 @@ function bleLog(text) {
 
 
 /* =====================================================
-   BLUETOOTH CONNECT
+   CONNECT
 ===================================================== */
 
 async function connectBluetooth() {
 
     try {
 
-        if (!navigator.bluetooth) {
+        if (
+            !navigator.bluetooth
+        ) {
 
             addBotMessage(
                 "❌ 이 브라우저에서는 Web Bluetooth를 사용할 수 없어요."
@@ -2458,14 +2570,25 @@ async function connectBluetooth() {
 
 
         bleLog(
-            "🔎 BLE 검색 시작"
+            "🔎 Bluetooth 검색 시작..."
         );
 
+
+        /*
+         * 중요:
+         *
+         * filters를 사용하지 않고
+         * 모든 BLE 장치를 검색합니다.
+         *
+         * 필요한 UART 서비스는
+         * optionalServices에 등록합니다.
+         */
 
         bluetoothDevice =
             await navigator.bluetooth.requestDevice({
 
-                acceptAllDevices:true,
+                acceptAllDevices:
+                    true,
 
                 optionalServices:[
                     SERVICE_UUID
@@ -2480,7 +2603,8 @@ async function connectBluetooth() {
 
 
         bleLog(
-            "✅ 선택: " + name
+            "✅ 선택됨: " +
+            name
         );
 
 
@@ -2493,7 +2617,8 @@ async function connectBluetooth() {
         document.getElementById(
             "deviceId"
         ).textContent =
-            bluetoothDevice.id || "-";
+            bluetoothDevice.id ||
+            "-";
 
 
         bluetoothDevice.addEventListener(
@@ -2503,7 +2628,7 @@ async function connectBluetooth() {
 
 
         bleLog(
-            "🔗 GATT 연결..."
+            "🔗 GATT 연결 중..."
         );
 
 
@@ -2527,11 +2652,29 @@ async function connectBluetooth() {
         );
 
 
+        /*
+         * micro:bit → S25
+         *
+         * 002 = INDICATE
+         */
+
         rxCharacteristic =
             await service.getCharacteristic(
                 RX_UUID
             );
 
+
+        bleLog(
+            "✅ RX 발견: " +
+            RX_UUID
+        );
+
+
+        /*
+         * S25 → micro:bit
+         *
+         * 003 = WRITE / WRITE_NO_RESPONSE
+         */
 
         txCharacteristic =
             await service.getCharacteristic(
@@ -2540,9 +2683,18 @@ async function connectBluetooth() {
 
 
         bleLog(
-            "✅ RX / TX 발견"
+            "✅ TX 발견: " +
+            TX_UUID
         );
 
+
+        /*
+         * 현재 장치에서 002가 INDICATE이므로
+         * startNotifications()를 사용합니다.
+         *
+         * 브라우저가 해당 characteristic의
+         * 변경 이벤트를 처리합니다.
+         */
 
         await rxCharacteristic.startNotifications();
 
@@ -2593,6 +2745,12 @@ async function connectBluetooth() {
         );
 
 
+        console.error(
+            "Bluetooth error:",
+            error
+        );
+
+
         if (
             error.name ===
             "NotFoundError"
@@ -2605,7 +2763,7 @@ async function connectBluetooth() {
         } else {
 
             addBotMessage(
-                "❌ 연결 실패\n" +
+                "❌ Bluetooth 연결 실패\n\n" +
                 error.name +
                 ": " +
                 error.message
@@ -2627,7 +2785,9 @@ function disconnectBluetooth() {
     try {
 
         if (
-            bluetoothDevice?.gatt?.connected
+            bluetoothDevice &&
+            bluetoothDevice.gatt &&
+            bluetoothDevice.gatt.connected
         ) {
 
             bluetoothDevice.gatt.disconnect();
@@ -2644,13 +2804,17 @@ function disconnectBluetooth() {
     }
 
 
-    bluetoothDevice = null;
+    bluetoothDevice =
+        null;
 
-    gattServer = null;
+    gattServer =
+        null;
 
-    rxCharacteristic = null;
+    rxCharacteristic =
+        null;
 
-    txCharacteristic = null;
+    txCharacteristic =
+        null;
 
 
     document.getElementById(
@@ -2704,14 +2868,21 @@ function handleDisconnected() {
         "❌ micro:bit 연결 끊김"
     );
 
+
+    addBotMessage(
+        "🔴 micro:bit 연결이 끊어졌어요."
+    );
+
 }
 
 
 /* =====================================================
-   BLE RECEIVE
+   RECEIVE
 ===================================================== */
 
-function handleBluetoothData(event) {
+function handleBluetoothData(
+    event
+) {
 
     const value =
         new TextDecoder(
@@ -2731,7 +2902,9 @@ function handleBluetoothData(event) {
 
 
     const lines =
-        receivedBuffer.split("\n");
+        receivedBuffer.split(
+            "\n"
+        );
 
 
     receivedBuffer =
@@ -2745,7 +2918,10 @@ function handleBluetoothData(event) {
         const data =
             line.trim();
 
-        if (data) {
+
+        if (
+            data
+        ) {
 
             processReceivedData(
                 data
@@ -2759,13 +2935,23 @@ function handleBluetoothData(event) {
 
 
 /* =====================================================
-   RECEIVED DATA
+   DATA PROCESSING
 ===================================================== */
 
-function processReceivedData(data) {
+function processReceivedData(
+    data
+) {
+
+    /*
+     * 센서:
+     *
+     * DATA,temp,light,sound,x,y,z,a,b
+     */
 
     if (
-        data.startsWith("DATA,")
+        data.startsWith(
+            "DATA,"
+        )
     ) {
 
         const parts =
@@ -2813,38 +2999,57 @@ function processReceivedData(data) {
 
         }
 
+
         return;
 
     }
 
 
+    /*
+     * micro:bit가 받은 명령
+     */
+
     if (
-        data.startsWith("RECEIVED,")
+        data.startsWith(
+            "RECEIVED,"
+        )
     ) {
 
         addBotMessage(
-            "micro:bit: " +
+            "micro:bit 📥\n" +
             data.substring(9)
         );
 
+
         return;
 
     }
 
 
+    /*
+     * 명령 결과
+     */
+
     if (
-        data.startsWith("RESULT,")
+        data.startsWith(
+            "RESULT,"
+        )
     ) {
 
         addBotMessage(
-            "결과: " +
+            "micro:bit 결과 📡\n" +
             data.substring(7)
         );
+
 
         return;
 
     }
 
+
+    /*
+     * PING
+     */
 
     if (
         data === "PONG" ||
@@ -2855,13 +3060,18 @@ function processReceivedData(data) {
             "📡 micro:bit 응답: PONG 🟢"
         );
 
+
         return;
 
     }
 
 
+    /*
+     * 기타 데이터
+     */
+
     addBotMessage(
-        "micro:bit: " +
+        "micro:bit 📥\n" +
         data
     );
 
@@ -2869,16 +3079,21 @@ function processReceivedData(data) {
 
 
 /* =====================================================
-   BLE SEND
+   SEND COMMAND
 ===================================================== */
 
-async function sendCommand(command) {
+async function sendCommand(
+    command
+) {
 
-    if (!txCharacteristic) {
+    if (
+        !txCharacteristic
+    ) {
 
         addBotMessage(
             "🔵 먼저 micro:bit를 연결해주세요."
         );
+
 
         return false;
 
@@ -2890,15 +3105,22 @@ async function sendCommand(command) {
         const data =
             new TextEncoder()
             .encode(
-                command + "\n"
+                command +
+                "\n"
             );
 
 
+        /*
+         * 003 characteristic:
+         *
+         * WRITE
+         * WRITE_NO_RESPONSE
+         */
+
         if (
-            typeof
             txCharacteristic
-            .writeValueWithoutResponse ===
-            "function"
+                .properties
+                .writeWithoutResponse
         ) {
 
             await txCharacteristic
@@ -2928,8 +3150,11 @@ async function sendCommand(command) {
 
         bleLog(
             "❌ TX 오류: " +
+            error.name +
+            ": " +
             error.message
         );
+
 
         return false;
 
@@ -2949,6 +3174,7 @@ function renderCommandManager() {
             "commandManagerList"
         );
 
+
     box.innerHTML = "";
 
 
@@ -2961,6 +3187,7 @@ function renderCommandManager() {
     ) {
 
         box.innerHTML = `
+
             <div
                 style="
                     padding:20px 5px;
@@ -2969,9 +3196,13 @@ function renderCommandManager() {
                     font-size:13px;
                 "
             >
+
                 아직 직접 만든 명령이 없어요.
+
             </div>
+
         `;
+
 
         return;
 
@@ -2979,12 +3210,16 @@ function renderCommandManager() {
 
 
     commands.forEach(
-        (command,index) => {
+        (
+            command,
+            index
+        ) => {
 
             const card =
                 document.createElement(
                     "div"
                 );
+
 
             card.className =
                 "command-card";
@@ -2993,18 +3228,33 @@ function renderCommandManager() {
             card.innerHTML = `
 
                 <div class="command-card-name">
-                    ${escapeHtml(command.name)}
+
+                    ${escapeHtml(
+                        command.name
+                    )}
+
                 </div>
+
 
                 <div class="command-card-trigger">
+
                     ${escapeHtml(
-                        command.triggers.join(", ")
+                        command.triggers.join(
+                            ", "
+                        )
                     )}
+
                 </div>
 
+
                 <div class="command-card-action">
-                    ${escapeHtml(command.action)}
+
+                    ${escapeHtml(
+                        command.action
+                    )}
+
                 </div>
+
 
                 <button
                     class="btn btn-red"
@@ -3012,7 +3262,8 @@ function renderCommandManager() {
                         width:100%;
                         margin-top:10px;
                     "
-                    onclick="deleteCommand(${index})">
+                    onclick="deleteCommand(${index})"
+                >
 
                     🗑️ 삭제
 
@@ -3021,7 +3272,9 @@ function renderCommandManager() {
             `;
 
 
-            box.appendChild(card);
+            box.appendChild(
+                card
+            );
 
         }
     );
@@ -3058,7 +3311,9 @@ function openAddCommand() {
 
     document.getElementById(
         "addCommandModal"
-    ).classList.add("show");
+    ).classList.add(
+        "show"
+    );
 
 }
 
@@ -3067,10 +3322,16 @@ function closeAddCommand() {
 
     document.getElementById(
         "addCommandModal"
-    ).classList.remove("show");
+    ).classList.remove(
+        "show"
+    );
 
 }
 
+
+/* =====================================================
+   SAVE COMMAND
+===================================================== */
 
 function saveCommand() {
 
@@ -3126,7 +3387,9 @@ function saveCommand() {
         .map(
             x => x.trim()
         )
-        .filter(Boolean);
+        .filter(
+            Boolean
+        );
 
 
     const commands =
@@ -3168,10 +3431,12 @@ function saveCommand() {
 
 
 /* =====================================================
-   DELETE
+   DELETE COMMAND
 ===================================================== */
 
-function deleteCommand(index) {
+function deleteCommand(
+    index
+) {
 
     const commands =
         getCustomCommands();
@@ -3216,17 +3481,34 @@ function deleteCommand(index) {
 
 
 /* =====================================================
-   ESCAPE
+   HTML ESCAPE
 ===================================================== */
 
-function escapeHtml(text) {
+function escapeHtml(
+    text
+) {
 
     return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -3241,6 +3523,7 @@ function clearLog() {
         "bleLog"
     ).textContent = "";
 
+
     document.getElementById(
         "fullLog"
     ).textContent = "";
@@ -3249,7 +3532,7 @@ function clearLog() {
 
 
 /* =====================================================
-   INIT
+   INITIALIZE
 ===================================================== */
 
 refreshCommandList();
@@ -3263,13 +3546,34 @@ window.addEventListener(
             "🤖 micro:bit AI 시작"
         );
 
+
         bleLog(
             "📱 모바일 UI 활성화"
         );
 
+
         bleLog(
-            "📡 BLE 서비스 준비 완료"
+            "📡 BLE UART 준비 완료"
         );
+
+
+        bleLog(
+            "Service: " +
+            SERVICE_UUID
+        );
+
+
+        bleLog(
+            "RX/INDICATE: " +
+            RX_UUID
+        );
+
+
+        bleLog(
+            "TX/WRITE: " +
+            TX_UUID
+        );
+
 
         if (
             navigator.bluetooth
@@ -3281,8 +3585,9 @@ window.addEventListener(
                     await navigator.bluetooth
                     .getAvailability();
 
+
                 bleLog(
-                    "Bluetooth: " +
+                    "Bluetooth 사용 가능: " +
                     available
                 );
 
@@ -3307,33 +3612,37 @@ window.addEventListener(
 
 
 /* =====================================================
-   CLOSE MODAL WHEN BACKGROUND TAP
+   CLOSE MODAL ON BACKGROUND TAP
 ===================================================== */
 
 document
-.querySelectorAll(".modal")
-.forEach(
-    modal => {
+    .querySelectorAll(
+        ".modal"
+    )
+    .forEach(
+        modal => {
 
-        modal.addEventListener(
-            "click",
-            event => {
+            modal.addEventListener(
+                "click",
+                event => {
 
-                if (
-                    event.target === modal
-                ) {
+                    if (
+                        event.target ===
+                        modal
+                    ) {
 
-                    modal.classList.remove(
-                        "show"
-                    );
+                        modal.classList.remove(
+                            "show"
+                        );
+
+                    }
 
                 }
+            );
 
-            }
-        );
+        }
+    );
 
-    }
-);
 
 </script>
 
