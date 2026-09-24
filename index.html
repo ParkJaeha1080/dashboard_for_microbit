@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>micro:bit BLE Dashboard</title>
+<title>micro:bit AI</title>
 
 <style>
 * {
@@ -13,1377 +13,2277 @@
 
 body {
     margin: 0;
-    background: #101114;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
+    background: #0b0b0f;
+    color: #f5f5f7;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    height: 100vh;
+    overflow: hidden;
 }
 
-header {
-    padding: 18px;
-    background: #181a20;
-    border-bottom: 1px solid #30333b;
-}
-
-header h1 {
-    margin: 0 0 6px;
-    font-size: 24px;
-}
-
-#status {
-    font-size: 14px;
-    color: #ffcc66;
-}
-
-.container {
-    padding: 14px;
-    max-width: 1000px;
-    margin: auto;
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
 }
 
 button {
-    border: 0;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 15px;
-    font-weight: bold;
     cursor: pointer;
-    color: white;
-    background: #3b82f6;
 }
 
-button:active {
-    transform: scale(0.97);
-}
+/* =========================
+   APP
+========================= */
 
-button.disconnect {
-    background: #dc3545;
-}
-
-button.command {
-    background: #7c3aed;
-}
-
-button.small {
-    padding: 8px 12px;
-    font-size: 13px;
-}
-
-.top-buttons {
+.app {
+    height: 100vh;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 14px;
+    flex-direction: column;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+
+    border-bottom: 1px solid #29292f;
+
+    background: #111116;
 }
 
-.card {
-    background: #181a20;
-    border: 1px solid #2c2f38;
-    border-radius: 14px;
-    padding: 15px;
+.logo {
+    font-size: 19px;
+    font-weight: 700;
 }
 
-.card h2 {
-    margin: 0 0 8px;
-    font-size: 15px;
-    color: #bfc4d0;
+.status {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #999;
+
+    font-size: 12px;
 }
 
-.value {
-    font-size: 28px;
-    font-weight: bold;
+.status-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #666;
 }
 
-.unit {
-    font-size: 14px;
-    color: #888f9d;
+.status-dot.connected {
+    background: #45d483;
 }
 
-.section {
-    margin-top: 14px;
+.header-button {
+    margin-left: 8px;
+
+    border: 1px solid #35353d;
+
+    background: #222229;
+    color: white;
+
+    padding: 7px 11px;
+
+    border-radius: 16px;
+
+    font-size: 12px;
 }
 
-.section-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.sensor-ok {
-    color: #55e68b;
-}
-
-.sensor-off {
-    color: #ff7070;
-}
+/* =========================
+   CHAT
+========================= */
 
 .chat {
-    height: 330px;
+    flex: 1;
+
     overflow-y: auto;
-    background: #0b0c0f;
-    border: 1px solid #2c2f38;
-    border-radius: 12px;
-    padding: 10px;
+
+    padding: 20px 13px 130px;
+}
+
+.message-row {
+    display: flex;
+
+    margin-bottom: 18px;
+}
+
+.message-row.user {
+    justify-content: flex-end;
+}
+
+.message-row.bot {
+    justify-content: flex-start;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    margin-right: 8px;
+
+    border-radius: 50%;
+
+    background: #29292f;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .message {
-    padding: 9px 11px;
-    margin: 6px 0;
-    border-radius: 10px;
-    max-width: 90%;
+    max-width: min(82%, 550px);
+
+    padding: 11px 14px;
+
+    border-radius: 18px;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    white-space: pre-wrap;
+
     word-break: break-word;
 }
 
-.message.me {
-    background: #17345f;
-    margin-left: auto;
+.bot .message {
+    background: #1b1b21;
+
+    border-top-left-radius: 5px;
 }
 
-.message.micro {
-    background: #22262f;
-    margin-right: auto;
+.user .message {
+    background: #303038;
+
+    border-top-right-radius: 5px;
 }
 
-.message.system {
-    background: #302a13;
-    color: #ffd966;
+/* =========================
+   INPUT
+========================= */
+
+.input-area {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding: 7px 10px 13px;
+
+    background:
+        linear-gradient(
+            transparent,
+            #0b0b0f 20%
+        );
+}
+
+.quick {
+    max-width: 800px;
+
+    margin: 0 auto 7px;
+
+    display: flex;
+
+    gap: 6px;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+}
+
+.quick::-webkit-scrollbar {
+    display: none;
+}
+
+.quick button {
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border-radius: 15px;
+
+    border: 1px solid #303038;
+
+    background: #19191e;
+
+    color: #ddd;
+}
+
+.input-box {
+    max-width: 800px;
+
     margin: auto;
-    text-align: center;
-    font-size: 13px;
-}
 
-.message small {
-    display: block;
-    margin-top: 4px;
-    opacity: 0.55;
-    font-size: 10px;
-}
-
-.input-row {
     display: flex;
-    gap: 8px;
-    margin-top: 8px;
+
+    align-items: flex-end;
+
+    gap: 7px;
+
+    padding: 8px;
+
+    border: 1px solid #34343b;
+
+    border-radius: 25px;
+
+    background: #1b1b20;
 }
 
-.input-row input {
+textarea {
     flex: 1;
-    min-width: 0;
-    background: #181a20;
+
+    min-height: 25px;
+    max-height: 120px;
+
+    resize: none;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
     color: white;
-    border: 1px solid #343842;
-    border-radius: 10px;
-    padding: 12px;
+
+    padding: 7px 8px;
+
     font-size: 15px;
-    outline: none;
 }
 
-.input-row input:focus {
-    border-color: #3b82f6;
+.send {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background: white;
+
+    color: black;
+
+    font-size: 19px;
 }
 
-.commands {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    background: rgba(0,0,0,.7);
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
 }
 
-.command-input {
+.modal.show {
     display: flex;
-    gap: 8px;
-    margin-top: 8px;
 }
 
-.command-input input {
-    flex: 1;
-    min-width: 0;
-    background: #181a20;
-    color: white;
-    border: 1px solid #343842;
+.modal-box {
+    width: min(500px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border: 1px solid #34343c;
+
+    border-radius: 18px;
+
+    background: #18181d;
+
+    padding: 18px;
+}
+
+.modal-title {
+    font-size: 19px;
+
+    font-weight: 700;
+
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+
+    color: #aaa;
+
+    font-size: 12px;
+
+    margin: 13px 0 6px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+
+    border: 1px solid #36363e;
+
+    outline: none;
+
     border-radius: 10px;
-    padding: 12px;
+
+    padding: 11px;
+
+    background: #101014;
+
+    color: white;
+
     font-size: 14px;
 }
 
-.log {
-    height: 190px;
-    overflow-y: auto;
-    background: #08090b;
-    border: 1px solid #2c2f38;
-    border-radius: 10px;
-    padding: 10px;
-    font-family: monospace;
-    font-size: 12px;
-    white-space: pre-wrap;
+.form-help {
+    color: #777;
+
+    font-size: 11px;
+
+    margin-top: 5px;
+
+    line-height: 1.4;
 }
 
-.stat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.axis {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-}
-
-.axis-box {
-    background: #101217;
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-}
-
-.axis-box b {
-    display: block;
-    color: #8fa7ff;
-    margin-bottom: 5px;
-}
-
-.button-state {
+.modal-buttons {
     display: flex;
-    gap: 10px;
+
+    gap: 8px;
+
+    margin-top: 18px;
 }
 
-.ab {
+.modal-buttons button {
     flex: 1;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    background: #101217;
-}
 
-.ab.active {
-    background: #185c39;
-    color: #7dffb0;
-}
+    padding: 11px;
 
-.progress {
-    height: 8px;
-    background: #292c34;
+    border: 0;
+
     border-radius: 10px;
+}
+
+.save-button {
+    background: white;
+
+    color: black;
+}
+
+.cancel-button {
+    background: #292930;
+
+    color: white;
+}
+
+/* =========================
+   COMMAND MANAGER
+========================= */
+
+.command-list {
+    margin-top: 15px;
+}
+
+.command-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px;
+
+    margin-bottom: 8px;
+
+    border: 1px solid #303038;
+
+    border-radius: 12px;
+
+    background: #111116;
+}
+
+.command-icon {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 10px;
+
+    background: #24242b;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+.command-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.command-name {
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.command-trigger {
+    color: #888;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+
     overflow: hidden;
-    margin-top: 8px;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
 }
 
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: #3b82f6;
-    transition: width 0.15s;
+.delete-command {
+    background: #2b1c1f;
+
+    color: #ff8585;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    padding: 7px 9px;
 }
 
-@media (max-width: 700px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* =========================
+   DEVICE PANEL
+========================= */
 
-    .commands {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.panel {
+    display: none;
 
-    .stat-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    position: fixed;
+
+    z-index: 50;
+
+    top: 68px;
+    right: 10px;
+
+    width: 290px;
+
+    max-width: calc(100vw - 20px);
+
+    border: 1px solid #34343b;
+
+    border-radius: 15px;
+
+    background: #18181d;
+
+    padding: 14px;
 }
 
-@media (max-width: 420px) {
-    .grid {
-        grid-template-columns: 1fr 1fr;
-    }
+.panel.show {
+    display: block;
+}
 
-    .value {
-        font-size: 23px;
-    }
+.panel-title {
+    font-weight: 700;
 
-    button {
-        padding: 10px 12px;
-    }
+    margin-bottom: 12px;
+}
+
+.sensor-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+}
+
+.sensor-card {
+    background: #222229;
+
+    border-radius: 9px;
+
+    padding: 9px;
+}
+
+.sensor-name {
+    color: #888;
+
+    font-size: 11px;
+}
+
+.sensor-value {
+    margin-top: 3px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+.logs {
+    margin-top: 10px;
+
+    max-height: 130px;
+
+    overflow-y: auto;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+    background: #0c0c10;
+
+    color: #888;
+
+    font-size: 10px;
+
+    white-space: pre-wrap;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>📡 micro:bit BLE Dashboard</h1>
-    <div id="status">🔴 연결되지 않음</div>
-</header>
+<div class="app">
 
-<div class="container">
+    <!-- HEADER -->
 
-    <div class="top-buttons">
-        <button id="connectBtn" onclick="connectBLE()">
-            🔵 micro:bit 연결
-        </button>
+    <div class="header">
 
-        <button
-            id="disconnectBtn"
-            class="disconnect"
-            onclick="disconnectBLE()"
-            disabled>
-            🔌 연결 해제
-        </button>
-    </div>
-
-    <!-- 센서 -->
-    <div class="section">
-        <div class="section-title">📊 센서</div>
-
-        <div class="grid">
-
-            <div class="card">
-                <h2>🌡️ 온도</h2>
-                <div class="value">
-                    <span id="temperature">--</span>
-                    <span class="unit">°C</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>💡 밝기</h2>
-                <div class="value">
-                    <span id="light">--</span>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" id="lightBar"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🔊 소리</h2>
-                <div class="value">
-                    <span id="sound">--</span>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" id="soundBar"></div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- 가속도 -->
-    <div class="section">
-        <div class="section-title">📐 가속도</div>
-
-        <div class="axis">
-
-            <div class="axis-box">
-                <b>X</b>
-                <span id="accX">--</span>
-            </div>
-
-            <div class="axis-box">
-                <b>Y</b>
-                <span id="accY">--</span>
-            </div>
-
-            <div class="axis-box">
-                <b>Z</b>
-                <span id="accZ">--</span>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- 버튼 -->
-    <div class="section">
-        <div class="section-title">🎮 버튼</div>
-
-        <div class="button-state">
-
-            <div class="ab" id="buttonA">
-                🔵 A<br>
-                <b>OFF</b>
-            </div>
-
-            <div class="ab" id="buttonB">
-                🟣 B<br>
-                <b>OFF</b>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- 통계 -->
-    <div class="section">
-
-        <div class="section-title">📦 통신 상태</div>
-
-        <div class="stat-grid">
-
-            <div class="card">
-                <h2>패킷</h2>
-                <div class="value" id="packetCount">0</div>
-            </div>
-
-            <div class="card">
-                <h2>보낸 메시지</h2>
-                <div class="value" id="sentCount">0</div>
-            </div>
-
-            <div class="card">
-                <h2>받은 메시지</h2>
-                <div class="value" id="receivedCount">0</div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- 채팅 -->
-    <div class="section">
-
-        <div class="section-title">💬 micro:bit 채팅</div>
-
-        <div id="chat" class="chat"></div>
-
-        <div class="input-row">
-
-            <input
-                id="messageInput"
-                type="text"
-                placeholder="micro:bit로 보낼 글자..."
-                onkeydown="handleMessageKey(event)">
-
-            <button onclick="sendMessage()">
-                전송
-            </button>
-
+        <div class="logo">
+            🤖 micro:bit AI
         </div>
 
-    </div>
+        <div class="status">
 
-    <!-- 명령어 -->
-    <div class="section">
+            <span
+                id="statusDot"
+                class="status-dot"
+            ></span>
 
-        <div class="section-title">⚡ 명령어</div>
-
-        <div class="commands">
-
-            <button class="command" onclick="sendCommand('LED_ON')">
-                💡 LED ON
-            </button>
-
-            <button class="command" onclick="sendCommand('LED_OFF')">
-                🌑 LED OFF
-            </button>
-
-            <button class="command" onclick="sendCommand('HELLO')">
-                👋 HELLO
-            </button>
-
-            <button class="command" onclick="sendCommand('PING')">
-                📡 PING
-            </button>
-
-            <button class="command" onclick="sendCommand('CLEAR')">
-                🧹 CLEAR
-            </button>
-
-            <button class="command" onclick="sendCommand('STATUS')">
-                📊 STATUS
-            </button>
-
-            <button class="command" onclick="sendCommand('BEEP')">
-                🔔 BEEP
-            </button>
-
-            <button class="command" onclick="sendCommand('RESET')">
-                🔄 RESET
-            </button>
-
-        </div>
-
-        <div class="command-input">
-
-            <input
-                id="commandInput"
-                type="text"
-                placeholder="직접 명령어 입력..."
-                onkeydown="handleCommandKey(event)">
+            <span id="statusText">
+                연결 안 됨
+            </span>
 
             <button
-                class="command"
-                onclick="sendCustomCommand()">
-                실행
+                class="header-button"
+                onclick="connectMicrobit()"
+            >
+                📡 연결
+            </button>
+
+            <button
+                class="header-button"
+                onclick="togglePanel()"
+            >
+                📊
+            </button>
+
+            <button
+                class="header-button"
+                onclick="openCommandManager()"
+            >
+                ⚙️
             </button>
 
         </div>
 
     </div>
 
-    <!-- 로그 -->
-    <div class="section">
 
-        <div class="section-title">📜 BLE 로그</div>
+    <!-- CHAT -->
 
-        <div id="log" class="log"></div>
+    <div
+        id="chat"
+        class="chat"
+    ></div>
 
-        <br>
 
-        <button
-            class="small"
-            onclick="clearLog()">
-            로그 지우기
-        </button>
+    <!-- DEVICE PANEL -->
+
+    <div
+        id="devicePanel"
+        class="panel"
+    >
+
+        <div class="panel-title">
+            📡 micro:bit 상태
+        </div>
+
+        <div class="sensor-grid">
+
+            <div class="sensor-card">
+                <div class="sensor-name">
+                    온도
+                </div>
+
+                <div
+                    id="temp"
+                    class="sensor-value"
+                >
+                    --
+                </div>
+            </div>
+
+            <div class="sensor-card">
+                <div class="sensor-name">
+                    밝기
+                </div>
+
+                <div
+                    id="light"
+                    class="sensor-value"
+                >
+                    --
+                </div>
+            </div>
+
+            <div class="sensor-card">
+                <div class="sensor-name">
+                    소리
+                </div>
+
+                <div
+                    id="sound"
+                    class="sensor-value"
+                >
+                    --
+                </div>
+            </div>
+
+            <div class="sensor-card">
+                <div class="sensor-name">
+                    X
+                </div>
+
+                <div
+                    id="accelX"
+                    class="sensor-value"
+                >
+                    --
+                </div>
+            </div>
+
+            <div class="sensor-card">
+                <div class="sensor-name">
+                    Y
+                </div>
+
+                <div
+                    id="accelY"
+                    class="sensor-value"
+                >
+                    --
+                </div>
+            </div>
+
+            <div class="sensor-card">
+                <div class="sensor-name">
+                    Z
+                </div>
+
+                <div
+                    id="accelZ"
+                    class="sensor-value"
+                >
+                    --
+                </div>
+            </div>
+
+        </div>
+
+        <div
+            id="logs"
+            class="logs"
+        ></div>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="input-area">
+
+        <div class="quick">
+
+            <button
+                onclick="quickCommand('뭐하지?')"
+            >
+                🎲 뭐하지?
+            </button>
+
+            <button
+                onclick="quickCommand('하트')"
+            >
+                ❤️ 하트
+            </button>
+
+            <button
+                onclick="quickCommand('춤춰')"
+            >
+                💃 춤
+            </button>
+
+            <button
+                onclick="quickCommand('온도')"
+            >
+                🌡️ 온도
+            </button>
+
+            <button
+                onclick="quickCommand('센서')"
+            >
+                📊 센서
+            </button>
+
+        </div>
+
+        <div class="input-box">
+
+            <textarea
+                id="input"
+                placeholder="micro:bit에게 메시지를 보내세요..."
+                rows="1"
+            ></textarea>
+
+            <button
+                class="send"
+                onclick="sendChat()"
+            >
+                ↑
+            </button>
+
+        </div>
 
     </div>
 
 </div>
 
+
+<!-- COMMAND MANAGER -->
+
+<div
+    id="commandModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-title">
+            ⚙️ 명령 관리
+        </div>
+
+        <button
+            class="save-button"
+            style="
+                width:100%;
+                padding:11px;
+                border-radius:10px;
+                border:0;
+            "
+            onclick="openAddCommand()"
+        >
+            ＋ 새 명령 만들기
+        </button>
+
+        <div
+            id="commandList"
+            class="command-list"
+        ></div>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-button"
+                onclick="closeCommandManager()"
+            >
+                닫기
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ADD COMMAND -->
+
+<div
+    id="addModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-title">
+            ＋ 새 명령 만들기
+        </div>
+
+        <label class="form-label">
+            명령 이름
+        </label>
+
+        <input
+            id="commandName"
+            class="form-input"
+            placeholder="예: 선풍기 켜기"
+        >
+
+        <label class="form-label">
+            사용자가 말할 문장
+        </label>
+
+        <input
+            id="commandTriggers"
+            class="form-input"
+            placeholder="선풍기 켜줘, 선풍기 켜, 바람 켜줘"
+        >
+
+        <div class="form-help">
+            여러 문장은 쉼표(,)로 구분하세요.
+        </div>
+
+        <label class="form-label">
+            micro:bit 동작
+        </label>
+
+        <select
+            id="commandAction"
+            class="form-select"
+        >
+
+            <option value="HELLO">
+                😊 인사
+            </option>
+
+            <option value="HEART">
+                ❤️ 하트
+            </option>
+
+            <option value="WHAT">
+                🎲 랜덤 행동
+            </option>
+
+            <option value="DANCE">
+                💃 춤
+            </option>
+
+            <option value="BEEP">
+                🔊 소리
+            </option>
+
+            <option value="LED_ON">
+                💡 LED 켜기
+            </option>
+
+            <option value="LED_OFF">
+                🌑 LED 끄기
+            </option>
+
+            <option value="TEMP">
+                🌡️ 온도
+            </option>
+
+            <option value="LIGHT">
+                💡 밝기
+            </option>
+
+            <option value="SOUND">
+                🔊 소리 센서
+            </option>
+
+            <option value="SENSOR">
+                📊 전체 센서
+            </option>
+
+            <option value="PING">
+                📡 연결 테스트
+            </option>
+
+        </select>
+
+        <label class="form-label">
+            AI 응답
+        </label>
+
+        <input
+            id="commandResponse"
+            class="form-input"
+            placeholder="예: 🌀 선풍기를 켰어요!"
+        >
+
+        <div class="form-help">
+            명령 실행 후 채팅창에 표시될 문장입니다.
+        </div>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-button"
+                onclick="closeAddCommand()"
+            >
+                취소
+            </button>
+
+            <button
+                class="save-button"
+                onclick="saveNewCommand()"
+            >
+                저장
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
-const SERVICE_UUID =
-    "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+/* =========================================================
+   BLE
+========================================================= */
 
-/*
-    네 micro:bit에서 실제로 확인된 구조
+const UART_SERVICE =
+    "6e400001-b5a3-f393-e0a9-e50e24dcca9e"
 
-    002 = INDICATE
-    micro:bit → S25
+const RX_CHARACTERISTIC =
+    "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
 
-    003 = WRITE
-    S25 → micro:bit
-*/
-
-const MICROBIT_TO_PHONE_UUID =
-    "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-
-const PHONE_TO_MICROBIT_UUID =
-    "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
-let device = null;
-let server = null;
-let service = null;
-
-let microbitToPhone = null;
-let phoneToMicrobit = null;
-
-let packetCount = 0;
-let sentCount = 0;
-let receivedCount = 0;
-
-let receiveBuffer = "";
+const TX_CHARACTERISTIC =
+    "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 
 
-/* =========================
+let device = null
+let server = null
+let rx = null
+let tx = null
+
+let receiveBuffer = ""
+
+const decoder =
+    new TextDecoder("utf-8")
+
+const encoder =
+    new TextEncoder()
+
+
+/* =========================================================
+   기본 명령
+========================================================= */
+
+const DEFAULT_COMMANDS = [
+
+    {
+        name: "인사",
+        triggers: [
+            "안녕",
+            "안녕하세요",
+            "hello",
+            "hi"
+        ],
+        action: "HELLO",
+        response: "😊 안녕하세요!"
+    },
+
+    {
+        name: "하트",
+        triggers: [
+            "하트",
+            "하트 보여줘",
+            "사랑"
+        ],
+        action: "HEART",
+        response: "❤️ 하트를 보여줄게!"
+    },
+
+    {
+        name: "랜덤",
+        triggers: [
+            "뭐하지?",
+            "뭐하지",
+            "뭐 할까?",
+            "뭐 할까",
+            "재미있는 거",
+            "재미있는거",
+            "랜덤"
+        ],
+        action: "WHAT",
+        response: "🎲 좋아! 랜덤 행동을 골라볼게!"
+    },
+
+    {
+        name: "춤",
+        triggers: [
+            "춤",
+            "춤춰",
+            "춤 춰"
+        ],
+        action: "DANCE",
+        response: "💃 춤춰볼게!"
+    },
+
+    {
+        name: "삐",
+        triggers: [
+            "삐",
+            "삐 소리",
+            "소리 내"
+        ],
+        action: "BEEP",
+        response: "🔊 삐 소리를 낼게!"
+    },
+
+    {
+        name: "LED 켜기",
+        triggers: [
+            "불 켜",
+            "불켜",
+            "불 켜줘"
+        ],
+        action: "LED_ON",
+        response: "💡 불을 켰어요!"
+    },
+
+    {
+        name: "LED 끄기",
+        triggers: [
+            "불 꺼",
+            "불꺼",
+            "불 꺼줘"
+        ],
+        action: "LED_OFF",
+        response: "🌑 불을 껐어요!"
+    },
+
+    {
+        name: "온도",
+        triggers: [
+            "온도",
+            "온도 알려줘",
+            "몇 도야"
+        ],
+        action: "TEMP",
+        response: "🌡️ 온도를 확인할게요!"
+    },
+
+    {
+        name: "밝기",
+        triggers: [
+            "밝기",
+            "빛",
+            "밝기 알려줘"
+        ],
+        action: "LIGHT",
+        response: "💡 밝기를 확인할게요!"
+    },
+
+    {
+        name: "소리",
+        triggers: [
+            "소리",
+            "소리 알려줘"
+        ],
+        action: "SOUND",
+        response: "🔊 소리 크기를 확인할게요!"
+    },
+
+    {
+        name: "센서",
+        triggers: [
+            "센서",
+            "센서 정보",
+            "센서 상태",
+            "센서 알려줘"
+        ],
+        action: "SENSOR",
+        response: "📊 센서 정보를 가져올게요!"
+    }
+
+]
+
+
+/* =========================================================
+   저장된 명령 불러오기
+========================================================= */
+
+let customCommands = []
+
+try {
+
+    const saved =
+        localStorage.getItem(
+            "microbit_custom_commands"
+        )
+
+    if (saved) {
+
+        customCommands =
+            JSON.parse(saved)
+
+    }
+
+} catch (error) {
+
+    console.log(error)
+
+}
+
+
+/* =========================================================
+   모든 명령
+========================================================= */
+
+function getAllCommands() {
+
+    return [
+        ...DEFAULT_COMMANDS,
+        ...customCommands
+    ]
+
+}
+
+
+/* =========================================================
+   채팅 메시지
+========================================================= */
+
+function addMessage(
+    text,
+    type = "bot"
+) {
+
+    const chat =
+        document.getElementById("chat")
+
+    const row =
+        document.createElement("div")
+
+    row.className =
+        "message-row " + type
+
+    if (type === "bot") {
+
+        const avatar =
+            document.createElement("div")
+
+        avatar.className =
+            "avatar"
+
+        avatar.textContent =
+            "🤖"
+
+        row.appendChild(
+            avatar
+        )
+
+    }
+
+    const message =
+        document.createElement("div")
+
+    message.className =
+        "message"
+
+    message.textContent =
+        text
+
+    row.appendChild(
+        message
+    )
+
+    chat.appendChild(
+        row
+    )
+
+    chat.scrollTop =
+        chat.scrollHeight
+}
+
+
+/* =========================================================
    로그
-========================= */
+========================================================= */
 
-function log(message) {
+function log(text) {
 
-    const logBox = document.getElementById("log");
+    const logs =
+        document.getElementById("logs")
 
     const time =
-        new Date().toLocaleTimeString();
+        new Date()
+            .toLocaleTimeString()
 
-    logBox.textContent +=
-        "[" + time + "] " + message + "\n";
+    logs.textContent +=
+        "[" + time + "] " +
+        text +
+        "\n"
 
-    logBox.scrollTop =
-        logBox.scrollHeight;
-
-    console.log(message);
+    logs.scrollTop =
+        logs.scrollHeight
 }
 
 
-function clearLog() {
-    document.getElementById("log").textContent = "";
-}
-
-
-/* =========================
-   상태
-========================= */
-
-function setStatus(text, color = "#ffcc66") {
-
-    const status =
-        document.getElementById("status");
-
-    status.textContent = text;
-    status.style.color = color;
-}
-
-
-/* =========================
+/* =========================================================
    BLE 연결
-========================= */
+========================================================= */
 
-async function connectBLE() {
+async function connectMicrobit() {
 
     try {
 
-        if (!navigator.bluetooth) {
-
-            alert(
-                "이 브라우저는 Web Bluetooth를 지원하지 않습니다."
-            );
-
-            return;
-        }
-
-        setStatus(
-            "🟡 micro:bit 검색 중...",
-            "#ffcc66"
-        );
-
-        log("micro:bit 검색 시작");
+        addMessage(
+            "📡 micro:bit를 찾고 있어요..."
+        )
 
         device =
             await navigator.bluetooth.requestDevice({
 
-                acceptAllDevices: true,
-
-                optionalServices: [
-                    SERVICE_UUID
+                filters: [
+                    {
+                        services: [
+                            UART_SERVICE
+                        ]
+                    }
                 ]
 
-            });
+            })
 
         log(
-            "기기 발견: " +
-            (device.name || "이름 없음")
-        );
+            "장치 선택: " +
+            device.name
+        )
 
         device.addEventListener(
             "gattserverdisconnected",
             onDisconnected
-        );
-
-        setStatus(
-            "🟡 GATT 연결 중...",
-            "#ffcc66"
-        );
+        )
 
         server =
-            await device.gatt.connect();
+            await device.gatt.connect()
 
-        log("GATT 연결 성공");
-
-        service =
+        const service =
             await server.getPrimaryService(
-                SERVICE_UUID
-            );
+                UART_SERVICE
+            )
 
-        log("UART 서비스 발견");
-
-        microbitToPhone =
+        rx =
             await service.getCharacteristic(
-                MICROBIT_TO_PHONE_UUID
-            );
+                RX_CHARACTERISTIC
+            )
 
-        log(
-            "002 characteristic 발견: INDICATE"
-        );
-
-        phoneToMicrobit =
+        tx =
             await service.getCharacteristic(
-                PHONE_TO_MICROBIT_UUID
-            );
+                TX_CHARACTERISTIC
+            )
 
-        log(
-            "003 characteristic 발견: WRITE"
-        );
+        await rx.startNotifications()
 
-        /*
-            002는 INDICATE이므로
-            startNotifications()를 사용해
-            indication subscription을 요청한다.
-        */
+        rx.addEventListener(
+            "characteristicvaluechanged",
+            handleNotification
+        )
 
-        try {
+        document
+            .getElementById("statusDot")
+            .classList
+            .add("connected")
 
-            await microbitToPhone.startNotifications();
+        document
+            .getElementById("statusText")
+            .textContent =
+            "연결됨"
 
-            microbitToPhone.addEventListener(
-                "characteristicvaluechanged",
-                handleIncomingData
-            );
+        addMessage(
+            "✅ micro:bit와 연결됐어요!\n무엇을 해볼까요?"
+        )
 
-            log("INDICATE 활성화");
-
-        } catch (error) {
-
-            log(
-                "❌ INDICATE 활성화 실패: " +
-                error.message
-            );
-
-            /*
-                연결 자체는 유지하고
-                송신 기능은 사용할 수 있도록 한다.
-            */
-        }
-
-        document.getElementById(
-            "connectBtn"
-        ).disabled = true;
-
-        document.getElementById(
-            "disconnectBtn"
-        ).disabled = false;
-
-        setStatus(
-            "🟢 연결됨: " +
-            (device.name || "micro:bit"),
-            "#55e68b"
-        );
-
-        addSystemMessage(
-            "micro:bit에 연결되었습니다."
-        );
+        log("BLE 연결 완료")
 
     } catch (error) {
 
-        console.error(error);
+        console.error(error)
 
         log(
-            "❌ 연결 실패: " +
-            error.name +
-            " / " +
+            "연결 오류: " +
             error.message
-        );
+        )
 
-        setStatus(
-            "🔴 연결 실패",
-            "#ff7070"
-        );
+        addMessage(
+            "❌ 연결에 실패했어요.\n" +
+            error.message
+        )
+
     }
 }
 
 
-/* =========================
+/* =========================================================
    연결 해제
-========================= */
-
-function disconnectBLE() {
-
-    if (
-        device &&
-        device.gatt &&
-        device.gatt.connected
-    ) {
-
-        device.gatt.disconnect();
-
-    } else {
-
-        onDisconnected();
-    }
-}
-
+========================================================= */
 
 function onDisconnected() {
 
-    log("🔴 micro:bit 연결 해제");
-
-    setStatus(
-        "🔴 연결되지 않음",
-        "#ff7070"
-    );
-
-    document.getElementById(
-        "connectBtn"
-    ).disabled = false;
-
-    document.getElementById(
-        "disconnectBtn"
-    ).disabled = true;
-
-    microbitToPhone = null;
-    phoneToMicrobit = null;
-}
-
-
-/* =========================
-   연결 확인
-========================= */
-
-function isConnected() {
-
-    return (
-        phoneToMicrobit &&
-        device &&
-        device.gatt &&
-        device.gatt.connected
-    );
-}
-
-
-/* =========================
-   문자열 전송
-========================= */
-
-async function sendText(text) {
-
-    if (!isConnected()) {
-
-        addSystemMessage(
-            "먼저 micro:bit를 연결하세요."
-        );
-
-        return false;
-    }
-
-    if (!text || text.length === 0) {
-        return false;
-    }
-
-    try {
-
-        const encoder =
-            new TextEncoder();
-
-        /*
-            micro:bit UART에서
-            한 줄 단위로 처리하기 위해
-            반드시 \n을 붙인다.
-        */
-
-        const data =
-            encoder.encode(text + "\n");
-
-        /*
-            003은 WRITE / WRITE_NO_RESPONSE
-        */
-
-        if (
-            phoneToMicrobit.writeValueWithoutResponse
-        ) {
-
-            await phoneToMicrobit
-                .writeValueWithoutResponse(data);
-
-        } else {
-
-            await phoneToMicrobit
-                .writeValue(data);
-        }
-
-        sentCount++;
-
-        document.getElementById(
-            "sentCount"
-        ).textContent = sentCount;
-
-        log(
-            "TX ← " + text
-        );
-
-        return true;
-
-    } catch (error) {
-
-        log(
-            "❌ TX 실패: " +
-            error.message
-        );
-
-        return false;
-    }
-}
-
-
-/* =========================
-   채팅 전송
-========================= */
-
-async function sendMessage() {
-
-    const input =
-        document.getElementById(
-            "messageInput"
-        );
-
-    const text =
-        input.value.trim();
-
-    if (!text) {
-        return;
-    }
-
-    const success =
-        await sendText(text);
-
-    if (success) {
-
-        addMessage(
-            "나",
-            text,
-            "me"
-        );
-
-        input.value = "";
-        input.focus();
-    }
-}
-
-
-function handleMessageKey(event) {
-
-    if (event.key === "Enter") {
-
-        event.preventDefault();
-
-        sendMessage();
-    }
-}
-
-
-/* =========================
-   명령어
-========================= */
-
-async function sendCommand(command) {
-
-    const success =
-        await sendText(command);
-
-    if (success) {
-
-        addMessage(
-            "명령어",
-            command,
-            "me"
-        );
-    }
-}
-
-
-async function sendCustomCommand() {
-
-    const input =
-        document.getElementById(
-            "commandInput"
-        );
-
-    const command =
-        input.value.trim();
-
-    if (!command) {
-        return;
-    }
-
-    const success =
-        await sendText(command);
-
-    if (success) {
-
-        addMessage(
-            "명령어",
-            command,
-            "me"
-        );
-
-        input.value = "";
-    }
-}
-
-
-function handleCommandKey(event) {
-
-    if (event.key === "Enter") {
-
-        event.preventDefault();
-
-        sendCustomCommand();
-    }
-}
-
-
-/* =========================
-   수신 데이터
-========================= */
-
-function handleIncomingData(event) {
-
-    const value =
-        event.target.value;
-
-    const decoder =
-        new TextDecoder();
-
-    const text =
-        decoder.decode(value);
+    document
+        .getElementById("statusDot")
+        .classList
+        .remove("connected")
+
+    document
+        .getElementById("statusText")
+        .textContent =
+        "연결 안 됨"
+
+    rx = null
+    tx = null
 
     log(
-        "RX → " +
-        text.replace(/\n/g, "\\n")
-    );
+        "micro:bit 연결 해제"
+    )
 
-    receiveBuffer += text;
+    addMessage(
+        "⚠️ micro:bit 연결이 끊어졌어요."
+    )
+}
 
-    /*
-        여러 줄이 한 번에 들어오는 경우 처리
-    */
 
-    const lines =
-        receiveBuffer.split("\n");
+/* =========================================================
+   micro:bit 데이터 수신
+========================================================= */
+
+function handleNotification(event) {
+
+    const value =
+        event.target.value
+
+    const text =
+        decoder.decode(value)
+
+    receiveBuffer +=
+        text
+
+    let lines =
+        receiveBuffer.split("\n")
 
     receiveBuffer =
-        lines.pop();
+        lines.pop()
 
     for (
         const line of lines
     ) {
 
         const clean =
-            line.trim();
+            line
+                .replace(/\r/g, "")
+                .trim()
 
-        if (!clean) {
-            continue;
+        if (
+            clean.length > 0
+        ) {
+
+            processIncoming(
+                clean
+            )
+
         }
 
-        processIncomingLine(clean);
     }
+
 }
 
 
-/* =========================
-   데이터 처리
-========================= */
+/* =========================================================
+   micro:bit 응답 처리
+========================================================= */
 
-function processIncomingLine(line) {
+function processIncoming(line) {
 
-    receivedCount++;
-
-    document.getElementById(
-        "receivedCount"
-    ).textContent =
-        receivedCount;
-
-
-    /*
-        센서 패킷
-
-        DATA,
-        temperature,
-        light,
-        sound,
-        x,
-        y,
-        z,
-        a,
-        b
-    */
-
-    if (
-        line.startsWith("DATA,")
-    ) {
-
-        parseSensorData(line);
-
-        return;
-    }
-
-
-    /*
-        일반 텍스트
-    */
-
-    addMessage(
-        "micro:bit",
-        line,
-        "micro"
-    );
-}
-
-
-/* =========================
-   센서 데이터
-========================= */
-
-function parseSensorData(line) {
+    log(
+        "RX: " +
+        line
+    )
 
     const parts =
-        line.split(",");
+        line.split(",")
 
-    if (parts.length < 9) {
-
-        log(
-            "⚠️ 잘못된 DATA 패킷: " +
-            line
-        );
-
-        return;
-    }
-
-    const temperature =
-        parts[1];
-
-    const light =
-        Number(parts[2]);
-
-    const sound =
-        Number(parts[3]);
-
-    const x =
-        parts[4];
-
-    const y =
-        parts[5];
-
-    const z =
-        parts[6];
-
-    const a =
-        parts[7];
-
-    const b =
-        parts[8];
-
-
-    document.getElementById(
-        "temperature"
-    ).textContent =
-        temperature;
-
-
-    document.getElementById(
-        "light"
-    ).textContent =
-        light;
-
-
-    document.getElementById(
-        "sound"
-    ).textContent =
-        sound;
-
-
-    document.getElementById(
-        "accX"
-    ).textContent =
-        x;
-
-
-    document.getElementById(
-        "accY"
-    ).textContent =
-        y;
-
-
-    document.getElementById(
-        "accZ"
-    ).textContent =
-        z;
-
-
-    updateProgress(
-        "lightBar",
-        light
-    );
-
-
-    updateProgress(
-        "soundBar",
-        sound
-    );
-
-
-    updateButton(
-        "buttonA",
-        a
-    );
-
-
-    updateButton(
-        "buttonB",
-        b
-    );
-
-
-    packetCount++;
-
-    document.getElementById(
-        "packetCount"
-    ).textContent =
-        packetCount;
-}
-
-
-/* =========================
-   게이지
-========================= */
-
-function updateProgress(
-    id,
-    value
-) {
-
-    let percent =
-        Number(value);
-
-    if (isNaN(percent)) {
-        percent = 0;
-    }
-
-    percent =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                percent
-            )
-        );
-
-    document.getElementById(
-        id
-    ).style.width =
-        percent + "%";
-}
-
-
-/* =========================
-   버튼 표시
-========================= */
-
-function updateButton(
-    id,
-    value
-) {
-
-    const box =
-        document.getElementById(id);
-
-    const numeric =
-        Number(value);
+    const type =
+        parts[0]
 
     if (
-        value === "1" ||
-        value === "true" ||
-        numeric === 1
+        type === "DATA"
     ) {
 
-        box.classList.add("active");
+        updateSensor(
+            parts
+        )
 
-        box.innerHTML =
-            box.id === "buttonA"
-                ? "🔵 A<br><b>ON</b>"
-                : "🟣 B<br><b>ON</b>";
+        return
+    }
+
+    if (
+        type === "TEMP"
+    ) {
+
+        addMessage(
+            "🌡️ 현재 온도는 " +
+            parts[1] +
+            "°C예요."
+        )
+
+        return
+    }
+
+    if (
+        type === "LIGHT"
+    ) {
+
+        addMessage(
+            "💡 현재 밝기는 " +
+            parts[1] +
+            "이에요."
+        )
+
+        return
+    }
+
+    if (
+        type === "SOUND"
+    ) {
+
+        addMessage(
+            "🔊 현재 소리 크기는 " +
+            parts[1] +
+            "이에요."
+        )
+
+        return
+    }
+
+    if (
+        type === "RESULT"
+    ) {
+
+        handleResult(
+            parts.slice(1).join(",")
+        )
+
+        return
+    }
+
+    if (
+        type === "BUTTON"
+    ) {
+
+        if (
+            parts[1] === "A"
+        ) {
+
+            addMessage(
+                "🔵 micro:bit 버튼 A가 눌렸어요!"
+            )
+
+        }
+
+        if (
+            parts[1] === "B"
+        ) {
+
+            addMessage(
+                "🟢 micro:bit 버튼 B가 눌렸어요!"
+            )
+
+        }
+
+        return
+    }
+
+    if (
+        type === "RECEIVED"
+    ) {
+
+        log(
+            "명령 수신: " +
+            parts.slice(1).join(",")
+        )
+
+        return
+    }
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function handleResult(result) {
+
+    if (
+        result === "PONG"
+    ) {
+
+        addMessage(
+            "📡 연결 상태가 정상이에요!"
+        )
+
+    } else if (
+        result === "UNKNOWN"
+    ) {
+
+        addMessage(
+            "🤔 micro:bit가 이 동작을 이해하지 못했어요."
+        )
+
+    } else if (
+        result === "LED_ON"
+    ) {
+
+        addMessage(
+            "💡 LED를 켰어요!"
+        )
+
+    } else if (
+        result === "LED_OFF"
+    ) {
+
+        addMessage(
+            "🌑 LED를 껐어요!"
+        )
+
+    } else if (
+        result === "HEART"
+    ) {
+
+        addMessage(
+            "❤️ 하트를 표시했어요!"
+        )
+
+    } else if (
+        result === "HELLO"
+    ) {
+
+        addMessage(
+            "😊 micro:bit가 인사했어요!"
+        )
+
+    } else if (
+        result === "DANCE"
+    ) {
+
+        addMessage(
+            "💃 춤을 췄어요!"
+        )
+
+    } else if (
+        result === "BEEP"
+    ) {
+
+        addMessage(
+            "🔊 소리를 냈어요!"
+        )
+
+    } else if (
+        result === "RANDOM"
+    ) {
+
+        addMessage(
+            "🎲 랜덤 동작을 실행했어요!"
+        )
 
     } else {
 
-        box.classList.remove("active");
+        addMessage(
+            "🤖 micro:bit: " +
+            result
+        )
 
-        box.innerHTML =
-            box.id === "buttonA"
-                ? "🔵 A<br><b>OFF</b>"
-                : "🟣 B<br><b>OFF</b>";
     }
+
 }
 
 
-/* =========================
-   채팅 UI
-========================= */
+/* =========================================================
+   센서
+========================================================= */
 
-function addMessage(
-    sender,
-    text,
-    type
-) {
+function updateSensor(parts) {
 
-    const chat =
+    if (
+        parts.length < 9
+    ) {
+
+        return
+    }
+
+    document
+        .getElementById("temp")
+        .textContent =
+        parts[1] + "°C"
+
+    document
+        .getElementById("light")
+        .textContent =
+        parts[2]
+
+    document
+        .getElementById("sound")
+        .textContent =
+        parts[3]
+
+    document
+        .getElementById("accelX")
+        .textContent =
+        parts[4]
+
+    document
+        .getElementById("accelY")
+        .textContent =
+        parts[5]
+
+    document
+        .getElementById("accelZ")
+        .textContent =
+        parts[6]
+}
+
+
+/* =========================================================
+   명령 찾기
+========================================================= */
+
+function findCommand(text) {
+
+    const normalized =
+        text
+            .trim()
+            .toLowerCase()
+
+    const commands =
+        getAllCommands()
+
+    for (
+        const command of commands
+    ) {
+
+        for (
+            const trigger of command.triggers
+        ) {
+
+            if (
+                normalized ===
+                trigger
+                    .trim()
+                    .toLowerCase()
+            ) {
+
+                return command
+            }
+
+        }
+
+    }
+
+    return null
+}
+
+
+/* =========================================================
+   명령 실행
+========================================================= */
+
+async function executeChat(text) {
+
+    const command =
+        findCommand(text)
+
+    if (!command) {
+
+        addMessage(
+            "🤔 아직 이 명령을 몰라요.\n\n" +
+            "⚙️ 버튼을 눌러 직접 명령을 만들어 주세요!"
+        )
+
+        return
+    }
+
+    addMessage(
+        command.response
+    )
+
+    if (!tx) {
+
+        addMessage(
+            "📡 먼저 micro:bit를 연결해 주세요."
+        )
+
+        return
+    }
+
+    try {
+
+        await sendCommand(
+            command.action
+        )
+
+        log(
+            "명령 실행: " +
+            command.action
+        )
+
+    } catch (error) {
+
+        console.error(error)
+
+        addMessage(
+            "❌ 명령 전송 실패: " +
+            error.message
+        )
+
+    }
+
+}
+
+
+/* =========================================================
+   BLE 명령 보내기
+========================================================= */
+
+async function sendCommand(command) {
+
+    if (!tx) {
+
+        throw new Error(
+            "micro:bit가 연결되지 않았습니다."
+        )
+    }
+
+    const data =
+        encoder.encode(
+            command + "\n"
+        )
+
+    if (
+        tx.writeValueWithoutResponse
+    ) {
+
+        await tx.writeValueWithoutResponse(
+            data
+        )
+
+    } else {
+
+        await tx.writeValue(
+            data
+        )
+
+    }
+
+    log(
+        "TX: " +
+        command
+    )
+}
+
+
+/* =========================================================
+   채팅 보내기
+========================================================= */
+
+async function sendChat() {
+
+    const input =
         document.getElementById(
-            "chat"
-        );
+            "input"
+        )
 
-    const message =
-        document.createElement(
-            "div"
-        );
+    const text =
+        input.value.trim()
 
-    message.className =
-        "message " + type;
+    if (!text) {
 
-    const content =
-        document.createElement(
-            "div"
-        );
+        return
+    }
 
-    content.textContent =
-        text;
+    addMessage(
+        text,
+        "user"
+    )
 
-    const time =
-        document.createElement(
-            "small"
-        );
+    input.value = ""
 
-    time.textContent =
-        new Date().toLocaleTimeString();
-
-    message.appendChild(content);
-    message.appendChild(time);
-
-    chat.appendChild(message);
-
-    chat.scrollTop =
-        chat.scrollHeight;
+    await executeChat(
+        text
+    )
 }
 
 
-function addSystemMessage(
-    text
-) {
+/* =========================================================
+   빠른 명령
+========================================================= */
 
-    const chat =
+function quickCommand(text) {
+
+    const input =
         document.getElementById(
-            "chat"
-        );
+            "input"
+        )
 
-    const message =
-        document.createElement(
-            "div"
-        );
+    input.value =
+        text
 
-    message.className =
-        "message system";
-
-    message.textContent =
-        text;
-
-    chat.appendChild(message);
-
-    chat.scrollTop =
-        chat.scrollHeight;
+    sendChat()
 }
 
 
-/* =========================
-   시작 메시지
-========================= */
+/* =========================================================
+   명령 관리자
+========================================================= */
 
-addSystemMessage(
-    "micro:bit BLE Dashboard 준비 완료"
-);
+function openCommandManager() {
 
-log(
-    "Dashboard 시작"
-);
+    renderCommandList()
 
-log(
-    "UART Service: " +
-    SERVICE_UUID
-);
+    document
+        .getElementById(
+            "commandModal"
+        )
+        .classList
+        .add("show")
+}
 
-log(
-    "RX / INDICATE: " +
-    MICROBIT_TO_PHONE_UUID
-);
+function closeCommandManager() {
 
-log(
-    "TX / WRITE: " +
-    PHONE_TO_MICROBIT_UUID
-);
+    document
+        .getElementById(
+            "commandModal"
+        )
+        .classList
+        .remove("show")
+}
+
+
+/* =========================================================
+   명령 목록
+========================================================= */
+
+function renderCommandList() {
+
+    const list =
+        document.getElementById(
+            "commandList"
+        )
+
+    list.innerHTML = ""
+
+    const commands =
+        getAllCommands()
+
+    commands.forEach(
+        (command, index) => {
+
+            const item =
+                document.createElement(
+                    "div"
+                )
+
+            item.className =
+                "command-item"
+
+            const icon =
+                document.createElement(
+                    "div"
+                )
+
+            icon.className =
+                "command-icon"
+
+            icon.textContent =
+                getActionIcon(
+                    command.action
+                )
+
+            const info =
+                document.createElement(
+                    "div"
+                )
+
+            info.className =
+                "command-info"
+
+            const name =
+                document.createElement(
+                    "div"
+                )
+
+            name.className =
+                "command-name"
+
+            name.textContent =
+                command.name
+
+            const trigger =
+                document.createElement(
+                    "div"
+                )
+
+            trigger.className =
+                "command-trigger"
+
+            trigger.textContent =
+                command.triggers.join(
+                    " / "
+                )
+
+            info.appendChild(
+                name
+            )
+
+            info.appendChild(
+                trigger
+            )
+
+            item.appendChild(
+                icon
+            )
+
+            item.appendChild(
+                info
+            )
+
+            if (
+                index >=
+                DEFAULT_COMMANDS.length
+            ) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    )
+
+                deleteButton.className =
+                    "delete-command"
+
+                deleteButton.textContent =
+                    "삭제"
+
+                deleteButton.onclick =
+                    function() {
+
+                        deleteCustomCommand(
+                            index -
+                            DEFAULT_COMMANDS.length
+                        )
+
+                    }
+
+                item.appendChild(
+                    deleteButton
+                )
+
+            }
+
+            list.appendChild(
+                item
+            )
+
+        }
+    )
+}
+
+
+/* =========================================================
+   아이콘
+========================================================= */
+
+function getActionIcon(action) {
+
+    const icons = {
+
+        HELLO: "😊",
+        HEART: "❤️",
+        WHAT: "🎲",
+        DANCE: "💃",
+        BEEP: "🔊",
+        LED_ON: "💡",
+        LED_OFF: "🌑",
+        TEMP: "🌡️",
+        LIGHT: "💡",
+        SOUND: "🔊",
+        SENSOR: "📊",
+        PING: "📡"
+
+    }
+
+    return (
+        icons[action] ||
+        "⚙️"
+    )
+}
+
+
+/* =========================================================
+   새 명령
+========================================================= */
+
+function openAddCommand() {
+
+    document
+        .getElementById(
+            "commandName"
+        )
+        .value = ""
+
+    document
+        .getElementById(
+            "commandTriggers"
+        )
+        .value = ""
+
+    document
+        .getElementById(
+            "commandResponse"
+        )
+        .value = ""
+
+    document
+        .getElementById(
+            "addModal"
+        )
+        .classList
+        .add("show")
+}
+
+function closeAddCommand() {
+
+    document
+        .getElementById(
+            "addModal"
+        )
+        .classList
+        .remove("show")
+}
+
+
+/* =========================================================
+   명령 저장
+========================================================= */
+
+function saveNewCommand() {
+
+    const name =
+        document
+            .getElementById(
+                "commandName"
+            )
+            .value
+            .trim()
+
+    const triggersText =
+        document
+            .getElementById(
+                "commandTriggers"
+            )
+            .value
+            .trim()
+
+    const action =
+        document
+            .getElementById(
+                "commandAction"
+            )
+            .value
+
+    const response =
+        document
+            .getElementById(
+                "commandResponse"
+            )
+            .value
+            .trim()
+
+    if (!name) {
+
+        alert(
+            "명령 이름을 입력하세요."
+        )
+
+        return
+    }
+
+    if (!triggersText) {
+
+        alert(
+            "사용자가 말할 문장을 입력하세요."
+        )
+
+        return
+    }
+
+    const triggers =
+        triggersText
+            .split(",")
+            .map(
+                value =>
+                    value.trim()
+            )
+            .filter(
+                value =>
+                    value.length > 0
+            )
+
+    const newCommand = {
+
+        name: name,
+
+        triggers: triggers,
+
+        action: action,
+
+        response:
+            response ||
+            "🤖 명령을 실행했어요!"
+
+    }
+
+    customCommands.push(
+        newCommand
+    )
+
+    localStorage.setItem(
+        "microbit_custom_commands",
+        JSON.stringify(
+            customCommands
+        )
+    )
+
+    closeAddCommand()
+
+    renderCommandList()
+
+    addMessage(
+        "✅ 새로운 명령을 만들었어요!\n" +
+        "이제 \"" +
+        triggers[0] +
+        "\"라고 말하면 실행됩니다."
+    )
+}
+
+
+/* =========================================================
+   명령 삭제
+========================================================= */
+
+function deleteCustomCommand(index) {
+
+    if (
+        !confirm(
+            "이 명령을 삭제할까요?"
+        )
+    ) {
+
+        return
+    }
+
+    customCommands.splice(
+        index,
+        1
+    )
+
+    localStorage.setItem(
+        "microbit_custom_commands",
+        JSON.stringify(
+            customCommands
+        )
+    )
+
+    renderCommandList()
+}
+
+
+/* =========================================================
+   센서 패널
+========================================================= */
+
+function togglePanel() {
+
+    document
+        .getElementById(
+            "devicePanel"
+        )
+        .classList
+        .toggle("show")
+}
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+document
+    .getElementById("input")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault()
+
+                sendChat()
+            }
+
+        }
+    )
+
+
+/* =========================================================
+   시작
+========================================================= */
+
+addMessage(
+    "안녕하세요! 🤖\n\n" +
+    "저는 micro:bit를 제어하는 챗봇이에요.\n\n" +
+    "예를 들어 \"하트 보여줘\", \"온도 알려줘\", \"뭐하지?\"라고 말해보세요.\n\n" +
+    "⚙️ 버튼에서는 직접 새로운 명령을 만들 수 있어요!"
+)
 
 </script>
 
